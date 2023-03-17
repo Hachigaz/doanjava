@@ -19,3 +19,10 @@ values('LC02','Thực phẩm đóng hộp')
 use quanlykho
 insert into mat_hang
 values
+
+use test;
+select* from sinhvien
+
+use test;
+insert into lop
+values('1','1',0,50),('2','1',0,35),('3','2',0,45),('4','3',0,60)
