@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 public class DataSet {
     private String columnName[];
-    private ArrayList<Object> data[];
+    private ArrayList<ArrayList<Object>> data;
+    private int length;
 
     public DataSet(){
         this.columnName = null;
@@ -17,28 +18,48 @@ public class DataSet {
     public DataSet(ResultSet rs){
         try{
             ResultSetMetaData metaData = rs.getMetaData();
-
             this.columnName = new String[metaData.getColumnCount()];
+            this.data = new ArrayList<ArrayList<Object>>();
             for(int i = 0 ; i < this.columnName.length;i++){
                 this.columnName[i] = metaData.getColumnName(i+1);
-                this.data[i] = new ArrayList<Object>();
+                this.data.add(new ArrayList<Object>());
             }
-            for(int i = 0 ; i < metaData.getColumnCount();i++){ 
-                System.out.println(this.columnName[i]);
-            }
-
             if(rs.isBeforeFirst()){
                 rs.next();
             }
             while(!rs.isAfterLast()){
                 for(int i = 0 ; i < this.columnName.length;i++){
-                    this.data[i].add(rs.getString(i));
+                    this.data.get(i).add(rs.getString(i+1));
                 }
                 rs.next();
             }
         }
         catch(SQLException exception){
             System.out.println(exception.getMessage());
+        }
+
+        length = this.data.get(0).size();
+    }
+    
+    public String[] getColumnName(){
+        return this.columnName;
+    }
+
+    public Object[][] getData(){
+        Object[][] objArr = new Object[this.data.size()][length];
+        for(int i = 0 ; i < this.data.size();i++){
+            for(int j = 0 ; j < length;j++){
+                objArr[i][j] = this.data.get(i).get(j);
+            }
+        }
+        return objArr;
+    }
+
+    public void print(){
+        for(int i = 0 ; i < this.data.size();i++){
+            for(int j = 0 ; j < this.data.get(i).size();j++){
+                System.out.println(this.data.get(i).get(j));
+            }
         }
     }
 }

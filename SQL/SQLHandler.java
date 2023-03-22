@@ -4,7 +4,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.Properties;
 
 public class SQLHandler {
@@ -18,19 +17,21 @@ public class SQLHandler {
         this.password = password;
     }
     
-    public void query(String sql){
+    public DataSet query(String sql){
         String connectionUrl =url;
         Properties info = new Properties();
         info.setProperty("characterEncoding", "utf8");
         info.setProperty("user", username);
         info.setProperty("password", password);
 
+        DataSet ds = null;
+
         try (Connection connection = DriverManager.getConnection(connectionUrl,info);) {
             Statement statement = connection.createStatement();
             
             ResultSet rs = statement.executeQuery(sql);
 
-            DataSet ds = new DataSet(rs);
+            ds = new DataSet(rs);
 
             rs.close();
         }
@@ -39,5 +40,6 @@ public class SQLHandler {
             e.printStackTrace();
             System.out.println(e.getLocalizedMessage());
         }
+        return ds;
     }
 }
