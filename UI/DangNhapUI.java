@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class DangNhapUI extends JFrame{
+public class DangNhapUI extends TitleFrame{
     public final int F_Width = 600;
     public final int F_Height = 350;
 
@@ -22,10 +22,10 @@ public class DangNhapUI extends JFrame{
     private JButton submitButton;
 
     public DangNhapUI(){
-        super("Đăng nhập");
+        super();
 
 
-        this.setBounds(500,200,F_Width,F_Height);
+        this.setBounds(600,50,F_Width,F_Height);
 
 
         int sidePanelWidth = 200;
@@ -51,14 +51,14 @@ public class DangNhapUI extends JFrame{
         usernameInput = new JTextField("",15);
         passwordInput = new JPasswordField("",15);
 
-        springlayout.putConstraint(SpringLayout.WEST, usernameLabel, 5, SpringLayout.WEST, formPanel);
+        springlayout.putConstraint(SpringLayout.WEST, usernameLabel, 50, SpringLayout.WEST, formPanel);
         springlayout.putConstraint(SpringLayout.NORTH, usernameLabel, 100, SpringLayout.NORTH, formPanel);
-        springlayout.putConstraint(SpringLayout.WEST, usernameInput, 5, SpringLayout.EAST, usernameLabel);
+        springlayout.putConstraint(SpringLayout.WEST, usernameInput, 50, SpringLayout.EAST, usernameLabel);
         springlayout.putConstraint(SpringLayout.NORTH, usernameInput, 100, SpringLayout.NORTH, formPanel);
 
-        springlayout.putConstraint(SpringLayout.WEST, passwordLabel, 5, SpringLayout.WEST, formPanel);
+        springlayout.putConstraint(SpringLayout.WEST, passwordLabel, 50, SpringLayout.WEST, formPanel);
         springlayout.putConstraint(SpringLayout.NORTH, passwordLabel, 20, SpringLayout.SOUTH, usernameLabel);
-        springlayout.putConstraint(SpringLayout.WEST, passwordInput, 5, SpringLayout.EAST, usernameLabel);
+        springlayout.putConstraint(SpringLayout.WEST, passwordInput, 50, SpringLayout.EAST, usernameLabel);
         springlayout.putConstraint(SpringLayout.NORTH, passwordInput, 20, SpringLayout.SOUTH, usernameInput);
 
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER, formPanel);
@@ -97,8 +97,8 @@ public class DangNhapUI extends JFrame{
 
 
         //Frame
-        this.add(formPanel,BorderLayout.CENTER);
-        this.add(sidePanel,BorderLayout.EAST);
+        this.add(formPanel,BorderLayout.SOUTH);
+        this.add(sidePanel,BorderLayout.CENTER);
 
         this.pack();
         this.setVisible(true);

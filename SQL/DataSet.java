@@ -37,7 +37,7 @@ public class DataSet {
                 rs.next();
             }
         }
-        catch(SQLException exception){\
+        catch(SQLException exception){
             System.out.println(exception.getMessage());
         }
     }
