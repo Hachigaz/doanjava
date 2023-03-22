@@ -7,10 +7,10 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 
-public class Main{
+public class main{
     
     public static void connectToMySQL(){
-        String connectionUrl ="jdbc:mysql://localhost:3306/test";
+        String connectionUrl ="jdbc:mysql://172.20.10.5:3306/test";
         Properties info = new Properties();
         info.setProperty("characterEncoding", "utf8");
         info.setProperty("user", "master");
