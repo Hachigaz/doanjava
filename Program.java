@@ -2,8 +2,6 @@ import java.awt.event.*;
 
 import UI.DangNhapUI;
 import SQL.SQLHandler;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Program {
     private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
@@ -11,7 +9,6 @@ public class Program {
     private final String password = "123";
 
     private SQLHandler masterHandler;
-    private SQLHandler employeeHandler;
 
     public Program(){
         masterHandler = new SQLHandler(url, username, password);
