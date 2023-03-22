@@ -51,15 +51,15 @@ public class DangNhapUI extends TitleFrame{
         usernameInput = new JTextField("",15);
         passwordInput = new JPasswordField("",15);
 
-        springlayout.putConstraint(SpringLayout.WEST, usernameLabel, 20, SpringLayout.WEST, formPanel);
-        springlayout.putConstraint(SpringLayout.NORTH, usernameLabel, 100, SpringLayout.NORTH, formPanel);
-        springlayout.putConstraint(SpringLayout.WEST, usernameInput, 50, SpringLayout.EAST, usernameLabel);
-        springlayout.putConstraint(SpringLayout.NORTH, usernameInput, 100, SpringLayout.NORTH, formPanel);
+        springlayout.putConstraint(SpringLayout.NORTH,usernameLabel,100,SpringLayout.NORTH,formPanel);
+        springlayout.putConstraint(SpringLayout.WEST,usernameLabel,30,SpringLayout.WEST,formPanel);
+        springlayout.putConstraint(SpringLayout.NORTH,usernameInput,100,SpringLayout.NORTH,formPanel);
+        springlayout.putConstraint(SpringLayout.WEST,usernameInput,30,SpringLayout.EAST,usernameLabel);
 
-        springlayout.putConstraint(SpringLayout.WEST, passwordLabel, 20, SpringLayout.WEST, formPanel);
-        springlayout.putConstraint(SpringLayout.NORTH, passwordLabel, 20, SpringLayout.SOUTH, usernameLabel);
-        springlayout.putConstraint(SpringLayout.WEST, passwordInput, 50, SpringLayout.EAST, usernameLabel);
-        springlayout.putConstraint(SpringLayout.NORTH, passwordInput, 20, SpringLayout.SOUTH, usernameInput);
+        springlayout.putConstraint(SpringLayout.NORTH,passwordLabel,20,SpringLayout.SOUTH,usernameLabel);
+        springlayout.putConstraint(SpringLayout.WEST,passwordLabel,30,SpringLayout.WEST,formPanel);
+        springlayout.putConstraint(SpringLayout.NORTH,passwordInput,15,SpringLayout.SOUTH,usernameInput);
+        springlayout.putConstraint(SpringLayout.WEST,passwordInput,50,SpringLayout.EAST,passwordLabel);
 
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER, formPanel);
         springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 20, SpringLayout.NORTH, formPanel);
@@ -75,7 +75,7 @@ public class DangNhapUI extends TitleFrame{
         submitButton = new JButton("Đăng nhập");
         submitButton.setPreferredSize(new Dimension(100,30));
 
-        springlayout.putConstraint(SpringLayout.WEST, submitButton, 50, SpringLayout.WEST, formPanel);
+        springlayout.putConstraint(SpringLayout.WEST, submitButton, 60, SpringLayout.WEST, formPanel);
         springlayout.putConstraint(SpringLayout.SOUTH, submitButton, -20, SpringLayout.SOUTH, formPanel);
 
         formPanel.add(submitButton);
@@ -97,8 +97,8 @@ public class DangNhapUI extends TitleFrame{
 
 
         //Frame
-        this.add(formPanel,BorderLayout.SOUTH);
-        this.add(sidePanel,BorderLayout.CENTER);
+        this.add(formPanel,BorderLayout.CENTER);
+        this.add(sidePanel,BorderLayout.EAST);
 
         this.pack();
         this.setVisible(true);

@@ -19,7 +19,7 @@ public class TitleFrame extends JFrame {
         lb1.setText("      X");
         lb1.setOpaque(true);
         lb1.setBackground(new Color(250,250,250));
-        p1.setBackground(new Color(224, 72, 72));
+        p1.setBackground(new Color(190, 237, 157));
         p1.add(lb1);
         p1.setLayout(new FlowLayout(RIGHT));
         this.add(p1,BorderLayout.NORTH);

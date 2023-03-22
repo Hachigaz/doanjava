@@ -1,9 +1,13 @@
 import java.awt.event.*;
 
+<<<<<<< Updated upstream
 import javax.swing.JFrame;
 import javax.swing.JTable;
 
 import UI.DangNhapUI;
+=======
+import UI.*;
+>>>>>>> Stashed changes
 import SQL.SQLHandler;
 import SQL.DataSet;
 
@@ -19,6 +23,7 @@ public class Program {
     public Program(){
         masterHandler = new SQLHandler(url, username, password);
 
+<<<<<<< Updated upstream
         DangNhapUI dangNhapUI = new DangNhapUI();
         ActionListener submitAction = new ActionListener() {
             @Override
@@ -35,5 +40,19 @@ public class Program {
             }
         };
         dangNhapUI.setSubmitAction(submitAction);
+=======
+        // DangNhapUI dangNhapUI = new DangNhapUI();
+        // ActionListener submitAction = new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         System.out.println(dangNhapUI.getUsernameInput());
+        //         System.out.println(dangNhapUI.getPasswordInput());
+        //         masterHandler.query("SELECT * FROM nhanvien");
+        //     }
+        // };
+        // dangNhapUI.setSubmitAction(submitAction);
+
+        GUI gui = new GUI();
+>>>>>>> Stashed changes
     }
 }
