@@ -17,6 +17,9 @@ values('LC02','Thực phẩm đóng hộp')
 ,('LB01','Thiết bị điện tử')
 
 use quanlykho;
+select * from loai_hang
+
+use quanlykho;
 insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) values ('NV1001', 'Aguie De Clairmont', 'CV01', 'Nam', '21/05/1982', '34 Ramsey Junction', 'K01');
 insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) values ('NV2001', 'Jolyn Scarlett', 'CV01', 'Nữ', '21/11/1993', '93306 Manley Parkway', 'K02');
 insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) values ('NV1002', 'Melvyn Castellucci', 'CV02', 'Nam', '08/08/1985', '55 Nelson Lane', 'K01');

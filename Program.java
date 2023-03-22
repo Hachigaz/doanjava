@@ -18,7 +18,10 @@ public class Program {
 
     public Program(){
         masterHandler = new SQLHandler(url2, username, password);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 086f1eee4d91d4382488135bbae32f0b26bf3a81
         DangNhapUI dangNhapUI = new DangNhapUI();
         ActionListener submitAction = new ActionListener() {
             @Override
