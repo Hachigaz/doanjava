@@ -51,12 +51,12 @@ public class DangNhapUI extends JFrame{
         usernameInput = new JTextField("",15);
         passwordInput = new JPasswordField("",15);
 
-        springlayout.putConstraint(SpringLayout.WEST, usernameLabel, 5, SpringLayout.WEST, formPanel);
+        springlayout.putConstraint(SpringLayout.WEST, usernameLabel, 20, SpringLayout.WEST, formPanel);
         springlayout.putConstraint(SpringLayout.NORTH, usernameLabel, 100, SpringLayout.NORTH, formPanel);
         springlayout.putConstraint(SpringLayout.WEST, usernameInput, 5, SpringLayout.EAST, usernameLabel);
         springlayout.putConstraint(SpringLayout.NORTH, usernameInput, 100, SpringLayout.NORTH, formPanel);
 
-        springlayout.putConstraint(SpringLayout.WEST, passwordLabel, 5, SpringLayout.WEST, formPanel);
+        springlayout.putConstraint(SpringLayout.WEST, passwordLabel, 20, SpringLayout.WEST, formPanel);
         springlayout.putConstraint(SpringLayout.NORTH, passwordLabel, 20, SpringLayout.SOUTH, usernameLabel);
         springlayout.putConstraint(SpringLayout.WEST, passwordInput, 5, SpringLayout.EAST, usernameLabel);
         springlayout.putConstraint(SpringLayout.NORTH, passwordInput, 20, SpringLayout.SOUTH, usernameInput);
