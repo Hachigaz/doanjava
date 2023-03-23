@@ -26,7 +26,7 @@ public class DangNhapUI extends TitleFrame{
 
 
         this.setBounds(600,50,F_Width,F_Height);
-
+        this.setLocationRelativeTo(null);
 
         int sidePanelWidth = 200;
         SpringLayout springlayout = new SpringLayout();
