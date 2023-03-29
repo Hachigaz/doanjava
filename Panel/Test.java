@@ -20,6 +20,7 @@ public class Test extends JFrame implements MouseListener{
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png"};
     JLabel[] labels = new JLabel[6];
     SQLHandler hanndler;
+    TaoDonNhap dn;
     public Test(SQLHandler handler){
         this.hanndler= handler;
         this.setSize(1100,700);
@@ -116,9 +117,8 @@ public class Test extends JFrame implements MouseListener{
         // panelUser.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
 
         //Chuc nang
-        DataSet ds = handler.query("select * from mat_hang");
-        TaoDonNhap dn = new TaoDonNhap(ds);
-        dn.setVisible(false);
+        DataSet ds = handler.query("select * from nhanvien");
+        dn = new TaoDonNhap(ds);
         panelRight.add(dn);
 
         panelUser.add(labelIcon2);
@@ -139,17 +139,17 @@ public class Test extends JFrame implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==labels[0]){
-            panelRight.setVisible(false);
+            dn.setVisible(false);
         }else if(e.getSource()==labels[1]){
-            panelRight.setVisible(false);
+            dn.setVisible(false);
         }else if(e.getSource()==labels[2]){
-            panelRight.setVisible(false);
+            dn.setVisible(false);
         }else if(e.getSource()==labels[3]){
-            panelRight.setVisible(false);
+            dn.setVisible(false);
         }else if(e.getSource()==labels[4]){
-            panelRight.setVisible(false);
+            dn.setVisible(false);
         }else if (e.getSource()==labels[5]){
-            panelRight.setVisible(true);
+            dn.setVisible(true);
         }
     }
     @Override
