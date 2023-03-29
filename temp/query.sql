@@ -32,3 +32,9 @@ end;
 use test;
 insert into chitietlop
 value(1,2),(2,1),(3,1),(1,3),(2,5)
+
+use quanlykho;
+create trigger trig_DonXuat before insert on chitiet_donxuat
+update chitiet_donnhap
+set SLConLai = SLConLai - n
+
