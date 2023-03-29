@@ -138,15 +138,15 @@ public class Test extends JFrame implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==labels[0]){
-            panelRight.setBackground(Color.BLACK);
+            panelRight.setVisible(false);
         }else if(e.getSource()==labels[1]){
-            panelRight.setBackground(Color.WHITE);
+            panelRight.setVisible(false);
         }else if(e.getSource()==labels[2]){
-            panelRight.setBackground(Color.ORANGE);
+            panelRight.setVisible(false);
         }else if(e.getSource()==labels[3]){
-            panelRight.setBackground(Color.LIGHT_GRAY);
+            panelRight.setVisible(false);
         }else if(e.getSource()==labels[4]){
-            panelRight.setBackground(Color.yellow);
+            panelRight.setVisible(false);
         }else if (e.getSource()==labels[5]){
             panelRight.setVisible(true);
         }
