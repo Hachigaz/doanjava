@@ -28,9 +28,10 @@ public class Test extends JFrame implements MouseListener{
                 super.paintComponent(g);
 
                 Graphics2D g2d = (Graphics2D) g;
+                
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(0,171,255),
-                    0, getHeight(), new Color(100,100,100)
+                    0, 0, new Color(255,197,70),
+                    0, getHeight(), new Color(255,145,83)
                 );
 
                 g2d.setPaint(gradient);
@@ -76,15 +77,16 @@ public class Test extends JFrame implements MouseListener{
                 
                 Graphics2D g2d = (Graphics2D) g;
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(102,0,255),
-                    0, getHeight(), new Color(0,171,255)
+                    0, 0, new Color(255,209,67),
+                    0, getHeight(), new Color(255,197,70)
                 );
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         panelTop.setLayout(new BorderLayout());
-        panelTop.setPreferredSize(new Dimension(0,130));
+        panelTop.setPreferredSize(new Dimension(0,160));
+        panelTop.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
 
         panelUser = new JPanel();
         panelUser.setPreferredSize(new Dimension(250,170));
