@@ -1,7 +1,9 @@
 package Mat_Hang;
 
+import Panel.DanhMucSP;
+
 public class DanhSachMatHang {
-    MatHang[] danhSachMH;
+    DanhMucSP[] danhSachMH;
     public DanhSachMatHang(){
         danhSachMH = null;
     }
