@@ -118,6 +118,7 @@ public class Test extends JFrame implements MouseListener{
         //Chuc nang
         DataSet ds = handler.query("select * from mat_hang");
         TaoDonNhap dn = new TaoDonNhap(ds);
+        dn.setVisible(false);
         panelRight.add(dn);
 
         panelUser.add(labelIcon2);
