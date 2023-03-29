@@ -7,9 +7,11 @@ import UI.DangNhapUI;
 import SQL.SQLHandler;
 import SQL.DataSet;
 
+import Panel.*;
+
 public class Program {
     private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
-    private final String url2 = "jdbc:mysql://192.168.25.159:3306/QuanLyKho";
+    private final String url2 = "jdbc:mysql://192.168.31.38:3306/QuanLyKho";
 
     private final String username = "master";
     private final String password = "123";
@@ -33,6 +35,8 @@ public class Program {
                 JFrame frame = new JFrame();
 
                 JTable table = new JTable(ds.getData(),ds.getColumnName());
+
+                Test test = new Test();
                 frame.add(table);
                 frame.setVisible(true);
             }

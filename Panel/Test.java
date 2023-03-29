@@ -16,7 +16,7 @@ public class Test extends JFrame implements MouseListener{
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png"};
     JLabel[] labels = new JLabel[5];
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle;
-    Test(){
+    public Test(){
         this.setSize(1100,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
