@@ -1,5 +1,7 @@
 package Panel;
 
+import SQL.*;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -9,9 +11,11 @@ import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.*;
+import Function.*;
 
 public class Test extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser;
+<<<<<<< Updated upstream
     public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho"};
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png"};
     JLabel[] labels = new JLabel[5];
@@ -21,6 +25,15 @@ public class Test extends JFrame implements MouseListener{
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose;
 >>>>>>> Stashed changes
     public Test(){
+=======
+    public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập"};
+    public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png"};
+    JLabel[] labels = new JLabel[6];
+    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle;
+    SQLHandler hanndler;
+    public Test(SQLHandler handler){
+        this.hanndler= handler;
+>>>>>>> Stashed changes
         this.setSize(1100,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -45,7 +58,7 @@ public class Test extends JFrame implements MouseListener{
         panelLeft.setPreferredSize(new Dimension(190,0));
         panelLeft.setBackground(new Color(7, 140, 217));
         panelLeft.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        for(int i=0;i<5;i++){
+        for(int i=0;i<6;i++){
             ImageIcon icon = new ImageIcon("res/img/"+img[i]);
             Image img = icon.getImage();
             Image newImg = img.getScaledInstance(40,40,java.awt.Image.SCALE_SMOOTH);
@@ -114,6 +127,11 @@ public class Test extends JFrame implements MouseListener{
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
         // panelUser.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
 
+        //Chuc nang
+        DataSet ds = handler.query("select * from mat_hang");
+        TaoDonNhap dn = new TaoDonNhap(ds);
+        panelRight.add(dn);
+
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
 
@@ -141,6 +159,8 @@ public class Test extends JFrame implements MouseListener{
             panelRight.setBackground(Color.LIGHT_GRAY);
         }else if(e.getSource()==labels[4]){
             panelRight.setBackground(Color.yellow);
+        }else if (e.getSource()==labels[5]){
+            panelRight.setVisible(true);
         }
     }
     @Override
