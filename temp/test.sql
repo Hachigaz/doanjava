@@ -1,12 +1,12 @@
 use quanlykho;
 insert into kho(MaKho,TenKho,DiaChi)
 VALUES('K01','Kho ADV','273 An Dương Vương'),
-('K02','Kho THD','348 Trần Hưng Đạo')
+      ('K02','Kho THD','348 Trần Hưng Đạo')
 
 use quanlykho;
 insert into khuvuc
 values('K01','KV_D001','14000.0')
-,('K01','KV_B002','8000.0')
+      ,('K01','KV_B002','8000.0')
 
 use quanlykho;
 insert into loai_hang
@@ -17,7 +17,14 @@ values('LC02','Thực phẩm đóng hộp')
 ,('LB01','Thiết bị điện tử')
 
 use quanlykho;
-select * from loai_hang
+select * from congty
+
+use quanlykho;
+insert into congty
+values('CTY_7UP','Nuoc ngot 7 up','273 An duong vuong','01248623165'),
+      ('CTY_KFC','Kitchen food chicken','12 Le Van Quoi','1221301565'),
+      ('BTY_BHX','Bach Hoa Xanh','125 vo van kiet','05123687522')
+
 
 use quanlykho;
 insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) values ('NV1001', 'Aguie De Clairmont', 'CV01', 'Nam', '21/05/1982', '34 Ramsey Junction', 'K01');
