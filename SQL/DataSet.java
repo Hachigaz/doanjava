@@ -46,10 +46,10 @@ public class DataSet {
     }
 
     public Object[][] getData(){
-        Object[][] objArr = new Object[this.data.size()][length];
-        for(int i = 0 ; i < this.data.size();i++){
-            for(int j = 0 ; j < length;j++){
-                objArr[i][j] = this.data.get(i).get(j);
+        Object[][] objArr = new Object[length][this.data.size()];
+        for(int i = 0 ; i < length;i++){
+            for(int j = 0 ; j < this.data.size();j++){
+                objArr[i][j] = this.data.get(j).get(i);
             }
         }
         return objArr;

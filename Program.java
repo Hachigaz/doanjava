@@ -27,9 +27,7 @@ public class Program {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(dangNhapUI.getUsernameInput());
                 System.out.println(dangNhapUI.getPasswordInput());
-                DataSet ds = masterHandler.query("select kho.TenKho,kho.DiaChi,khuvuc.MaKV,khuvuc.SucChua,loai_hang.TenLoai from kho,khuvuc,khuvuc_loai,loai_hang\n"
-                +"where kho.MaKho = khuvuc.MaKho and khuvuc.MaKV = khuvuc_loai.MaKV\n"
-                +"and khuvuc_loai.MaLoai = loai_hang.MaLoai");
+                DataSet ds = masterHandler.query("select * from taikhoan_nhanvien");
                 JFrame frame = new JFrame();
 
                 JTable table = new JTable(ds.getData(),ds.getColumnName());
