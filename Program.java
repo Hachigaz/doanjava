@@ -56,5 +56,26 @@ public class Program {
         //         frame.setVisible(true);
         //     }
         // };
+        // dangNhapUI.setSubmitAction(submitAction);
+
+        ActionListener submitDanhMucSP = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // DataSet ds = masterHandler.query("select * from mat_hang");
+                // JTable table = new JTable(ds.getData(),ds.getColumnName());
+
+                DataSet ds = masterHandler.query("select * from mat_hang");
+                
+                
+                JFrame frame = new JFrame();
+
+                JTable table = new JTable(ds.getData(),ds.getColumnName());
+
+                Test test = new Test(masterHandler);
+
+                frame.add(table);
+                frame.setVisible(true);
+            }
+        };
     }
 }
