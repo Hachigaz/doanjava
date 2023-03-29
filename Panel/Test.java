@@ -15,25 +15,13 @@ import Function.*;
 
 public class Test extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser;
-<<<<<<< Updated upstream
-    public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho"};
-    public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png"};
-    JLabel[] labels = new JLabel[5];
-<<<<<<< Updated upstream
-    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle;
-=======
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose;
->>>>>>> Stashed changes
-    public Test(){
-=======
     public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập"};
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png"};
     JLabel[] labels = new JLabel[6];
-    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle;
     SQLHandler hanndler;
     public Test(SQLHandler handler){
         this.hanndler= handler;
->>>>>>> Stashed changes
         this.setSize(1100,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
