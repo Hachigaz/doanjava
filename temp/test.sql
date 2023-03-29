@@ -37,6 +37,19 @@ insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) 
 insert into nhanvien (MaNV, HoTen, MaChucVu, GioiTinh, NgaySinh, DiaChi, MaKho) values ('NV2004', 'Joellyn Saltmarsh', 'CV02', 'Nam', '02/05/1999', '80368 Warbler Avenue', 'K02');
 
 use quanlykho;
+insert into taikhoan_nhanvien
+value('NV1001','123test','NQ_QLK'),
+('NV1002','123test','NQ_NV'),
+('NV1003','123test','NQ_NV'),
+('NV1004','123test','NQ_NV'),
+('NV1005','123test','NQ_NV'),
+('NV1006','123test','NQ_QLK'),
+('NV2001','123test','NQ_QLK'),
+('NV2002','123test','NQ_NV'),
+('NV2003','123test','NQ_QLK'),
+('NV2004','123test','NQ_NV')
+
+use quanlykho;
 insert into chucvu
 values('CV01','Quản lý kho'),('CV02','Nhân viên kho')
 
