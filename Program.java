@@ -53,8 +53,7 @@ public class Program {
 
                 JTable table = new JTable(ds.getData(),ds.getColumnName());
 
-                Test test = new Test(masterHandler);
-
+                Test test = new Test();
                 frame.add(table);
                 frame.setVisible(true);
 =======
