@@ -20,7 +20,7 @@ public class Program {
     private final String username = "master";
     private final String password = "123";
 
-    private boolean testgiaodien = true;
+    private boolean testgiaodien = false;
 
     //tên tài khoản đăng nhập zo phần mềm hiện tại
     private String tkDangNhap;
