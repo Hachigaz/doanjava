@@ -1,10 +1,14 @@
+import java.awt.Dialog;
 import java.awt.event.*;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 
+import DangNhap.DangNhap;
 import UI.DangNhapUI;
-import SQL.SQLHandler;
+import temp.test;
+import SQL.SQLUser;
 import SQL.DataSet;
 
 import Panel.*;
@@ -16,32 +20,51 @@ public class Program {
     private final String username = "master";
     private final String password = "123";
 
-    private SQLHandler masterHandler;
+    private boolean testgiaodien = true;
 
-    public Program(){
-        masterHandler = new SQLHandler(url2, username, password);
+    //tên tài khoản đăng nhập zo phần mềm hiện tại
+    private String tkDangNhap;
 
-        DangNhapUI dangNhapUI = new DangNhapUI();
-        ActionListener submitAction = new ActionListener() {
+    //còn cái này chắc là model (kiểu như nó dùng để gọi đến cơ sở dữ liệu)
+    private SQLUser master;
+
+    public void dangNhap(){
+        DangNhapUI dangnhapui = new DangNhapUI();
+        ActionListener submitDanhMucSP = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(dangNhapUI.getUsernameInput());
-                System.out.println(dangNhapUI.getPasswordInput());
-                DataSet ds = masterHandler.query("select * from taikhoan_nhanvien");
-                JFrame frame = new JFrame();
-
-                JTable table = new JTable(ds.getData(),ds.getColumnName());
-                Test test = new Test(masterHandler);
-                frame.add(table);
-                frame.setVisible(true);
+                if(!testgiaodien){
+                    String tentk = dangnhapui.getUsernameInput();
+                    String mk = dangnhapui.getPasswordInput();
+                    
+                    String sql = "select * from taikhoan_nhanvien tknv where tknv.TenTaiKhoan = '"+tentk+"' and '"+mk+"'=tknv.MatKhau";
+    
+                    DataSet ds = master.getDataQuery(sql);
+                    if(ds!=null){//là tìm thấy tài khoản trong csdl
+                        ds.printColumnName();
+                        ds.printData();
+                        Test test = new Test(master);
+                    }
+                    else{//là không tìm thấy tài khoản trong csdl
+    
+                    }
+                }
+                else{
+                    Test test = new Test(master);
+                }
             }
         };
-        dangNhapUI.setSubmitAction(submitAction);
+        dangnhapui.setSubmitAction(submitDanhMucSP);
+    }
+    
+    public Program(){
+        master = new SQLUser(url, username, password);
 
+        this.dangNhap();
         // ActionListener submitDanhMucSP = new ActionListener() {
         //     @Override
         //     public void actionPerformed(ActionEvent e) {
-        //         DataSet ds = masterHandler.query("select * from mat_hang");
+        //         DataSet ds = master.query("select * from mat_hang");
         //         // JTable table = new JTable(ds.getData(),ds.getColumnName());
                 
                 
@@ -56,24 +79,6 @@ public class Program {
         // };
         // dangNhapUI.setSubmitAction(submitAction);
 
-        ActionListener submitDanhMucSP = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // DataSet ds = masterHandler.query("select * from mat_hang");
-                // JTable table = new JTable(ds.getData(),ds.getColumnName());
 
-                DataSet ds = masterHandler.query("select * from mat_hang");
-                
-                
-                JFrame frame = new JFrame();
-
-                JTable table = new JTable(ds.getData(),ds.getColumnName());
-
-                Test test = new Test(masterHandler);
-
-                frame.add(table);
-                frame.setVisible(true);
-            }
-        };
     }
 }

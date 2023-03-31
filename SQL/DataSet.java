@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class DataSet {
     private String columnName[];
     private ArrayList<ArrayList<Object>> data;
+    private Object[][] dataArr;
     private int length;
 
     public DataSet(){
@@ -37,8 +38,14 @@ public class DataSet {
         catch(SQLException exception){
             System.out.println(exception.getMessage());
         }
-
         length = this.data.get(0).size();
+
+        dataArr = new Object[length][this.data.size()];
+        for(int i = 0 ; i < length;i++){
+            for(int j = 0 ; j < this.data.size();j++){
+                dataArr[i][j] = this.data.get(j).get(i);
+            }
+        }
     }
     
     public String[] getColumnName(){
@@ -46,20 +53,40 @@ public class DataSet {
     }
 
     public Object[][] getData(){
-        Object[][] objArr = new Object[length][this.data.size()];
-        for(int i = 0 ; i < length;i++){
-            for(int j = 0 ; j < this.data.size();j++){
-                objArr[i][j] = this.data.get(j).get(i);
-            }
-        }
-        return objArr;
+        return dataArr;
+    }
+    public int getLength() {
+        return length;
     }
 
-    public void print(){
-        for(int i = 0 ; i < this.data.size();i++){
-            for(int j = 0 ; j < this.data.get(i).size();j++){
-                System.out.println(this.data.get(i).get(j));
+    public Object[] getColumn(int index){
+        return dataArr[index];
+    }
+
+    public Object[] getColumn(String colName){
+        for(int i  = 0 ; i  < columnName.length;i++){
+            if(columnName[i].equals(colName)){
+                return dataArr[i];
             }
+        }
+        return null;
+    }
+
+    public void printColumnName(){
+        String s = "";
+        for(int i = 0 ; i < columnName.length;i++){
+            s+=columnName[i]+" ";
+        }
+        System.out.println(s);
+    }
+
+    public void printData(){
+        for(int i = 0 ; i < this.length;i++){
+            String data = "";
+            for(int j = 0 ; j < this.data.size();j++){
+                data += ((this.data.get(j).get(i)).toString() + ' ');
+            }
+            System.out.println(data);
         }
     }
 }

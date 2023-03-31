@@ -6,18 +6,22 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class SQLHandler {
+public class SQLUser {
     private String url;
     private String username;
     private String password;
 
-    public SQLHandler(String url,String username,String password){
+    public SQLUser(String url,String username,String password){
         this.url = url;
         this.username = username;
         this.password = password;
     }
     
-    public DataSet query(String sql){
+    public void updateQuery(){
+
+    }
+
+    public DataSet getDataQuery(String sql){
         String connectionUrl =url;
         Properties info = new Properties();
         info.setProperty("characterEncoding", "utf8");
@@ -30,10 +34,10 @@ public class SQLHandler {
             Statement statement = connection.createStatement();
             
             ResultSet rs = statement.executeQuery(sql);
-
-            ds = new DataSet(rs);
-
-            rs.close();
+            if(rs.isBeforeFirst()){
+                 ds = new DataSet(rs);
+                 rs.close();
+            }
         }
         // Handle any errors that may have occurred.
         catch (SQLException e) {

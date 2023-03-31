@@ -129,8 +129,13 @@ public class DangNhapUI extends TitleFrame{
         return this.usernameInput.getText();
     }
 
-    public char[] getPasswordInput(){
-        return this.passwordInput.getPassword();
+    public String getPasswordInput(){
+        String s = "";
+        char[] p = this.passwordInput.getPassword();
+        for(int i = 0 ; i < p.length;i++){
+            s+=p[i];
+        }
+        return s;
     }
 
     public void setSubmitAction(ActionListener a){

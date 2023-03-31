@@ -19,9 +19,9 @@ public class Test extends JFrame implements MouseListener{
     public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập"};
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png"};
     JLabel[] labels = new JLabel[6];
-    SQLHandler hanndler;
+    SQLUser hanndler;
     TaoDonNhap dn;
-    public Test(SQLHandler handler){
+    public Test(SQLUser handler){
         this.hanndler= handler;
         this.setSize(1100,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,7 +117,7 @@ public class Test extends JFrame implements MouseListener{
         // panelUser.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
 
         //Chuc nang
-        DataSet ds = handler.query("select * from nhanvien");
+        DataSet ds = handler.getDataQuery("select * from nhanvien");
         dn = new TaoDonNhap(ds);
         panelRight.add(dn);
 
