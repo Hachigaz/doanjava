@@ -15,7 +15,7 @@ import Panel.*;
 
 public class Program {
     private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
-    private final String url2 = "jdbc:mysql://192.168.31.38:3306/QuanLyKho";
+    private final String url2 = "jdbc:mysql://26.236.133.174:3306/QuanLyKho";
 
     private final String username = "master";
     private final String password = "123";
@@ -58,7 +58,7 @@ public class Program {
     }
     
     public Program(){
-        master = new SQLUser(url, username, password);
+        master = new SQLUser(url2, username, password);
 
         this.dangNhap();
         // ActionListener submitDanhMucSP = new ActionListener() {

@@ -12,15 +12,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.*;
 import Function.*;
+import Nhan_vien.NhanVien;
 
 public class Test extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose;
-    public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập"};
-    public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png"};
-    JLabel[] labels = new JLabel[6];
+    public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập","Nhân viên"};
+    public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png","users.png"};
+    JLabel[] labels = new JLabel[7];
     SQLUser hanndler;
     TaoDonNhap dn;
+    DanhMucSP dmsp;
+    NhanVien dsnv;
     public Test(SQLUser handler){
         this.hanndler= handler;
         this.setSize(1100,700);
@@ -47,7 +50,7 @@ public class Test extends JFrame implements MouseListener{
         panelLeft.setPreferredSize(new Dimension(190,0));
         panelLeft.setBackground(new Color(7, 140, 217));
         panelLeft.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        for(int i=0;i<6;i++){
+        for(int i=0;i<7;i++){
             ImageIcon icon = new ImageIcon("res/img/"+img[i]);
             Image img = icon.getImage();
             Image newImg = img.getScaledInstance(40,40,java.awt.Image.SCALE_SMOOTH);
@@ -117,9 +120,18 @@ public class Test extends JFrame implements MouseListener{
         // panelUser.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
 
         //Chuc nang
-        DataSet ds = handler.getDataQuery("select * from nhanvien");
-        dn = new TaoDonNhap(ds);
-        panelRight.add(dn);
+        // DataSet ds = handler.getDataQuery("select * from nhanvien");
+        // dn = new TaoDonNhap(ds);
+        // panelRight.add(dn);
+
+        DataSet danhMucSanPham = handler.getDataQuery("select * from loai_hang");
+        dmsp = new DanhMucSP(danhMucSanPham);
+        panelRight.add(dmsp);
+
+        DataSet danhSachNhanVien = handler.getDataQuery("select * from nhanvien");
+        dsnv = new NhanVien(danhSachNhanVien);
+        panelRight.add(dsnv);
+
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
@@ -139,17 +151,30 @@ public class Test extends JFrame implements MouseListener{
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==labels[0]){
-            dn.setVisible(false);
+            dmsp.setVisible(true);
+            dsnv.setVisible(false);
+
         }else if(e.getSource()==labels[1]){
-            dn.setVisible(false);
+            dmsp.setVisible(false);
+            dsnv.setVisible(false);
+
         }else if(e.getSource()==labels[2]){
-            dn.setVisible(false);
+            dmsp.setVisible(false);
+            dsnv.setVisible(false);
+
         }else if(e.getSource()==labels[3]){
-            dn.setVisible(false);
+            dmsp.setVisible(false);
+            dsnv.setVisible(false);
+
         }else if(e.getSource()==labels[4]){
-            dn.setVisible(false);
+            dmsp.setVisible(false);
+            dsnv.setVisible(false);
         }else if (e.getSource()==labels[5]){
-            dn.setVisible(true);
+            dmsp.setVisible(false);
+            dsnv.setVisible(false);
+        }else if(e.getSource()==labels[6]){
+            dmsp.setVisible(false);
+            dsnv.setVisible(true);
         }
     }
     @Override
