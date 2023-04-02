@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.*;
 import Function.*;
-import Nhan_vien.NhanVien;
 
 public class Test extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser;
@@ -29,6 +28,7 @@ public class Test extends JFrame implements MouseListener{
         this.setSize(1100,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        this.setFocusable(true);
         this.setLayout(new BorderLayout());
 
         panelLeft = new JPanel(){
@@ -59,7 +59,7 @@ public class Test extends JFrame implements MouseListener{
             labels[i] = new JLabel(str[i]);
             labels[i].setOpaque(false);
             labels[i].setBorder(null);
-            labels[i].setForeground(Color.white);
+            labels[i].setForeground(Color.black);
             labels[i].setPreferredSize(new Dimension(190,40));
             labels[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             labels[i].setFont(new Font("Monospace",Font.PLAIN,15));
@@ -150,6 +150,11 @@ public class Test extends JFrame implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
+
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
         if(e.getSource()==labels[0]){
             dmsp.setVisible(true);
             dsnv.setVisible(false);
@@ -178,10 +183,6 @@ public class Test extends JFrame implements MouseListener{
         }
     }
     @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-    }
-    @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
     }
@@ -201,6 +202,7 @@ public class Test extends JFrame implements MouseListener{
             if(e.getSource()==labels[i]){
                 labels[i].setOpaque(false);
                 labels[i].setBackground(null);
+                labels[i].setForeground(Color.BLACK);
             }
         }
     }
