@@ -11,5 +11,6 @@
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"
         ]
-    }
+    },
+    "cSpell.words": []
 }
