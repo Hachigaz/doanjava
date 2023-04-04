@@ -13,7 +13,8 @@ public class Program {
     private SQLUser master;
 
     public Program(){
-        master = new SQLUser(url, username, password);
+        master = new SQLUser(url2, username, password);
+
         this.dangNhap();
     }
 

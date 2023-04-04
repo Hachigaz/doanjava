@@ -23,6 +23,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,7 +49,10 @@ public class NhanVien extends JPanel implements MouseListener{
     JButton addButton;
     JButton btn;
     JPanel searchPanel;
-    public String[] labelForm = {"Mã nhân viên:","Tên nhân viên:","Mã chức vụ:","Giới tính:","Ngày sinh:","Kho làm việc:"};
+    JLabel labelCombobox;
+    JComboBox comboBox;
+    String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
+    public String[] labelForm = {"Mã nhân viên:","Tên nhân viên:","Mã chức vụ:","Giới tính:","Ngày sinh:","Địa chỉ","Kho làm việc:"};
     public NhanVien(DataSet ds){
         this.setLayout(new BorderLayout());
         
@@ -76,7 +80,6 @@ public class NhanVien extends JPanel implements MouseListener{
         searchField.setPreferredSize(new Dimension(300,30));
         searchField.setFont(new Font("Monospace",Font.PLAIN,15));
         searchField.setForeground(Color.black);
-        searchField.setFocusable(false);
 
         searchButton = new JButton("Tìm kiếm");
         searchButton.setBorder(null);
@@ -98,6 +101,25 @@ public class NhanVien extends JPanel implements MouseListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // lấy ra đối tượng JFrame cha của NhanVien
+                FormNhanVien();
+            }            
+        });
+        addButton.addMouseListener(this);
+
+        labelCombobox = new JLabel("Sắp xếp theo");
+        JComboBox<String> comboBox = new JComboBox<>(arrange);
+
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+        searchPanel.add(addButton);
+        searchPanel.add(labelCombobox);
+        searchPanel.add(comboBox); 
+
+        this.add(searchPanel,BorderLayout.NORTH);
+        this.add(scrollPane);
+        this.setVisible(false);
+    }
+    public JDialog FormNhanVien(){
                 JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(NhanVien.this);
                 JDialog dialog = new JDialog(parentFrame,"Thêm nhân viên",true);
 
@@ -105,23 +127,24 @@ public class NhanVien extends JPanel implements MouseListener{
                 panelCenter.setLayout(new GridBagLayout());
 
                 JPanel panelTop = new JPanel();
-                JLabel title = new JLabel("Form thêm nhân viên");
+                JLabel title = new JLabel("FORM THÊM NHÂN VIÊN");
                 title.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
                 title.setFont(new Font("Monospace",Font.BOLD,20));
                 panelTop.add(title);
 
                 JPanel panelBottom = new JPanel();
+                panelBottom.setBorder(BorderFactory.createEmptyBorder(0,0,50,0));
                 btn = new JButton("Thêm");
                 panelBottom.add(btn);
 
                 JPanel panelDialog = new JPanel();
+                panelDialog.setPreferredSize(new Dimension(800,500));
                 panelDialog.setLayout(new BorderLayout());
                 panelDialog.add(panelTop,BorderLayout.NORTH);
                 panelDialog.add(panelCenter,BorderLayout.CENTER);
                 panelDialog.add(panelBottom,BorderLayout.SOUTH);
 
                 GridBagConstraints gbc = new GridBagConstraints();
-
                 gbc.insets = new Insets(10, 10, 10, 10);
                 
                 for(int i=0;i<labelForm.length;i++){
@@ -134,37 +157,23 @@ public class NhanVien extends JPanel implements MouseListener{
                     panelCenter.add(createTextField(),gbc);
                 }
                 
-                btn.setPreferredSize(new Dimension(200,50));
+                btn.setPreferredSize(new Dimension(300,50));
+                btn.setFont(new Font("Monospace",Font.BOLD,16));
+                btn.setForeground(Color.white);
                 btn.setForeground(Color.white);
                 btn.setBackground(Color.red);
                 btn.setFocusable(false);
-                btn.setBorder(null);
-                btn.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // TODO Auto-generated method stub
-                        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
-                    }
-                    
-                });
+                btn.setBorder(null);       
                 btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                btn.addMouseListener(this);
 
                 dialog.add(panelDialog);
-                dialog.setPreferredSize(new Dimension(800,500));
+                dialog.setPreferredSize(new Dimension(1000,650));
                 dialog.pack();
                 dialog.setLocationRelativeTo(parentFrame);
                 dialog.setVisible(true);
+                return dialog;
             }
-        });
-        addButton.addMouseListener(this);
-
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-        searchPanel.add(addButton);
-
-        this.add(searchPanel,BorderLayout.NORTH);
-        this.add(scrollPane);
-    }
     private JLabel createLabel(String text){
         JLabel label = new JLabel(text);
         label.setPreferredSize(new Dimension(150, 30)); // đặt kích thước ưu tiên cho nhãn

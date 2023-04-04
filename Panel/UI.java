@@ -13,9 +13,9 @@ import java.awt.event.MouseListener;
 import java.awt.*;
 import Function.*;
 
-public class Test extends JFrame implements MouseListener{
-    JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser;
-    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose;
+public class UI extends JFrame implements MouseListener{
+    JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
+    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
     public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập","Nhân viên"};
     public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png","users.png"};
     JLabel[] labels = new JLabel[7];
@@ -23,10 +23,11 @@ public class Test extends JFrame implements MouseListener{
     TaoDonNhap dn;
     DanhMucSP dmsp;
     NhanVien dsnv;
-    public Test(SQLUser handler){
+    public UI(SQLUser handler){
         this.hanndler= handler;
         this.setSize(1300,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setUndecorated(true);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
         this.setLayout(new BorderLayout());
@@ -83,7 +84,6 @@ public class Test extends JFrame implements MouseListener{
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                
                 Graphics2D g2d = (Graphics2D) g;
                 GradientPaint gradient = new GradientPaint(
                     0, 0, new Color(255,209,67),
@@ -94,8 +94,7 @@ public class Test extends JFrame implements MouseListener{
             }
         };
         panelTop.setLayout(new BorderLayout());
-        panelTop.setPreferredSize(new Dimension(0,160));
-        panelTop.setBorder(BorderFactory.createEmptyBorder(30,0,0,0));
+        panelTop.setPreferredSize(new Dimension(0,140));
 
         panelUser = new JPanel();
         panelUser.setPreferredSize(new Dimension(250,170));
@@ -114,15 +113,9 @@ public class Test extends JFrame implements MouseListener{
         labelUserName.setForeground(Color.WHITE);
         labelUserName.setVerticalAlignment(JLabel.CENTER);
 
-        labelTitle = new JLabel("Phần mềm quản lý kho");
+        labelTitle = new JLabel("PHẦN MỀM QUẢN LÝ KHO");
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
-        // panelUser.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
-
-        //Chuc nang
-        // DataSet ds = handler.getDataQuery("select * from nhanvien");
-        // dn = new TaoDonNhap(ds);
-        // panelRight.add(dn);
 
         DataSet danhMucSanPham = handler.getDataQuery("select * from loai_hang");
         dmsp = new DanhMucSP(danhMucSanPham);
@@ -140,17 +133,64 @@ public class Test extends JFrame implements MouseListener{
         panelTop.add(panelUser,BorderLayout.EAST);
         panelTop.add(labelTitle,BorderLayout.CENTER);
         
+        panelUI = new JPanel();
+        panelUI.setLayout(new BorderLayout());
 
-        this.add(panelLeft,BorderLayout.WEST);
-        this.add(panelRight);
-        this.add(panelTop,BorderLayout.NORTH);
+        panelUI.add(panelLeft,BorderLayout.WEST);
+        panelUI.add(panelRight);
+        panelUI.add(panelTop,BorderLayout.NORTH);
+
+        // Thanh title bar phía trên
+        panelTitleBar = new JPanel();
+        panelTitleBar.setPreferredSize(new Dimension(0,30));
+        panelTitleBar.setBackground(new Color(255,209,67));
+        panelTitleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
+
+        labelHide = new JLabel();
+        labelClose = new JLabel();
+
+        ImageIcon iconHide = new ImageIcon("res/img/minimum.png");
+        Image imgHide = iconHide.getImage();
+        Image newImgHide = imgHide.getScaledInstance(13,13,java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIconHide = new ImageIcon(newImgHide);
+
+        ImageIcon iconClose = new ImageIcon("res/img/close.png");
+        Image imgClose = iconClose.getImage();
+        Image newImgClose = imgClose.getScaledInstance(13,13,java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIconClose = new ImageIcon(newImgClose);
+
+        labelHide.setIcon(newIconHide);
+        labelHide.setHorizontalAlignment(JLabel.CENTER);
+        labelHide.setPreferredSize(new Dimension(30,20));
+        labelHide.setBackground(new Color(255,209,67));
+        labelHide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        labelHide.setOpaque(true);
+        labelHide.addMouseListener(this);
+
+        labelClose.setIcon(newIconClose);
+        labelClose.setHorizontalAlignment(JLabel.CENTER);
+        labelClose.setPreferredSize(new Dimension(30,20));
+        labelClose.setBackground(new Color(255,209,67));
+        labelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        labelClose.setOpaque(true);
+        labelClose.addMouseListener(this);
+
+        panelTitleBar.add(labelHide);
+        panelTitleBar.add(labelClose);
+
+        this.add(panelUI,BorderLayout.CENTER);
+        this.add(panelTitleBar,BorderLayout.NORTH);
 
         this.setVisible(true);
     }
     @Override
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
-
+        if(e.getSource()==labelHide){
+            this.setExtendedState(JFrame.ICONIFIED); 
+        }else if(e.getSource()==labelClose){
+            this.dispose();
+        }
     }
     @Override
     public void mousePressed(MouseEvent e) {
@@ -195,6 +235,11 @@ public class Test extends JFrame implements MouseListener{
                 labels[i].setOpaque(true);
             }
         }
+        if(e.getSource()==labelHide){
+            labelHide.setBackground(Color.gray);
+        }else if(e.getSource()==labelClose){
+            labelClose.setBackground(Color.red);
+        }
     }
     @Override
     public void mouseExited(MouseEvent e) {
@@ -204,6 +249,11 @@ public class Test extends JFrame implements MouseListener{
                 labels[i].setBackground(null);
                 labels[i].setForeground(Color.BLACK);
             }
+        }
+        if(e.getSource()==labelHide){
+            labelHide.setBackground(new Color(255,209,67));
+        }else if(e.getSource()==labelClose){
+            labelClose.setBackground(new Color(255,209,67));
         }
     }
 }

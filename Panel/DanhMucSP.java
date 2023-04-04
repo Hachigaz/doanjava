@@ -16,7 +16,7 @@ public class DanhMucSP extends JPanel{
     public DanhMucSP(DataSet ds){
         table = new JTable(ds.getData(),ds.getColumnName());
         scrollPane = new JScrollPane(table);
-        table.setPreferredScrollableViewportSize(new Dimension(800,500));
+        // table.setPreferredScrollableViewportSize(new Dimension(300,150));
         scrollPane.setPreferredSize(new Dimension(800,500));
         this.add(scrollPane);
     }
