@@ -29,6 +29,11 @@ public class DangNhap implements ActionListener {
         }
         else{//là không tìm thấy tài khoản trong csdl
             JDialog dialog = new JDialog(dangnhapui,JDialog.ModalityType.DOCUMENT_MODAL);
+            dialog.setTitle("Thông báo");
+            dialog.setBounds(0,0,300,170);
+            dialog.setLocationRelativeTo(null);
+            JLabel message = new JLabel("Thông tin đăng nhập không đúng!");
+            dialog.add(message);
             dialog.setVisible(true);
         }
     }

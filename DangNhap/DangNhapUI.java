@@ -26,7 +26,6 @@ public class DangNhapUI extends TitleFrame{
     public DangNhapUI(){
         super();
 
-
         this.setBounds(600,50,F_Width,F_Height);
         this.setLocationRelativeTo(null);
 
