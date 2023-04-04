@@ -67,3 +67,74 @@ value('DX_BHX_0001','K01','CTY_BHX','NV1001','2021-12-8');
 use quanlykho;
 insert chitiet_donxuat
 value('DX_BHX_0001','DN_BHX_0001','K01_KV_A001','MH_BHX005',35);
+
+use quanlykho;
+insert into mat_hang
+values
+('MH_ABC_001','CTY_ABC','LA01','Bút chì bản mỏng ABC',100)
+,('MH_ABC_002','CTY_ABC','LA01','Bút chì bản đậm ABC',100)
+,('MH_ABC_003','CTY_ABC','LA01','Bút bi màu xanh ABC',100)
+,('MH_ABC_004','CTY_ABC','LA01','Bút bi màu đen ABC',100)
+,('MH_ABC_005','CTY_ABC','LA01','Bút mực đen ABC',100)
+,('MH_ABC_006','CTY_ABC','LA03','Cục tẩy bút chì ABC',80)
+,('MH_ABC_007','CTY_ABC','LA03','Cục tẩy bút mực ABC',80)
+,('MH_ABC_008','CTY_ABC','LA01','Cặp bút chì và bút mực ABC',70)
+,('MH_ABC_009','CTY_ABC','LA01','Cặp bút bi và bút mực ABC',70)
+,('MH_ABC_010','CTY_ABC','LA03','Tẩy bảng khô ABC',75)
+,('MH_ABC_011','CTY_ABC','LA03','Tẩy bảng ướt ABC',75)
+,('MH_ABC_012','CTY_ABC','LA01','Mực in đen ABC',40)
+,('MH_ABC_013','CTY_ABC','LA01','Mực in màu ABC',40)
+,('MH_ABC_014','CTY_ABC','LA03','Bìa hồ sơ màu xanh ABC',125)
+,('MH_ABC_015','CTY_ABC','LA03','Bìa hồ sơ màu đỏ ABC',125)
+,('MH_ABC_016','CTY_ABC','LA01','Bút mực xanh ABC',115)
+,('MH_STU_001','CTY_STU','LA02','Giấy A4 dày 80gsm STU',120)
+,('MH_STU_002','CTY_STU','LA02','Giấy A4 dày 70gsm STU',120)
+,('MH_STU_003','CTY_STU','LA02','Sổ tay bìa da STU',80)
+,('MH_STU_004','CTY_STU','LA02','Sổ tay bìa cứng STU',80)
+,('MH_STU_005','CTY_STU','LA03','Kẹp giấy màu xanh STU',200)
+,('MH_STU_006','CTY_STU','LA03','Kẹp giấy màu đen STU',200)
+,('MH_STU_007','CTY_STU','LA03','Băng keo trong suốt STU',60)
+,('MH_STU_008','CTY_STU','LA03','Băng keo màu STU',60)
+,('MH_STU_009','CTY_STU','LA03','Thước kẻ kim loại STU',125)
+,('MH_STU_010','CTY_STU','LA03','Thước kẻ nhựa STU',125)
+,('MH_STU_011','CTY_STU','LA02','File hồ sơ A4 STU',100)
+,('MH_STU_012','CTY_STU','LA02','File hồ sơ A3 STU',100)
+
+
+use quanlykho;
+insert into mat_hang
+values
+('MH_HIJ_001','CTY_HIJ','LC01','Sữa bột HIJ',24)
+,('MH_HIJ_002','CTY_HIJ','LC02','Bánh quy HIJ',30)
+,('MH_HIJ_003','CTY_HIJ','LC01','Hạt điều rang muối HIJ',24)
+,('MH_HIJ_004','CTY_HIJ','LC02','Hủ tiếu khô HIJ',24)
+,('MH_HIJ_005','CTY_HIJ','LC01','Bánh tráng trộn đồ HIJ',24)
+,('MH_HIJ_006','CTY_HIJ','LC03','Nước mắm tôm HIJ',30),
+('MH_HIJ_007','CTY_HIJ','LC01','Bánh mì sandwich HIJ',24),
+('MH_HIJ_008','CTY_HIJ','LC01','Thịt bò khô HIJ',50),
+('MH_HIJ_009','CTY_HIJ','LC01','Kẹo cao su HIJ',44),
+('MH_HIJ_010','CTY_HIJ','LC02','Bánh quy bơ HIJ',30),
+('MH_HIJ_011','CTY_HIJ','LC01','Bánh tráng cuộn HIJ',50),
+('MH_HIJ_012','CTY_HIJ','LC01','Gạo nếp hương HIJ',24),
+('MH_HIJ_013','CTY_HIJ','LC04','Nước chanh HIJ',44),
+('MH_HIJ_014','CTY_HIJ','LC01','Bánh phồng tôm HIJ',30),
+('MH_HIJ_015','CTY_HIJ','LC01','Bún bò Huế đóng gói HIJ',50),
+('MH_HIJ_016','CTY_HIJ','LC01','Mì ăn liền HIJ',24),
+('MH_HIJ_017','CTY_HIJ','LC01','Cà phê rang xay HIJ',44),
+('MH_HIJ_018','CTY_HIJ','LC04','Nước ép trái cây HIJ',30),
+('MH_HIJ_019','CTY_HIJ','LC01','Bánh pía HIJ',50),
+('MH_HIJ_020','CTY_HIJ','LC01','Hạt điều bọc mè HIJ',24),
+('MH_VMX_001','CTY_VMX','LC01','Hạt sen rang muối VMX',44),
+('MH_VMX_002','CTY_VMX','LC01','Hủ tiếu Nam Vang đóng gói VMX',30),
+('MH_VMX_003','CTY_VMX','LC01','Bún riêu đóng gói VMX',50),
+('MH_VMX_004','CTY_VMX','LC01','Nước sốt cà chua đóng gói VMX',24),
+('MH_VMX_005','CTY_VMX','LC01','Cá viên chiên đóng gói VMX',30),
+('MH_VMX_006','CTY_VMX','LC02','Sữa đặc VMX',44),
+('MH_VMX_007','CTY_VMX','LC05','Nước ngọt VMX',50),
+('MH_VMX_008','CTY_VMX','LC01','Kẹo dẻo VMX',24),
+('MH_VMX_009','CTY_VMX','LC01','Khoai tây chiên đóng gói VMX',44),
+('MH_VMX_010','CTY_VMX','LC01','Phở bò đóng gói VMX',30),
+('MH_VMX_011','CTY_VMX','LC01','Mì tôm đóng gói VMX',50),
+('MH_VMX_012','CTY_VMX','LC01','Bánh đa lợn đóng gói VMX',20)
+,('MH_VMX_013','CTY_VMX','LC01','Trà đen đóng gói VMX',35)
+,('MH_VMX_014','CTY_VMX','LC02','Bánh nướng socola VMX',20)
