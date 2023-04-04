@@ -77,25 +77,6 @@ public class NhanVien extends JPanel implements MouseListener{
         searchField.setFont(new Font("Monospace",Font.PLAIN,15));
         searchField.setForeground(Color.black);
         searchField.setFocusable(false);
-        // searchField.addMouseListener(this);
-        // searchField.addFocusListener(new FocusListener() {
-        //     @Override
-        //     public void focusGained(FocusEvent e) {
-        //         if (searchField.getText().equals("Nhập tên nhân viên muốn tìm...")) {
-        //             searchField.setText("");
-        //             searchField.setForeground(Color.BLACK);
-        //             searchField.requestFocusInWindow();
-        //         }
-        //     }
-        //     @Override
-        //     public void focusLost(FocusEvent e) {
-        //         if (searchField.getText().isEmpty()) {
-        //             searchField.setForeground(Color.GRAY);
-        //             searchField.setText("Nhập tên nhân viên muốn tìm...");
-        //             searchField.setFocusable(false);
-        //         }        
-        //     } 
-        // });
 
         searchButton = new JButton("Tìm kiếm");
         searchButton.setBorder(null);
@@ -120,8 +101,25 @@ public class NhanVien extends JPanel implements MouseListener{
                 JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(NhanVien.this);
                 JDialog dialog = new JDialog(parentFrame,"Thêm nhân viên",true);
 
-                JPanel panel = new JPanel();
-                panel.setLayout(new GridBagLayout());
+                JPanel panelCenter = new JPanel();
+                panelCenter.setLayout(new GridBagLayout());
+
+                JPanel panelTop = new JPanel();
+                JLabel title = new JLabel("Form thêm nhân viên");
+                title.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+                title.setFont(new Font("Monospace",Font.BOLD,20));
+                panelTop.add(title);
+
+                JPanel panelBottom = new JPanel();
+                btn = new JButton("Thêm");
+                panelBottom.add(btn);
+
+                JPanel panelDialog = new JPanel();
+                panelDialog.setLayout(new BorderLayout());
+                panelDialog.add(panelTop,BorderLayout.NORTH);
+                panelDialog.add(panelCenter,BorderLayout.CENTER);
+                panelDialog.add(panelBottom,BorderLayout.SOUTH);
+
                 GridBagConstraints gbc = new GridBagConstraints();
 
                 gbc.insets = new Insets(10, 10, 10, 10);
@@ -129,37 +127,29 @@ public class NhanVien extends JPanel implements MouseListener{
                 for(int i=0;i<labelForm.length;i++){
                     gbc.gridx = 0;
                     gbc.gridy = i;
-                    panel.add(createLabel(labelForm[i]),gbc);
+                    panelCenter.add(createLabel(labelForm[i]),gbc);
 
                     gbc.gridx = 1;
                     gbc.gridy = i;
-                    panel.add(createTextField(),gbc);
+                    panelCenter.add(createTextField(),gbc);
                 }
-
-                // JLabel lblHoTen = new JLabel("Họ tên:");
-                // lblHoTen.setBorder(BorderFactory.createEmptyBorder(0,20,0,0));
-                // lblHoTen.setFont(new Font("Monospace",Font.BOLD,15));
-                // JTextField txtHoTen = new JTextField(20);
-
-                // JLabel lblSoDienThoai = new JLabel("Số điện thoại:");
-                // lblSoDienThoai.setBorder(BorderFactory.createEmptyBorder(0,20,0,0));
-                // lblSoDienThoai.setFont(new Font("Monospace",Font.BOLD,15));
-                // JTextField txtSoDienThoai = new JTextField(20);
-
-                // panel.add(lblHoTen);
-                // panel.add(txtHoTen);
-                // panel.add(lblSoDienThoai);
-                // panel.add(txtSoDienThoai);
                 
-                btn = new JButton("Thêm");
-                btn.setPreferredSize(new Dimension(80,50));
+                btn.setPreferredSize(new Dimension(200,50));
+                btn.setForeground(Color.white);
                 btn.setBackground(Color.red);
+                btn.setFocusable(false);
+                btn.setBorder(null);
+                btn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // TODO Auto-generated method stub
+                        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                    }
+                    
+                });
+                btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                gbc.gridx = 0;
-                gbc.gridy = 7;
-                panel.add(btn,gbc);
-
-                dialog.add(panel);
+                dialog.add(panelDialog);
                 dialog.setPreferredSize(new Dimension(800,500));
                 dialog.pack();
                 dialog.setLocationRelativeTo(parentFrame);
@@ -172,7 +162,6 @@ public class NhanVien extends JPanel implements MouseListener{
         searchPanel.add(searchButton);
         searchPanel.add(addButton);
 
-        
         this.add(searchPanel,BorderLayout.NORTH);
         this.add(scrollPane);
     }

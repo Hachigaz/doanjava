@@ -25,7 +25,7 @@ public class Test extends JFrame implements MouseListener{
     NhanVien dsnv;
     public Test(SQLUser handler){
         this.hanndler= handler;
-        this.setSize(1100,700);
+        this.setSize(1300,700);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setFocusable(true);
