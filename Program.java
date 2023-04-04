@@ -1,3 +1,6 @@
+import java.awt.event.*;
+
+import DangNhap.ChonURL;
 import DangNhap.DangNhap;
 import SQL.SQLUser;
 
@@ -13,8 +16,19 @@ public class Program {
     private SQLUser master;
 
     public Program(){
-        master = new SQLUser(url, username, password);
-        this.dangNhap();
+        ChonURL frameChon = new ChonURL();
+        frameChon.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e){
+                frameChon.getLuachon();
+                if(frameChon.getLuachon().equals("ip")){
+                    master = new SQLUser(url2, username, password);
+                }
+                else if(frameChon.getLuachon().equals("localhost")){
+                    master = new SQLUser(url, username, password);
+                }
+                dangNhap();
+            }
+        });
     }
 
     
