@@ -123,7 +123,7 @@ public class UI extends JFrame implements MouseListener{
         dmsp = new DanhMucSP(danhMucSanPham);
         panelRight.add(dmsp);
 
-        DataSet danhSachNhanVien = handler.getDataQuery("select * from nhanvien");
+        DataSet danhSachNhanVien = handler.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
         dsnv = new NhanVien(danhSachNhanVien);
         panelRight.add(dsnv);
 

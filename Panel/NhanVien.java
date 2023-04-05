@@ -22,13 +22,16 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import SQL.DataSet;
@@ -50,12 +53,26 @@ public class NhanVien extends JPanel implements MouseListener{
         this.setLayout(new BorderLayout());
         
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        table = new JTable(ds.getData(),ds.getColumnName());
+        table = new JTable(ds.getData(),ds.getColumnLabel());
         // ngăn người dùng kéo thả thay đổi kích thước cột
         TableColumnModel columnModel = table.getColumnModel();
         for(int i=0;i<7;i++){
             columnModel.getColumn(i).setResizable(false);
         }
+
+        // DefaultTableModel model = (DefaultTableModel) table.getModel();
+        // model.addColumn(null);
+
+
+        // TableColumn tb = new TableColumn();
+        // tb.setHeaderValue("New Column");
+        // table.addColumn(tb);
+
+        // for(int i=0;i<table.getRowCount();i++){
+        //     JButton button0 = new JButton();
+        //     table.setValueAt(button0, i, table.getColumnCount()-1);
+        // }
+
         // ngăn người kéo thả thay đổi vị trí cột
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
@@ -63,6 +80,7 @@ public class NhanVien extends JPanel implements MouseListener{
         table.setEnabled(false);
 
         table.setRowHeight(30);
+
         scrollPane = new JScrollPane(table);
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
         verticalScrollBar.setBackground(Color.BLACK);
@@ -76,7 +94,7 @@ public class NhanVien extends JPanel implements MouseListener{
 
         searchButton = new JButton("Tìm kiếm");
         searchButton.setBorder(null);
-        searchButton.setPreferredSize(new Dimension(80,40));
+        searchButton.setPreferredSize(new Dimension(65,40));
         searchButton.setFocusable(false);
         searchButton.setBackground(new Color(255,197,70));
         searchButton.setForeground(Color.black);
@@ -86,7 +104,7 @@ public class NhanVien extends JPanel implements MouseListener{
         addButton = new JButton("Thêm nhân viên");
         addButton.setBackground(new Color(0,255,119));
         addButton.setForeground(Color.BLACK);
-        addButton.setPreferredSize(new Dimension(140,40));
+        addButton.setPreferredSize(new Dimension(100,40));
         addButton.setFocusable(false);
         addButton.setBorder(null);
         addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -159,6 +177,14 @@ public class NhanVien extends JPanel implements MouseListener{
                 btn.setBorder(null);       
                 btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btn.addMouseListener(this);
+                btn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // TODO Auto-generated method stub
+                        JOptionPane.showMessageDialog(null, "Thêm thành công");
+                        dialog.dispose();
+                    }
+                });
 
                 dialog.add(panelDialog);
                 dialog.setPreferredSize(new Dimension(1000,650));

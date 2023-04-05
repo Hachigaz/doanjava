@@ -28,7 +28,6 @@ public class Program {
                 else if(frameChon.getLuachon().equals("localhost")){
                     master = new SQLUser(url, username, password);
                 }
-                
                 dangNhap();
             }
         });

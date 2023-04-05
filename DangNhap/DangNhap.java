@@ -1,8 +1,6 @@
 package DangNhap;
 
 import SQL.*;
-import Panel.*;
-import javax.swing.*;
 
 import java.awt.event.*;
 
