@@ -16,11 +16,11 @@ import Function.*;
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
-    public String[] str = {"Danh sách sản phẩm","Danh mục sản phẩm","Khách hàng","Nhà cung cấp","Nhập/Xuất kho","Đơn nhập","Nhân viên"};
-    public String[] img = {"danhMuc.png","danhSach.png","users.png","nhaCungCap.png","kho.png","kho.png","users.png"};
-    JLabel[] labels = new JLabel[7];
+    public String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
+    public String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
+    JLabel[] labels = new JLabel[5];
     SQLUser hanndler;
-    TaoDonNhap dn;
+    TaoDonNhap tdn;
     DanhMucSP dmsp;
     NhanVien dsnv;
     public UI(SQLUser handler){
@@ -51,7 +51,7 @@ public class UI extends JFrame implements MouseListener{
         panelLeft.setPreferredSize(new Dimension(190,0));
         panelLeft.setBackground(new Color(7, 140, 217));
         panelLeft.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        for(int i=0;i<7;i++){
+        for(int i=0;i<5;i++){
             ImageIcon icon = new ImageIcon("res/img/"+img[i]);
             Image img = icon.getImage();
             Image newImg = img.getScaledInstance(40,40,java.awt.Image.SCALE_SMOOTH);
@@ -125,6 +125,10 @@ public class UI extends JFrame implements MouseListener{
         dsnv = new NhanVien(danhSachNhanVien);
         panelRight.add(dsnv);
 
+        DataSet taoDonNhap = handler.getDataQuery("select * from  donnhap");
+        tdn = new TaoDonNhap(taoDonNhap);
+        tdn.setVisible(false);
+        panelRight.add(tdn);
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
@@ -198,28 +202,23 @@ public class UI extends JFrame implements MouseListener{
         if(e.getSource()==labels[0]){
             dmsp.setVisible(true);
             dsnv.setVisible(false);
-
+            tdn.setVisible(false);
         }else if(e.getSource()==labels[1]){
             dmsp.setVisible(false);
             dsnv.setVisible(false);
-
+            tdn.setVisible(false);
         }else if(e.getSource()==labels[2]){
             dmsp.setVisible(false);
             dsnv.setVisible(false);
-
+            tdn.setVisible(false);
         }else if(e.getSource()==labels[3]){
             dmsp.setVisible(false);
             dsnv.setVisible(false);
-
+            tdn.setVisible(true);
         }else if(e.getSource()==labels[4]){
             dmsp.setVisible(false);
-            dsnv.setVisible(false);
-        }else if (e.getSource()==labels[5]){
-            dmsp.setVisible(false);
-            dsnv.setVisible(false);
-        }else if(e.getSource()==labels[6]){
-            dmsp.setVisible(false);
             dsnv.setVisible(true);
+            tdn.setVisible(false);
         }
     }
     @Override
