@@ -1,8 +1,10 @@
+import java.awt.Window;
 import java.awt.event.*;
 
-import DangNhap.ChonURL;
-import DangNhap.DangNhap;
+import DangNhap.*;
+import Panel.*;
 import SQL.SQLUser;
+
 
 public class Program {
     private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
@@ -35,5 +37,10 @@ public class Program {
     
     public void dangNhap(){
         DangNhap dn = new DangNhap(master);
+        dn.addWindowEvent(new WindowAdapter() {
+            public void windowClosed(WindowEvent e){
+                UI ui = new UI(master);
+            }
+        });
     }
 }

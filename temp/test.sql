@@ -118,3 +118,24 @@ select* from sinhvien
 use test;
 insert into lop
 values('1','1',0,50),('2','1',0,35),('3','2',0,45),('4','3',0,60)
+
+
+use quanlykho;
+insert into quyentaikhoan
+values('Q1','Xem thêm xoá sửa danh sách tài khoản nhân viên')
+,('Q2', 'Xem thêm xoá sửa các thông tin mặt hàng')
+,('Q3','Sửa thông tin khu vực trong kho')
+,('Q4','Sửa thông tin kho')
+,('Q5','Xem thêm xoá sửa các đơn nhập')
+,('Q6','Xem thêm xoá sửa các đơn xuất')
+,('Q7','Xem thêm xoá sửa các đơn kiểm')
+
+use quanlykho;
+insert into chitiet_nhomquyen
+values('NQ_ADMIN','Q1'),
+('NQ_ADMIN','Q2'),
+('NQ_ADMIN','Q3'),
+('NQ_ADMIN','Q4'),
+('NQ_ADMIN','Q5'),
+('NQ_ADMIN','Q6'),
+('NQ_ADMIN','Q7')

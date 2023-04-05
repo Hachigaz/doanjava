@@ -3,7 +3,6 @@ import javax.swing.*;
 
 import misc.ThongBaoDialog;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.util.Enumeration;
