@@ -21,6 +21,7 @@ public class DataSet {
         try{
             ResultSetMetaData metaData = rs.getMetaData();
             this.columnName = new String[metaData.getColumnCount()];
+            this.columnLabel = new String[metaData.getColumnCount()];
             this.data = new ArrayList<ArrayList<Object>>();
             for(int i = 0 ; i < this.columnName.length;i++){
                 this.columnName[i] = metaData.getColumnName(i+1);
