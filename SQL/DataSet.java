@@ -53,6 +53,9 @@ public class DataSet {
     public String[] getColumnName(){
         return this.columnName;
     }
+    public String[] getColumnLabel() {
+        return columnLabel;
+    }
 
     public Object[][] getData(){
         return dataArr;
