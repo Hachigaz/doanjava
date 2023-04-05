@@ -138,3 +138,6 @@ values
 ('MH_VMX_012','CTY_VMX','LC01','Bánh đa lợn đóng gói VMX',20)
 ,('MH_VMX_013','CTY_VMX','LC01','Trà đen đóng gói VMX',35)
 ,('MH_VMX_014','CTY_VMX','LC02','Bánh nướng socola VMX',20)
+
+use quanlykho;
+select TenNV as 'Tên nhân viên',DiaChi as 'Chức vụ' from nhanvien 

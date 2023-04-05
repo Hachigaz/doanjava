@@ -14,7 +14,7 @@ public class DSMHPanel extends JPanel{
 
         this.add(filterPanel,BorderLayout.NORTH);
         this.add(dataPanel,BorderLayout.CENTER);
-
+        
         
     }
 }

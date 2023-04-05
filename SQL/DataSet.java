@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class DataSet {
     private String columnName[];
+    private String columnLabel[];
     private ArrayList<ArrayList<Object>> data;
     private Object[][] dataArr;
     private int length;
@@ -23,6 +24,7 @@ public class DataSet {
             this.data = new ArrayList<ArrayList<Object>>();
             for(int i = 0 ; i < this.columnName.length;i++){
                 this.columnName[i] = metaData.getColumnName(i+1);
+                this.columnLabel[i] = metaData.getColumnLabel(i+1);
                 this.data.add(new ArrayList<Object>());
             }
             if(rs.isBeforeFirst()){

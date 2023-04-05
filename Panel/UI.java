@@ -13,6 +13,8 @@ import java.awt.event.MouseListener;
 import java.awt.*;
 import Function.*;
 
+import Quyen.*;
+
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
@@ -186,6 +188,9 @@ public class UI extends JFrame implements MouseListener{
         this.add(panelTitleBar,BorderLayout.NORTH);
 
         this.setVisible(true);
+
+        //của tao
+        ThemQuyen(new QuyenDSMH());
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -254,5 +259,16 @@ public class UI extends JFrame implements MouseListener{
         }else if(e.getSource()==labelClose){
             labelClose.setBackground(new Color(255,209,67));
         }
+    }
+    public void ThemQuyen(Quyen quyen){
+        JLabel label = new JLabel(quyen.title);
+        label.setOpaque(false);
+        label.setBorder(null);
+        label.setForeground(Color.black);
+        label.setPreferredSize(new Dimension(190,40));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        label.setFont(new Font("Monospace",Font.PLAIN,15));
+        label.addMouseListener(this);
+        panelLeft.add(label);
     }
 }

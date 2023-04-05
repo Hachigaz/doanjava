@@ -25,7 +25,7 @@ public class ChonURL extends JFrame implements ActionListener{
         luachon = null;
         luachon1 = new JRadioButton("localhost");
         luachon2 = new JRadioButton("IP của Huy gay");
-        luachon1.setActionCommand("localhost1");
+        luachon1.setActionCommand("localhost");
         luachon2.setActionCommand("ip");
 
         group = new ButtonGroup(); 
