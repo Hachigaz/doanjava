@@ -24,11 +24,12 @@ public class Program {
                 frameChon.getLuachon();
                 if(frameChon.getLuachon().equals("ip")){
                     master = new SQLUser(url2, username, password);
+                    dangNhap();
                 }
                 else if(frameChon.getLuachon().equals("localhost")){
                     master = new SQLUser(url, username, password);
+                    dangNhap();
                 }
-                dangNhap();
             }
         });
     }

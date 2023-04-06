@@ -49,8 +49,8 @@ public class DangNhapUI extends TitleFrame{
         passwordLabel = new JLabel();
         passwordLabel.setText("Mật khẩu");
 
-        usernameInput = new JTextField("",15);
-        passwordInput = new JPasswordField("",15);
+        usernameInput = new JTextField("admin",15);
+        passwordInput = new JPasswordField("123",15);
 
         springlayout.putConstraint(SpringLayout.NORTH,usernameLabel,100,SpringLayout.NORTH,formPanel);
         springlayout.putConstraint(SpringLayout.WEST,usernameLabel,30,SpringLayout.WEST,formPanel);
