@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.*;
 import Function.*;
 
@@ -24,10 +25,10 @@ public class UI extends JFrame implements MouseListener{
     //tao thay Label[] thành Arraylist<Label>
     //thay tên labels thành btnChucNang (đặt tên ngu)
     ArrayList<JLabel> btnChucNang = new ArrayList<JLabel>();
+    //mảng chứa panel chức năng
+    HashMap<JLabel,JPanel> pnlChucNang = new HashMap<JLabel,JPanel>();
     SQLUser hanndler;
-    TaoDonNhap tdn;
-    DanhMucSP dmsp;
-    NhanVien dsnv;
+
     public UI(SQLUser handler){
         this.hanndler= handler;
         this.setSize(1300,700);
@@ -123,18 +124,29 @@ public class UI extends JFrame implements MouseListener{
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
+
+        //thêm panel chức năng vào mảng
         DataSet danhMucSanPham = handler.getDataQuery("select * from loai_hang");
-        dmsp = new DanhMucSP(danhMucSanPham);
-        panelRight.add(dmsp);
+        pnlChucNang.put(btnChucNang.get(0),new DanhMucSP(danhMucSanPham));
 
         DataSet danhSachNhanVien = handler.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
-        dsnv = new NhanVien(danhSachNhanVien);
-        panelRight.add(dsnv);
+        pnlChucNang.put(btnChucNang.get(4),new NhanVien(danhSachNhanVien));
 
         DataSet taoDonNhap = handler.getDataQuery("select * from  donnhap");
-        tdn = new TaoDonNhap(taoDonNhap);
-        tdn.setVisible(false);
-        panelRight.add(tdn);
+        pnlChucNang.put(btnChucNang.get(3),new TaoDonNhap(taoDonNhap));
+
+        //thêm mấy cái panel zo right panel
+        //duyệt bảng băm
+        for(int i = 0 ; i<btnChucNang.size();i++){
+            //lấy panel có khoá là nút chức năng của panel đó
+            JPanel panel = pnlChucNang.get(btnChucNang.get(i));
+            //nếu kết quả trả về không phải là rỗng
+            if(panel != null){
+                //thì thêm cái panel zo rightpanel xong setvisible false
+                panelRight.add(panel);
+                panel.setVisible(false);
+            }
+        }
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
@@ -207,27 +219,17 @@ public class UI extends JFrame implements MouseListener{
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        if(e.getSource()==btnChucNang.get(0)){
-            dmsp.setVisible(true);
-            dsnv.setVisible(false);
-            tdn.setVisible(false);
-        }else if(e.getSource()==btnChucNang.get(1)){
-            dmsp.setVisible(false);
-            dsnv.setVisible(false);
-            tdn.setVisible(false);
-        }else if(e.getSource()==btnChucNang.get(2)){
-            dmsp.setVisible(false);
-            dsnv.setVisible(false);
-            tdn.setVisible(false);
-        }else if(e.getSource()==btnChucNang.get(3)){
-            dmsp.setVisible(false);
-            dsnv.setVisible(false);
-            tdn.setVisible(true);
-        }else if(e.getSource()==btnChucNang.get(4)){
-            dmsp.setVisible(false);
-            dsnv.setVisible(true);
-            tdn.setVisible(false);
+        //duyệt mảng panel coi cái nút lồn nào đc bấm thì hiện lên
+        for(int i = 0 ; i < btnChucNang.size();i++){
+            JPanel panel = pnlChucNang.get(btnChucNang.get(i));
+            if(panel!=null){
+                if(e.getSource()==btnChucNang.get(i)){
+                    panel.setVisible(true);
+                }
+                else{
+                    panel.setVisible(false);
+                }
+            }
         }
     }
     @Override
@@ -236,7 +238,7 @@ public class UI extends JFrame implements MouseListener{
     }
     @Override
     public void mouseEntered(MouseEvent e) {
-        for(int i=0;i<str.length;i++){
+        for(int i=0;i<btnChucNang.size();i++){
             if(e.getSource()==btnChucNang.get(i)){
                 btnChucNang.get(i).setBackground(new Color(223,18,133));
                 btnChucNang.get(i).setForeground(Color.white);
@@ -251,7 +253,7 @@ public class UI extends JFrame implements MouseListener{
     }
     @Override
     public void mouseExited(MouseEvent e) {
-        for(int i=0;i<str.length;i++){
+        for(int i=0;i<btnChucNang.size();i++){
             if(e.getSource()==btnChucNang.get(i)){
                 btnChucNang.get(i).setOpaque(false);
                 btnChucNang.get(i).setBackground(null);
@@ -282,5 +284,7 @@ public class UI extends JFrame implements MouseListener{
         
         panelLeft.revalidate();
         panelLeft.repaint();
+
+
     }
 }
