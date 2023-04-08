@@ -4,6 +4,7 @@ import SQL.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import java.awt.*;
 import Function.*;
 
 import Quyen.*;
+import Quyen.XemDSMH.DSMHPanel;
 
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
@@ -207,6 +209,21 @@ public class UI extends JFrame implements MouseListener{
 
         //của tao
         themBtnChucNang(new QuyenDSMH());
+
+        JLabel cho = new JLabel("Cho hien");
+        JPanel hien = new JPanel();
+        cho.setBackground(Color.red);
+        cho.setOpaque(false);
+        cho.setBorder(null);
+        cho.setForeground(Color.black);
+        cho.setPreferredSize(new Dimension(190,40));
+        cho.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        cho.setFont(new Font("Monospace",Font.PLAIN,15));
+        cho.addMouseListener(this);
+
+        hien.setBackground(Color.red);
+        hien.setPreferredSize(new Dimension(100,200));
+        themQuyen(cho, new DanhMucSP(danhMucSanPham));
     }
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -219,7 +236,7 @@ public class UI extends JFrame implements MouseListener{
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        //duyệt mảng panel coi cái nút lồn nào đc bấm thì hiện lên
+        //duyệt mảng panel coi cái nút nào đc bấm thì hiện lên
         for(int i = 0 ; i < btnChucNang.size();i++){
             JPanel panel = pnlChucNang.get(btnChucNang.get(i));
             if(panel!=null){
@@ -266,6 +283,14 @@ public class UI extends JFrame implements MouseListener{
             labelClose.setBackground(new Color(255,209,67));
         }
     }
+    public void themQuyen(JLabel label,JPanel panel){
+        btnChucNang.add(label);
+        panelLeft.add(label);
+
+        pnlChucNang.put(label,panel);
+        panelRight.add(panel);
+        panel.setVisible(false);
+    }
     //thêm nút cho quyền
     public void themBtnChucNang(Quyen quyen){
         //tạo nút
@@ -284,7 +309,5 @@ public class UI extends JFrame implements MouseListener{
         
         panelLeft.revalidate();
         panelLeft.repaint();
-
-
     }
 }
