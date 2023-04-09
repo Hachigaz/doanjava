@@ -28,11 +28,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class FormDN extends JFrame implements MouseListener{
-    JPanel panelTitleBar,centerPanel,panelLoginContainer,panelLogin,panelSubmit;
-    JLabel labelHide,labelClose,labelUser,labelPass,labelTitle,labelForget;
-    JTextField usernameInput;
-    JPasswordField passwordInput;
-    JButton submitButton;
+    public JPanel panelTitleBar,centerPanel,panelLoginContainer,panelLogin,panelSubmit;
+    public JLabel labelHide,labelClose,labelUser,labelPass,labelTitle,labelForget;
+    public JTextField usernameInput;
+    public JPasswordField passwordInput;
+    public JButton submitButton;
     public FormDN() {
         this.setTitle("Gradient Frame");
         this.setSize(1000, 650);
@@ -153,7 +153,7 @@ public class FormDN extends JFrame implements MouseListener{
         this.setVisible(true);
     }
 
-    private JLabel createLabel(String link){
+    public JLabel createLabel(String link){
         JLabel label = new JLabel();
         label.setPreferredSize(new Dimension(20, 20)); // đặt kích thước ưu tiên cho nhãn
         label.setFont(new Font("Monospace",Font.BOLD,13));
@@ -164,16 +164,16 @@ public class FormDN extends JFrame implements MouseListener{
         label.setIcon(newIcon);
         return label;
     }
-    private JTextField createTextField() {
-        JTextField textField = new JTextField("Admin");
-        textField.setPreferredSize(new Dimension(240, 30)); // đặt kích thước ưu tiên cho trường văn bản
-        textField.setFont(new Font("Monospace",Font.PLAIN,18));
-        textField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
-        textField.setOpaque(false);
-        return textField;
+    public JTextField createTextField() {
+        usernameInput = new JTextField("Admin");
+        usernameInput.setPreferredSize(new Dimension(240, 30)); // đặt kích thước ưu tiên cho trường văn bản
+        usernameInput.setFont(new Font("Monospace",Font.PLAIN,18));
+        usernameInput.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
+        usernameInput.setOpaque(false);
+        return usernameInput;
     } 
-    private JPasswordField createPasswordField() {
-        JPasswordField passwordInput = new JPasswordField("123");
+    public JPasswordField createPasswordField() {
+        passwordInput = new JPasswordField("123");
         passwordInput.setPreferredSize(new Dimension(240, 30)); // đặt kích thước ưu tiên cho trường văn bản
         passwordInput.setFont(new Font("Monospace",Font.PLAIN,18));
         passwordInput.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
