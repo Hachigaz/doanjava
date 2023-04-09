@@ -112,7 +112,7 @@ public class FormDN extends JFrame implements MouseListener{
         submitButton.setBackground(new Color(255, 255, 153));
         submitButton.setForeground(Color.BLACK);
         submitButton.setFont(new Font("Monosapce",Font.PLAIN,15));
-        submitButton.setPreferredSize(new Dimension(180,40));
+        submitButton.setPreferredSize(new Dimension(240,40));
         submitButton.setFocusable(false);
         submitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
