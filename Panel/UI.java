@@ -20,7 +20,8 @@ import Quyen.*;
 import Quyen.XemDSMH.DSMHPanel;
 
 public class UI extends JFrame implements MouseListener{
-    JPanel panelLeft,panelRight,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
+    JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
+    public static JPanel panelRight;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
     public String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
     public String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
@@ -33,7 +34,7 @@ public class UI extends JFrame implements MouseListener{
 
     public UI(SQLUser handler){
         this.hanndler= handler;
-        this.setSize(1300,700);
+        this.setSize(1400,750);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);

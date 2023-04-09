@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -32,6 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import NHANVIEN.demo2;
 import SQL.DataSet;
 
 public class NhanVien extends JPanel implements MouseListener{
@@ -42,16 +44,47 @@ public class NhanVien extends JPanel implements MouseListener{
     JButton searchButton;
     JButton addButton;
     JButton btn;
-    JPanel searchPanel;
+    JPanel searchPanel,panelTable,panelInfo;
     JLabel labelCombobox;
     JComboBox comboBox;
+    JTextField[] textFields;
+    String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
     public String[] labelForm = {"Mã nhân viên:","Tên nhân viên:","Mã chức vụ:","Giới tính:","Ngày sinh:","Địa chỉ","Kho làm việc:"};
     public NhanVien(DataSet ds){
         this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(1200,500));
+        this.setBackground(Color.red);
+
+        panelInfo = new JPanel();
+        panelInfo.setPreferredSize(new Dimension(390,0));
+        panelInfo.setBackground(Color.BLUE);
+
+        panelTable = new JPanel();
+        panelTable.setLayout(new BorderLayout());
         
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        table = new JTable(ds.getData(),ds.getColumnLabel());
+        table = new JTable(ds.getData(),ds.getColumnLabel()){
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
+
+        table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+                int rowIndex = table.getSelectedRow();
+
+                String maNV = table.getValueAt(rowIndex, 0).toString();
+                String tenNV = table.getValueAt(rowIndex, 1).toString();
+                String maChucVu = table.getValueAt(rowIndex, 2).toString();
+                String gioiTinh = table.getValueAt(rowIndex, 3).toString();
+                String ngaySinh = table.getValueAt(rowIndex, 4).toString();
+                String diaChi = table.getValueAt(rowIndex, 5).toString();
+                String khoLamViec = table.getValueAt(rowIndex, 6).toString();
+
+                System.out.printf(maNV);
+            }
+        });
         // ngăn người dùng kéo thả thay đổi kích thước cột
         TableColumnModel columnModel = table.getColumnModel();
         for(int i=0;i<7;i++){
@@ -63,7 +96,7 @@ public class NhanVien extends JPanel implements MouseListener{
         header.setReorderingAllowed(false);
         header.setPreferredSize(new Dimension(40,25));
         // ngăn chỉnh sửa dữ liệu
-        table.setEnabled(false);
+        // table.setEnabled(false);
         table.setRowHeight(30);
 
         scrollPane = new JScrollPane(table);
@@ -111,8 +144,10 @@ public class NhanVien extends JPanel implements MouseListener{
         searchPanel.add(labelCombobox);
         searchPanel.add(comboBox); 
 
-        this.add(searchPanel,BorderLayout.NORTH);
-        this.add(scrollPane);
+        panelTable.add(searchPanel,BorderLayout.NORTH);
+        panelTable.add(scrollPane);
+        this.add(panelTable,BorderLayout.WEST);
+        this.add(panelInfo,BorderLayout.EAST);
         this.setVisible(false);
     }
     public JDialog FormNhanVien(){
@@ -142,7 +177,6 @@ public class NhanVien extends JPanel implements MouseListener{
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.insets = new Insets(10, 10, 10, 10);
-                
                 for(int i=0;i<labelForm.length;i++){
                     gbc.gridx = 0;
                     gbc.gridy = i;
@@ -150,7 +184,7 @@ public class NhanVien extends JPanel implements MouseListener{
 
                     gbc.gridx = 1;
                     gbc.gridy = i;
-                    panelCenter.add(createTextField(),gbc);
+                    panelCenter.add(createTextField(i),gbc);
                 }
                 
                 btn.setPreferredSize(new Dimension(300,50));
@@ -166,8 +200,14 @@ public class NhanVien extends JPanel implements MouseListener{
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // TODO Auto-generated method stub
-                        JOptionPane.showMessageDialog(null, "Thêm thành công");
-                        dialog.dispose();
+                        add = new String[labelForm.length];
+                        for(int i=0;i<labelForm.length;i++){
+                            add[i] = textFields[i].getText();
+                            // System.out.println(add[i]);
+                            System.out.println(add[i]);
+                        }
+                        // JOptionPane.showMessageDialog(null, "Thêm thành công");
+                        // dialog.dispose();
                     }
                 });
 
@@ -184,10 +224,14 @@ public class NhanVien extends JPanel implements MouseListener{
         label.setFont(new Font("Monospace",Font.BOLD,13));
         return label;
     }
-    private JTextField createTextField() {
+    private JTextField createTextField(int index) {
+        if (textFields == null) {
+            textFields = new JTextField[labelForm.length];
+        }
         JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(300, 30)); // đặt kích thước ưu tiên cho trường văn bản
-        textField.setFont(new Font("Monospace",Font.BOLD,13));
+        textField.setPreferredSize(new Dimension(300, 30));
+        textField.setFont(new Font("Monospace", Font.BOLD, 13));
+        textFields[index] = textField;
         return textField;
     }
     @Override
