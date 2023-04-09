@@ -58,31 +58,18 @@ public class NhanVien extends JPanel implements MouseListener{
             columnModel.getColumn(i).setResizable(false);
         }
 
-        // DefaultTableModel model = (DefaultTableModel) table.getModel();
-        // model.addColumn(null);
-
-
-        // TableColumn tb = new TableColumn();
-        // tb.setHeaderValue("New Column");
-        // table.addColumn(tb);
-
-        // for(int i=0;i<table.getRowCount();i++){
-        //     JButton button0 = new JButton();
-        //     table.setValueAt(button0, i, table.getColumnCount()-1);
-        // }
-
         // ngăn người kéo thả thay đổi vị trí cột
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
+        header.setPreferredSize(new Dimension(40,25));
         // ngăn chỉnh sửa dữ liệu
         table.setEnabled(false);
-
         table.setRowHeight(30);
 
         scrollPane = new JScrollPane(table);
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
         verticalScrollBar.setBackground(Color.BLACK);
-        table.setPreferredScrollableViewportSize(new Dimension(800,500));
+        table.setPreferredScrollableViewportSize(new Dimension(800,400));
         // scrollPane.setPreferredSize(new Dimension(800,500));
 
         searchField = new JTextField();

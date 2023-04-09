@@ -33,7 +33,6 @@ public class Program {
         });
     }
 
-    
     public void dangNhap(){
         DangNhap dn = new DangNhap(master);
         dn.addWindowEvent(new WindowAdapter() {

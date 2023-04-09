@@ -30,7 +30,7 @@ import java.awt.event.MouseListener;
 public class FormDN extends JFrame implements MouseListener{
     public JPanel panelTitleBar,centerPanel,panelLoginContainer,panelLogin,panelSubmit;
     public JLabel labelHide,labelClose,labelUser,labelPass,labelTitle,labelForget;
-    public JTextField usernameInput;
+    public static JTextField usernameInput;
     public JPasswordField passwordInput;
     public JButton submitButton;
     public FormDN() {
@@ -238,8 +238,8 @@ public class FormDN extends JFrame implements MouseListener{
         submitButton.setEnabled(true);
     }
 
-    public String getUsernameInput(){
-        return this.usernameInput.getText();
+    public static String getUsernameInput(){
+        return usernameInput.getText();
     }
 
     public String getPasswordInput(){
@@ -250,7 +250,6 @@ public class FormDN extends JFrame implements MouseListener{
         }
         return s;
     }
-
     public void setSubmitAction(ActionListener a){
         this.submitButton.addActionListener(a);
     }

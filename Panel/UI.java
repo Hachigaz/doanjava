@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 import Function.*;
-
+import Login.FormDN;
 import Quyen.*;
 import Quyen.XemDSMH.DSMHPanel;
 
@@ -103,7 +103,7 @@ public class UI extends JFrame implements MouseListener{
             }
         };
         panelTop.setLayout(new BorderLayout());
-        panelTop.setPreferredSize(new Dimension(0,140));
+        panelTop.setPreferredSize(new Dimension(0,120));
 
         panelUser = new JPanel();
         panelUser.setPreferredSize(new Dimension(250,170));
@@ -117,7 +117,7 @@ public class UI extends JFrame implements MouseListener{
         labelIcon2.setIcon(newIcon2);
         labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
-        labelUserName = new JLabel("Xin chào user name");
+        labelUserName = new JLabel("Xin chào "+FormDN.getUsernameInput());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
         labelUserName.setVerticalAlignment(JLabel.CENTER);
@@ -128,7 +128,7 @@ public class UI extends JFrame implements MouseListener{
 
 
         //thêm panel chức năng vào mảng
-        DataSet danhMucSanPham = handler.getDataQuery("select * from loai_hang");
+        DataSet danhMucSanPham = handler.getDataQuery("select * from mat_hang");
         pnlChucNang.put(btnChucNang.get(0),new DanhMucSP(danhMucSanPham));
 
         DataSet danhSachNhanVien = handler.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
