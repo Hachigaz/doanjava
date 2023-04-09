@@ -1,4 +1,4 @@
-package DangNhap;
+package Login;
 import javax.swing.*;
 
 import misc.ThongBaoDialog;

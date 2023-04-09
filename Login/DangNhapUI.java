@@ -1,4 +1,4 @@
-package DangNhap;
+package Login;
 import javax.swing.*;
 
 import UI.TitleFrame;
@@ -116,7 +116,7 @@ public class DangNhapUI extends TitleFrame{
         submitButton.setEnabled(false);
     }
 
-    public void enableAll(){
+    public void enableAll(){//??
         usernameInput.setEnabled(true);
         passwordInput.setEnabled(true);
     

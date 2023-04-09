@@ -1,6 +1,6 @@
 import java.awt.event.*;
 
-import DangNhap.*;
+import Login.*;
 import Panel.*;
 import SQL.SQLUser;
 

@@ -1,4 +1,4 @@
-package DangNhap;
+package Login;
 
 import SQL.*;
 
@@ -8,13 +8,13 @@ import SQL.SQLUser;
 import misc.ThongBaoDialog;
 public class DangNhap implements ActionListener {
 
-    private DangNhapUI dangnhapui;
+    private FormDN dangnhapui;/* */
     private SQLUser master;
 
     private DataSet ds;
     public DangNhap(SQLUser master){
         ds = null;
-        dangnhapui = new DangNhapUI();
+        dangnhapui = new FormDN();//* */
         this.master = master;
         dangnhapui.setSubmitAction(this);
     }
