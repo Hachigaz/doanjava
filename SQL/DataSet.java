@@ -9,12 +9,28 @@ public class DataSet {
     private String columnName[];
     private String columnLabel[];
     private ArrayList<ArrayList<Object>> data;
-    private Object[][] dataArr;
-    private int length;
+    private int rowCount;
+    private int columnCount;
 
     public DataSet(){
         this.columnName = null;
+        this.columnLabel=null;
         this.data = null;
+        this.rowCount=0;
+        this.columnCount=0;
+    }    
+    public DataSet(String[] columnName,String[] columnLabel){
+        this.columnName = columnName;
+        this.columnLabel = columnLabel;
+        this.columnCount = columnName.length;
+    }
+
+    public DataSet(DataSet ds){
+        this.columnLabel= ds.columnLabel.clone();
+        this.columnName = ds.columnName.clone();
+        this.data = new ArrayList<ArrayList<Object>>(ds.data);
+        this.rowCount= ds.rowCount;
+        this.columnCount = ds.columnCount;
     }
 
     public DataSet(ResultSet rs){
@@ -26,28 +42,37 @@ public class DataSet {
             for(int i = 0 ; i < this.columnName.length;i++){
                 this.columnName[i] = metaData.getColumnName(i+1);
                 this.columnLabel[i] = metaData.getColumnLabel(i+1);
-                this.data.add(new ArrayList<Object>());
+                this.columnCount=this.columnName.length;
             }
             if(rs.isBeforeFirst()){
                 rs.next();
             }
             while(!rs.isAfterLast()){
-                for(int i = 0 ; i < this.columnName.length;i++){
-                    this.data.get(i).add(rs.getString(i+1));
+                ArrayList<Object> rowData = new ArrayList<Object>();
+                for(int i = 0 ; i < columnCount;i++){
+                    rowData.add(rs.getString(i+1));
                 }
+                this.data.add(rowData);
                 rs.next();
             }
+            this.rowCount=this.data.size();
         }
         catch(SQLException exception){
             System.out.println(exception.getMessage());
         }
-        length = this.data.get(0).size();
+    }
 
-        dataArr = new Object[length][this.data.size()];
-        for(int i = 0 ; i < length;i++){
-            for(int j = 0 ; j < this.data.size();j++){
-                dataArr[i][j] = this.data.get(j).get(i);
-            }
+    public void add(ArrayList<Object> dataRow){
+        this.data.add(dataRow);
+        this.rowCount++;
+    }
+
+    public Object[] getRow(int index){
+        if(index>=0 && index<rowCount){
+            return this.data.get(index).toArray();
+        }
+        else{
+            return null;
         }
     }
     
@@ -55,42 +80,68 @@ public class DataSet {
         return this.columnName;
     }
     public String[] getColumnLabel() {
-        return columnLabel;
+        return this.columnLabel;
     }
 
     public Object[][] getData(){
-        return dataArr;
+        Object[][] dataReturn = new Object[this.rowCount][this.columnCount];
+        for(int i = 0 ; i < rowCount;i++){
+            for(int j = 0 ; j < this.columnCount ; j++){
+                dataReturn[i][j] = this.data.get(i).get(j);
+            }
+        }
+        return dataReturn;
     }
-    public int getLength() {
-        return length;
+    public int getRowCount() {
+        return rowCount;
     }
 
     public Object[] getColumn(int index){
-        return dataArr[index];
+        if(index < 0 && index >= this.columnCount){
+            return null;
+        }
+        else{
+            ArrayList<Object> columnData = new ArrayList<>();
+            for(int i = 0 ; i < this.rowCount;i++){
+                columnData.add(this.data.get(i).get(index));
+            }
+            return columnData.toArray();
+        }
     }
 
     public Object[] getColumn(String colName){
-        for(int i  = 0 ; i  < columnName.length;i++){
+        for(int i  = 0 ; i  < this.columnCount;i++){
             if(columnName[i].equals(colName)){
-                return dataArr[i];
+                return getColumn(i);
             }
         }
         return null;
     }
 
+    public DataSet locGiaTri(int index,Object giaTri){
+        DataSet ds = new DataSet();
+        for(int i = 0 ; i < this.rowCount;i++){
+            if(this.data.get(index).get(i).equals(giaTri)){
+                this.add(this.data.get(i));
+            }
+        }
+        ds.printData();
+        return ds;
+    }
+
     public void printColumnName(){
         String s = "";
-        for(int i = 0 ; i < columnName.length;i++){
+        for(int i = 0 ; i < this.columnCount;i++){
             s+=columnName[i]+" ";
         }
         System.out.println(s);
     }
 
     public void printData(){
-        for(int i = 0 ; i < this.length;i++){
+        for(int i = 0 ; i < this.rowCount;i++){
             String data = "";
-            for(int j = 0 ; j < this.data.size();j++){
-                data += ((this.data.get(j).get(i)).toString() + ' ');
+            for(int j = 0 ; j < this.columnCount;j++){
+                data += ((this.data.get(i).get(j)).toString() + ' ');
             }
             System.out.println(data);
         }

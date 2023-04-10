@@ -2,7 +2,7 @@ import java.awt.event.*;
 
 import Login.*;
 import Panel.*;
-import SQL.SQLUser;
+import SQL.*;
 
 
 public class Program {
@@ -37,7 +37,7 @@ public class Program {
         DangNhap dn = new DangNhap(master);
         dn.addWindowEvent(new WindowAdapter() {
             public void windowClosed(WindowEvent e){
-                UI ui = new UI(master);
+                UI ui = new UI(master,dn.getTenTKDangNhap());
             }
         });
     }
