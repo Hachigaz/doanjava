@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
@@ -134,6 +135,9 @@ public class UI extends JFrame implements MouseListener{
 
         DataSet danhSachNhanVien = handler.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
         pnlChucNang.put(btnChucNang.get(4),new NhanVien(danhSachNhanVien));
+        
+        DataSet danhSachNhaCungCap = handler.getDataQuery("select MaCty as 'Mã công ty', TenCty as 'Tên công ty', DiaChi as 'Địa chỉ', SDT as 'SDT' from cong_ty");
+        pnlChucNang.put(btnChucNang.get(1),new NhaCungCap(danhSachNhaCungCap));
 
         DataSet taoDonNhap = handler.getDataQuery("select * from  donnhap");
         pnlChucNang.put(btnChucNang.get(3),new TaoDonNhap(taoDonNhap));
