@@ -21,6 +21,7 @@ INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES
 ('K01_KV_D001', 'LC03')
 
 
+
 use quanlykho;
 INSERT INTO `khuvuc` (`MaKho`, `MaKV`, `SucChua`) VALUES 
 ('K01', 'K01_KV_A001', '6000'), 
@@ -139,3 +140,34 @@ values('NQ_ADMIN','Q1'),
 ('NQ_ADMIN','Q5'),
 ('NQ_ADMIN','Q6'),
 ('NQ_ADMIN','Q7')
+
+use quanlykho;
+insert into donnhap
+values
+('DN0003','K02','Cty_ABC','NV2001',2021/12/1),
+('DN0004','K02','Cty_HIJ','NV2003',2021/2/4)
+
+
+use quanlykho;
+INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES 
+('K02_KV_A001', 'LA01'), 
+('K02_KV_A001', 'LA02'),
+('K02_KV_A002', 'LC01'), 
+('K02_KV_A002', 'LC02'),
+('K02_KV_A002', 'LC03')
+
+use quanlykho;
+insert into chitiet_donnhap
+values
+('DN0003','MH_ABC_012','K02_KV_A001',250,230),
+('DN0003','MH_ABC_013','K02_KV_A001',300,280),
+('DN0003','MH_ABC_016','K02_KV_A001',240,240),
+('DN0003','MH_ABC_008','K02_KV_A001',240,240)
+
+
+use quanlykho;
+insert into chitiet_donnhap
+values
+('DN0004','MH_HIJ_007','K02_KV_A002',500,450),
+('DN0004','MH_HIJ_008','K02_KV_A002',750,640),
+('DN0004','MH_HIJ_009','K02_KV_A002',300,240)
