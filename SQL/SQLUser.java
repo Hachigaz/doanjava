@@ -17,9 +17,7 @@ public class SQLUser {
         this.password = password;
     }
     
-    public void updateQuery(){
 
-    }
 
     public DataSet getDataQuery(String sql){
         String connectionUrl =url;
