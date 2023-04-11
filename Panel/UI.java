@@ -16,26 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 import Function.*;
-<<<<<<< Updated upstream
-import Login.FormDN;
 import Panel.TraCuuHang.TraCuuHang;
-
-public class UI extends JFrame implements MouseListener{
-    private JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
-    public static JPanel panelRight;
-    private JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
-    public String[] str = {"Thông tin sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
-=======
-import Login.DangNhapUI;
-import Quyen.*;
-import Quyen.XemDSMH.DSMHPanel;
 
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
     public JPanel panelRight;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
     public String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
->>>>>>> Stashed changes
     public String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
     //tao thay Label[] thành Arraylist<Label>
     //thay tên labels thành btnChucNang (đặt tên ngu)
@@ -133,7 +120,7 @@ public class UI extends JFrame implements MouseListener{
         labelIcon2.setIcon(newIcon2);
         labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
-        labelUserName = new JLabel("Xin chào "+DangNhapUI.getUsernameInput());
+        labelUserName = new JLabel("Xin chào ");
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
         labelUserName.setVerticalAlignment(JLabel.CENTER);
@@ -150,7 +137,7 @@ public class UI extends JFrame implements MouseListener{
         DataSet danhSachNhanVien = master.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
         pnlChucNang.put(btnChucNang.get(4),new NhanVien(danhSachNhanVien));
         
-        DataSet danhSachNhaCungCap = handler.getDataQuery("select MaCty as 'Mã công ty', TenCty as 'Tên công ty', DiaChi as 'Địa chỉ', SDT as 'SDT' from cong_ty");
+        DataSet danhSachNhaCungCap = master.getDataQuery("select MaCty as 'Mã công ty', TenCty as 'Tên công ty', DiaChi as 'Địa chỉ', SDT as 'SDT' from cong_ty");
         pnlChucNang.put(btnChucNang.get(1),new NhaCungCap(danhSachNhaCungCap));
 
         DataSet taoDonNhap = master.getDataQuery("select * from  donnhap");
