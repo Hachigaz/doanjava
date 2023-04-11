@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -30,10 +32,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import SQL.DataSet;
+import SQL.SQLUser;
 
 public class NhanVien extends JPanel implements MouseListener{
     JTable table;
@@ -47,8 +52,11 @@ public class NhanVien extends JPanel implements MouseListener{
     JLabel labelCombobox;
     JComboBox comboBox;
     JTextField[] textFields;
+    Object[] obj;
     String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
+    SQLUser handler;
+    DefaultTableModel model;
     public String[] labelForm = {"Mã nhân viên:","Tên nhân viên:","Mã chức vụ:","Giới tính:","Ngày sinh:","Địa chỉ","Kho làm việc:"};
     public NhanVien(DataSet ds){
         this.setLayout(new BorderLayout());
@@ -195,20 +203,46 @@ public class NhanVien extends JPanel implements MouseListener{
                 btn.setBorder(null);       
                 btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btn.addMouseListener(this);
-                btn.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // TODO Auto-generated method stub
-                        add = new String[labelForm.length];
-                        for(int i=0;i<labelForm.length;i++){
-                            add[i] = textFields[i].getText();
-                            // System.out.println(add[i]);
-                            System.out.println(add[i]);
-                        }
-                        // JOptionPane.showMessageDialog(null, "Thêm thành công");
-                        // dialog.dispose();
-                    }
-                });
+                
+                // btn.addActionListener(new ActionListener() {
+                //     @Override
+                //     public void actionPerformed(ActionEvent e) {
+                //         // TODO Auto-generated method stub
+                //         if(model instanceof DefaultTableModel){
+                //             model = (DefaultTableModel) table.getModel();
+                //             add = new String[labelForm.length];
+                //             obj = new Object[labelForm.length];
+                //             for(int i=0;i<labelForm.length;i++){
+                //                 add[i] = textFields[i].getText();
+                //                 obj[i] = (Object)add[i];
+                //             }
+                //             table.setModel(model);
+                //             model.addRow(obj);
+                //             JOptionPane.showMessageDialog(null, "Thêm thành công");
+                //             dialog.dispose();
+                //         }else{
+                //             JOptionPane.showMessageDialog(null, "Lỗi: Đối tượng mô hình bảng không phải là một đối tượng DefaultTableModel");
+                //         }     
+                //     }
+                // });
+                // btn.addActionListener(new ActionListener() {
+                //     @Override
+                //     public void actionPerformed(ActionEvent e) {
+                //         TableModel model = table.getModel();
+                //         if (table.getModel() instanceof DefaultTableModel) {
+                //             DefaultTableModel defaultModel = (DefaultTableModel) model;
+                //             Object[] row = new Object[labelForm.length];
+                //             for (int i = 0; i < labelForm.length; i++) {
+                //                 row[i] = textFields[i].getText();
+                //             }
+                //             defaultModel.addRow(row);
+                //             JOptionPane.showMessageDialog(null, "Thêm thành công");
+                //             dialog.dispose();
+                //         } else {
+                //             JOptionPane.showMessageDialog(null, "Lỗi: Đối tượng mô hình bảng không phải là một đối tượng DefaultTableModel");
+                //         }
+                //     }
+                // });
 
                 dialog.add(panelDialog);
                 dialog.setPreferredSize(new Dimension(1000,650));

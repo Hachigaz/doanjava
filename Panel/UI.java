@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 import Function.*;
+<<<<<<< Updated upstream
 import Login.FormDN;
 import Panel.TraCuuHang.TraCuuHang;
 
@@ -24,6 +25,17 @@ public class UI extends JFrame implements MouseListener{
     public static JPanel panelRight;
     private JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
     public String[] str = {"Thông tin sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
+=======
+import Login.DangNhapUI;
+import Quyen.*;
+import Quyen.XemDSMH.DSMHPanel;
+
+public class UI extends JFrame implements MouseListener{
+    JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
+    public JPanel panelRight;
+    JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
+    public String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
+>>>>>>> Stashed changes
     public String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
     //tao thay Label[] thành Arraylist<Label>
     //thay tên labels thành btnChucNang (đặt tên ngu)
@@ -121,7 +133,7 @@ public class UI extends JFrame implements MouseListener{
         labelIcon2.setIcon(newIcon2);
         labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
-        labelUserName = new JLabel("Xin chào "+FormDN.getUsernameInput());
+        labelUserName = new JLabel("Xin chào "+DangNhapUI.getUsernameInput());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
         labelUserName.setVerticalAlignment(JLabel.CENTER);

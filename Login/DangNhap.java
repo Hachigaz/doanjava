@@ -9,20 +9,29 @@ import misc.TaiKhoanDangNhap;
 import misc.ThongBaoDialog;
 public class DangNhap implements ActionListener {
 
-    private FormDN dangnhapui;
+    private DangNhapUI dangnhapui;
     private SQLUser master;
 
     private TaiKhoanDangNhap tkDN = null;
 
     public DangNhap(SQLUser master){
+<<<<<<< Updated upstream
         dangnhapui = new FormDN();
+=======
+        ds = null;
+        dangnhapui = new DangNhapUI();
+>>>>>>> Stashed changes
         this.master = master;
         dangnhapui.setSubmitAction(this);
     }
     public void actionPerformed(ActionEvent e) {
+<<<<<<< Updated upstream
         DataSet ds = null;
 
         String tentk = FormDN.getUsernameInput();
+=======
+        String tentk = DangNhapUI.getUsernameInput();
+>>>>>>> Stashed changes
         String mk = dangnhapui.getPasswordInput();
         
         String sql = "select TenTaiKhoan,MaNV,MaNhomQuyen from taikhoan_nhanvien tknv where tknv.TenTaiKhoan = '"+tentk+"' and '"+mk+"'=tknv.MatKhau";
