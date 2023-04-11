@@ -3,8 +3,6 @@ package Panel.TraCuuHang;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -18,11 +16,9 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import SQL.DataSet;
-import SQL.SQLUser;
-import misc.TaiKhoanDangNhap;
 import misc.util;
 
-public class TraCuuHang extends JPanel{
+public class TraCuuHangUI extends JPanel{
 
     private JPanel panelChucNang;
     private JPanel panelLoc;
@@ -31,17 +27,11 @@ public class TraCuuHang extends JPanel{
     private TableRowSorter<TableModel> rowSorter;
     private JScrollPane bangDanhSach;
 
-    private final String sqlDSMH = 
-    "SELECT kv.TenKV as 'Khu vực', mh.TenMH as 'Tên mặt hàng', ctdn.SLConLai as 'Số lượng', loai.TenLoai as 'Loại sản phẩm', DATE(dn.NgayNhap) as 'Ngày nhập'\n"+
-    "FROM mat_hang mh, khuvuc kv,chitiet_donnhap ctdn, donnhap dn, loai_hang loai\n"+
-    "where kv.MaKV = ctdn.MaKV AND mh.MaMH = ctdn.MaMH AND dn.MaDonNhap = ctdn.MaDonNhap AND loai.MaLoai = mh.MaLoai";
-    
-    private SQLUser master;
-    private TaiKhoanDangNhap tkDangNhap;
+    private JTextField searchBar;
 
-    public TraCuuHang(SQLUser master,TaiKhoanDangNhap tkdn){
-        this.master = master;
-        this.tkDangNhap = tkdn;
+
+    
+    public TraCuuHangUI(){
 
         this.panelChucNang = new JPanel();
         this.panelLoc = new JPanel();
@@ -67,25 +57,21 @@ public class TraCuuHang extends JPanel{
         panelDanhSach.setBackground(Color.GREEN);
         panelDanhSach.setOpaque(true);
 
-        SetupPanelLoc();
-        SetupPanelChucNang();
-
-        
-        String sql = sqlDSMH+" AND dn.MaKho = '" + util.objToString(master.getDataQuery("SELECT Kho_Lam_Viec FROM nhanvien WHERE MaNV = '"+ tkdn.getMaNV()+"'").getRow(0))[0] +"'";
-        this.SetTable(master.getDataQuery(sql));
+    
     }
     //lọc theo loại sp và khu vực
     private ArrayList<JLabel> locArrLabel = new ArrayList<JLabel>();
     private HashMap<JLabel,JScrollPane> locArrPanel = new HashMap<JLabel,JScrollPane>();
     
-    private void SetupPanelLoc(){
-        this.themChucNangLoc("Lọc theo khu vực","SELECT MaKV,TenKV FROM khuvuc");
-        this.themChucNangLoc("Lọc theo loại sản phẩm","SELECT MaLoai,TenLoai FROM loai_hang");
+    public void SetupPanelLoc(DataSet[] dsLoc,String[] tenLoc){
+        for(int i = 0 ; i < tenLoc.length;i++){
+            themChucNangLoc(tenLoc[i],dsLoc[i]);
+        }
         panelLoc.revalidate();
         panelLoc.repaint();
     }
 
-    private void themChucNangLoc(String title,String sql){
+    private void themChucNangLoc(String title,DataSet dsCNLoc){
         MouseListener listener = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -117,9 +103,7 @@ public class TraCuuHang extends JPanel{
         label.addMouseListener(listener);
         locArrLabel.add(label);
 
-
-        DataSet dsLoaiSP = master.getDataQuery(sql);
-        LocPanel panel = new LocPanel(util.objToString(dsLoaiSP.getColumn(1)),util.objToString(dsLoaiSP.getColumn(0)));
+        LocPanel panel = new LocPanel(util.objToString(dsCNLoc.getColumn(1)),util.objToString(dsCNLoc.getColumn(0)));
         
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,250));
@@ -144,9 +128,8 @@ public class TraCuuHang extends JPanel{
     private String[] optionKey;
     private JComboBox<String> cbChonKho;
 
-    private void SetupPanelChucNang(){
+    public void SetupPanelChucNang(DataSet dsKho,ActionListener onChangeMaKho, ActionListener onSubmitSearch){
         JLabel labelChonKho = new JLabel("Chọn kho");
-        DataSet dsKho = master.getDataQuery("SELECT MaKho,TenKho FROM kho");
 
         optionName = util.objToString(dsKho.getColumn(1));
         optionKey = util.objToString(dsKho.getColumn(0));
@@ -156,36 +139,38 @@ public class TraCuuHang extends JPanel{
         panelChucNang.add(labelChonKho);
         panelChucNang.add(cbChonKho);
 
-        cbChonKho.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                String selected = cbChonKho.getSelectedItem().toString();   
-                for(int i = 0; i < optionKey.length;i++){
-                    if(selected.equals(optionName[i])){
-                        String sql = sqlDSMH + " AND dn.MaKho = '" + optionKey[i] +"'";
-                        DataSet ds = master.getDataQuery(sql);
-                        SetTable(ds);
-                    }
-                }
-            }
-        });
+        cbChonKho.addActionListener(onChangeMaKho);
 
-        JTextField searchBar = new JTextField(20);
-        searchBar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                String searchText = searchBar.getText();
-                if (searchText.length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    try {
-                        rowSorter.setRowFilter(RowFilter.regexFilter(searchText));
-                    } catch (PatternSyntaxException ex) {
-                        System.err.println("Invalid regex pattern: " + ex.getMessage());
-                    }
-                }
-            }
-        });
+        searchBar = new JTextField(20);
+        searchBar.addActionListener(onSubmitSearch);
+
         panelChucNang.add(searchBar);
     }
+
+    //lấy mã kho đang chọn trong combobox
+    public String getSelectedMaKhoKey(){
+        String selected = cbChonKho.getSelectedItem().toString();   
+        for(int i = 0; i < optionKey.length;i++){
+            if(selected.equals(optionName[i])){
+                return optionKey[i];
+            }
+        }
+        return null;
+    }
+    //tìm kiếm theo giá trị nhập
+    public void timTheoGiaTri(){
+        String searchText = searchBar.getText();
+        if (searchText.length() == 0) {
+            rowSorter.setRowFilter(null);
+        } else {
+            try {
+                rowSorter.setRowFilter(RowFilter.regexFilter(searchText));
+            } catch (PatternSyntaxException ex) {
+                System.err.println("Invalid regex pattern: " + ex.getMessage());
+            }
+        }
+    }
+
 
     // private String getMaKhoHienTai(){
     //     String maKho = null;
@@ -198,7 +183,7 @@ public class TraCuuHang extends JPanel{
     //     return maKho;
     // }
 
-    private void SetTable(DataSet ds){
+    public void SetTable(DataSet ds){
         if(ds!=null){
             if(this.bangDanhSach!=null){
                 this.remove(bangDanhSach);

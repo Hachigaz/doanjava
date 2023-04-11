@@ -11,29 +11,27 @@ import javax.swing.JPanel;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 import Function.*;
-import Panel.TraCuuHang.TraCuuHang;
+import Panel.TraCuuHang.TraCuuHangCTR;
+import Panel.TraCuuHang.TraCuuHangUI;
 
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
     public JPanel panelRight;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelHide,labelClose,labelTitleBar;
-    public String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
-    public String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
     //tao thay Label[] thành Arraylist<Label>
     //thay tên labels thành btnChucNang (đặt tên ngu)
     private ArrayList<JLabel> btnChucNang = new ArrayList<JLabel>();
     //mảng chứa panel chức năng
     private HashMap<JLabel,JPanel> pnlChucNang = new HashMap<JLabel,JPanel>();
 
-    private SQLUser hanndler;
+    private SQLUser master;
     private TaiKhoanDangNhap tenTKDangNhap;
     public UI(SQLUser master,TaiKhoanDangNhap tkDangNhap){
-        this.hanndler= master;
+        this.master= master;
         this.tenTKDangNhap=tkDangNhap;
 
         this.setSize(1400,750);
@@ -62,31 +60,13 @@ public class UI extends JFrame implements MouseListener{
         panelLeft.setPreferredSize(new Dimension(190,0));
         panelLeft.setBackground(new Color(7, 140, 217));
         panelLeft.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        //code j đây
-        for(int i=0;i<5;i++){
-            ImageIcon icon = new ImageIcon("res/img/"+img[i]);
-            Image img = icon.getImage();
-            Image newImg = img.getScaledInstance(40,40,java.awt.Image.SCALE_SMOOTH);
-            ImageIcon newIcon = new ImageIcon(newImg);
-
-            btnChucNang.add(new JLabel(str[i]));
-            btnChucNang.get(i).setOpaque(false);
-            btnChucNang.get(i).setBorder(null);
-            btnChucNang.get(i).setForeground(Color.black);
-            btnChucNang.get(i).setPreferredSize(new Dimension(190,40));
-            btnChucNang.get(i).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            btnChucNang.get(i).setFont(new Font("Monospace",Font.PLAIN,15));
-            btnChucNang.get(i).addMouseListener(this);
-            panelLeft.add(btnChucNang.get(i));
-
-            btnChucNang.get(i).setIcon(newIcon);
-        }
+        
         panelRight = new JPanel();
         panelRight.setBackground(Color.white);
         // Giảm kích thước icon
         ImageIcon icon = new ImageIcon("res/img/logo_kho.png");
-        Image img = icon.getImage();
-        Image newImg = img.getScaledInstance(130,130,java.awt.Image.SCALE_SMOOTH);
+        Image imgIcon = icon.getImage();
+        Image newImg = imgIcon.getScaledInstance(130,130,java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(newImg);
         labelIcon1 = new JLabel();
         labelIcon1.setIcon(newIcon);
@@ -129,32 +109,6 @@ public class UI extends JFrame implements MouseListener{
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
-
-        //thêm panel chức năng vào mảng
-        DataSet danhMucSanPham = master.getDataQuery("select * from mat_hang");
-        pnlChucNang.put(btnChucNang.get(0),new ThongTinSP(danhMucSanPham));
-
-        DataSet danhSachNhanVien = master.getDataQuery("select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', MaCV as 'Mã chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien");
-        pnlChucNang.put(btnChucNang.get(4),new NhanVien(danhSachNhanVien));
-        
-        DataSet danhSachNhaCungCap = master.getDataQuery("select MaCty as 'Mã công ty', TenCty as 'Tên công ty', DiaChi as 'Địa chỉ', SDT as 'SDT' from cong_ty");
-        pnlChucNang.put(btnChucNang.get(1),new NhaCungCap(danhSachNhaCungCap));
-
-        DataSet taoDonNhap = master.getDataQuery("select * from  donnhap");
-        pnlChucNang.put(btnChucNang.get(3),new TaoDonNhap(taoDonNhap));
-
-        //thêm mấy cái panel zo right panel
-        //duyệt bảng băm
-        for(int i = 0 ; i<btnChucNang.size();i++){
-            //lấy panel có khoá là nút chức năng của panel đó
-            JPanel panel = pnlChucNang.get(btnChucNang.get(i));
-            //nếu kết quả trả về không phải là rỗng
-            if(panel != null){
-                //thì thêm cái panel zo rightpanel xong setvisible false
-                panelRight.add(panel);
-                panel.setVisible(false);
-            }
-        }
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
@@ -211,8 +165,18 @@ public class UI extends JFrame implements MouseListener{
         this.add(panelTitleBar,BorderLayout.NORTH);
 
         this.setVisible(true);
-
-        themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHang(master,tkDangNhap));
+        
+        
+        String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
+        String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
+        
+        DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
+        themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
+        themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
+        themQuyen(new JLabel(str[3]), "res/img/"+img[3], new TaoDonNhap(ds));
+        themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(ds));
+        TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap);
+        themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
     }
     @Override
     public void mouseClicked(MouseEvent e) {
