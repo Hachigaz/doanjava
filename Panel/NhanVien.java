@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,14 +32,17 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import SQL.DataSet;
 import SQL.SQLUser;
+import misc.TaiKhoanDangNhap;
 
 public class NhanVien extends JPanel implements MouseListener{
     JTable table;
@@ -55,27 +59,33 @@ public class NhanVien extends JPanel implements MouseListener{
     Object[] obj;
     String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
-    SQLUser handler;
+    private SQLUser master;
+    private TaiKhoanDangNhap tkDangNhap;
     DefaultTableModel model;
-    public String[] labelForm = {"Mã nhân viên:","Tên nhân viên:","Mã chức vụ:","Giới tính:","Ngày sinh:","Địa chỉ","Kho làm việc:"};
-    public NhanVien(DataSet ds){
+    TableRowSorter<TableModel> rowSorter;
+    private final String sqlDSNV = "select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', TenCV as 'Chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien,chucvu where nhanvien.MaCV = chucvu.MaCV";
+    public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Mã chức vụ:         ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       "};
+    public NhanVien(SQLUser master,TaiKhoanDangNhap tkdn){
+        this.master = master;
+        this.tkDangNhap = tkdn;
+
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(1200,500));
-        this.setBackground(Color.red);
+
+        this.SetTable(master.getDataQuery(sqlDSNV));
 
         panelInfo = new JPanel();
         panelInfo.setPreferredSize(new Dimension(390,0));
-        panelInfo.setBackground(Color.BLUE);
+        panelInfo.setLayout(new FlowLayout());
+
+        for(int i=0;i<labelForm.length;i++){
+            panelInfo.add(createLabelInfo(labelForm[i]));
+        }
 
         panelTable = new JPanel();
         panelTable.setLayout(new BorderLayout());
         
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        table = new JTable(ds.getData(),ds.getColumnLabel()){
-            public boolean isCellEditable(int row,int column){
-                return false;
-            }
-        };
 
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e){
@@ -113,11 +123,41 @@ public class NhanVien extends JPanel implements MouseListener{
         // scrollPane.setPreferredSize(new Dimension(800,500));
 
         searchField = new JTextField();
+        searchField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String searchText = searchField.getText();
+                if (searchText.length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    try {
+                        rowSorter.setRowFilter(RowFilter.regexFilter(searchText));
+                    } catch (PatternSyntaxException ex) {
+                        System.err.println("Invalid regex pattern: " + ex.getMessage());
+                    }
+                }
+            }
+        });
         searchField.setPreferredSize(new Dimension(300,30));
         searchField.setFont(new Font("Monospace",Font.PLAIN,15));
         searchField.setForeground(Color.black);
 
         searchButton = new JButton("Tìm kiếm");
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Lấy nội dung từ ô tìm kiếm
+                String searchText = searchField.getText();
+                if (searchText.length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    try {
+                        // Áp dụng bộ lọc với chuỗi tìm kiếm
+                        rowSorter.setRowFilter(RowFilter.regexFilter(searchText));
+                    } catch (PatternSyntaxException ex) {
+                        System.err.println("Invalid regex pattern: " + ex.getMessage());
+                    }
+                }
+            }
+        });
         searchButton.setBorder(null);
         searchButton.setPreferredSize(new Dimension(65,40));
         searchButton.setFocusable(false);
@@ -142,14 +182,10 @@ public class NhanVien extends JPanel implements MouseListener{
         });
         addButton.addMouseListener(this);
 
-        labelCombobox = new JLabel("Sắp xếp theo");
-        JComboBox<String> comboBox = new JComboBox<>(arrange);
 
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         searchPanel.add(addButton);
-        searchPanel.add(labelCombobox);
-        searchPanel.add(comboBox); 
 
         panelTable.add(searchPanel,BorderLayout.NORTH);
         panelTable.add(scrollPane);
@@ -267,6 +303,12 @@ public class NhanVien extends JPanel implements MouseListener{
         textFields[index] = textField;
         return textField;
     }
+    private JLabel createLabelInfo(String text){
+        JLabel label = new JLabel(text);
+        label.setPreferredSize(new Dimension(300, 25)); // đặt kích thước ưu tiên cho nhãn
+        label.setFont(new Font("Monospace",Font.BOLD,13));
+        return label;
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
@@ -305,6 +347,67 @@ public class NhanVien extends JPanel implements MouseListener{
             addButton.setForeground(Color.black);
         }else if(e.getSource()==btn){
             btn.setBackground(Color.red);
+        }
+    }
+    private void SetTable(DataSet ds){
+        if(ds!=null){
+            if(this.scrollPane!=null){
+                this.remove(scrollPane);
+            }
+            TableModel tbModel = new DefaultTableModel(ds.getData(),ds.getColumnLabel());
+
+            JTable tableDS = new JTable(tbModel){
+                public boolean isCellEditable(int row,int column){
+                    return false;
+                }
+            };
+            String[] arr = new String[7];     
+            JButton sua = new JButton("Sua"){
+                
+            };   
+            tableDS.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e){
+                    int rowIndex = tableDS.getSelectedRow();
+                    
+                    arr[0] = tableDS.getValueAt(rowIndex, 0).toString();
+                    arr[1] = tableDS.getValueAt(rowIndex, 1).toString();
+                    arr[2] = tableDS.getValueAt(rowIndex, 2).toString();
+                    arr[3] = tableDS.getValueAt(rowIndex, 3).toString();
+                    arr[4] = tableDS.getValueAt(rowIndex, 4).toString();
+                    arr[5] = tableDS.getValueAt(rowIndex, 5).toString();
+                    arr[6] = tableDS.getValueAt(rowIndex, 6).toString();
+                    panelInfo.removeAll();    
+                    for(int i=0;i<labelForm.length;i++){
+                        JLabel label = createLabelInfo(labelForm[i] + " " + arr[i]);
+                        panelInfo.add(label);
+                        panelInfo.add(sua);
+                    }
+            
+                    // Cập nhật lại giao diện người dùng
+                    panelInfo.revalidate();
+                    panelInfo.repaint();
+                }
+            });    
+            TableColumnModel columnModel = tableDS.getColumnModel();
+            for(int i=0;i<7;i++){
+                columnModel.getColumn(i).setResizable(false);
+            }
+            tableDS.getTableHeader().setReorderingAllowed(false);
+            tableDS.setRowHeight(30);
+            
+            this.rowSorter = new TableRowSorter<>(tbModel);
+            tableDS.setRowSorter(rowSorter);
+
+            this.scrollPane = new JScrollPane(tableDS);
+            tableDS.setPreferredScrollableViewportSize(new Dimension(800,400));
+
+
+            
+            this.add(scrollPane);
+            
+            // Revalidate and repaint the frame
+            this.revalidate();
+            this.repaint();
         }
     }
 }
