@@ -87,10 +87,39 @@ public class NhanVien extends JPanel implements MouseListener{
         
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        // scrollPane = new JScrollPane();
-        // JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-        // verticalScrollBar.setBackground(Color.BLACK);
-        // table.setPreferredScrollableViewportSize(new Dimension(800,400));
+        table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+                int rowIndex = table.getSelectedRow();
+
+                String maNV = table.getValueAt(rowIndex, 0).toString();
+                String tenNV = table.getValueAt(rowIndex, 1).toString();
+                String maChucVu = table.getValueAt(rowIndex, 2).toString();
+                String gioiTinh = table.getValueAt(rowIndex, 3).toString();
+                String ngaySinh = table.getValueAt(rowIndex, 4).toString();
+                String diaChi = table.getValueAt(rowIndex, 5).toString();
+                String khoLamViec = table.getValueAt(rowIndex, 6).toString();
+
+                System.out.printf(maNV);
+            }
+        });
+        // ngăn người dùng kéo thả thay đổi kích thước cột
+        TableColumnModel columnModel = table.getColumnModel();
+        for(int i=0;i<7;i++){
+            columnModel.getColumn(i).setResizable(false);
+        }
+
+        // ngăn người kéo thả thay đổi vị trí cột
+        JTableHeader header = table.getTableHeader();
+        header.setReorderingAllowed(false);
+        header.setPreferredSize(new Dimension(40,25));
+        // ngăn chỉnh sửa dữ liệu
+        // table.setEnabled(false);
+        table.setRowHeight(30);
+
+        scrollPane = new JScrollPane(table);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setBackground(Color.BLACK);
+        table.setPreferredScrollableViewportSize(new Dimension(800,400));
         // scrollPane.setPreferredSize(new Dimension(800,500));
 
         searchField = new JTextField();

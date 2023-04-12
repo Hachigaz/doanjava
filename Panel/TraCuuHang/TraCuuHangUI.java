@@ -1,5 +1,4 @@
 package Panel.TraCuuHang;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,13 +10,10 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.*;
 import javax.swing.table.*;
-
 import SQL.DataSet;
 import misc.util;
-
 public class TraCuuHangUI extends JPanel{
 
     private JPanel panelChucNang;
