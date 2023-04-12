@@ -94,7 +94,7 @@ public class NhanVien extends JPanel implements MouseListener{
         });
         // ngăn người dùng kéo thả thay đổi kích thước cột
         TableColumnModel columnModel = table.getColumnModel();
-        for(int i=0;i<1;i++){
+        for(int i=0;i<7;i++){
             columnModel.getColumn(i).setResizable(false);
         }
 
