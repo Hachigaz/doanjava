@@ -1,11 +1,19 @@
 package Model;
 
-public class Taikhoan_nhanvien {
-    public final String tableName = "taikhoan_nhanvien";
+public class Taikhoan_nhanvien implements Model{
+    public static final String tableName = "taikhoan_nhanvien";
     private String MaNV;
     private String TenTaiKhoan;
     private String MatKhau;
     private String MaNhomQuyen;
+
+    
+    public Taikhoan_nhanvien(String maNV, String tenTaiKhoan, String matKhau, String maNhomQuyen) {
+        MaNV = maNV;
+        TenTaiKhoan = tenTaiKhoan;
+        MatKhau = matKhau;
+        MaNhomQuyen = maNhomQuyen;
+    }
     public String getMaNV() {
         return MaNV;
     }

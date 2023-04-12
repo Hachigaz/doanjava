@@ -1,12 +1,20 @@
 package Model;
 
-public class DonKiemMD {
-    public final String tableName = "donkiem";
+public class DonKiemMD implements Model{
+    public static final String tableName = "donkiem";
 
     private String MaDonKiem;
     private String MaKho;
     private String MaNVNhap;
     private String NgayKiem;
+    
+    public DonKiemMD(String maDonKiem, String maKho, String maNVNhap, String ngayKiem) {
+        MaDonKiem = maDonKiem;
+        MaKho = maKho;
+        MaNVNhap = maNVNhap;
+        NgayKiem = ngayKiem;
+    }
+    
     public String getMaDonKiem() {
         return MaDonKiem;
     }

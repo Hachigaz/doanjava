@@ -57,8 +57,8 @@ public class DonNhapUI extends JPanel implements MouseListener{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                FormDonNhap form = new FormDonNhap(ds);
-                form.setVisible(true);
+                //FormDonNhap form = new FormDonNhap(ds);
+                //form.setVisible(true);
             }
         });
         pNorth.add(btadd);

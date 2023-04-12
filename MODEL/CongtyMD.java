@@ -1,12 +1,22 @@
 package Model;
 
-public class CongtyMD {
-    public final String tableName = "congty";
+public class CongtyMD implements Model{
+    public static final String tableName = "congty";
 
     private String MaCty;
     private String TenCty;
-    private String diaChi;
+    private String DiaChi;
     private String SDT;
+
+    
+    
+    public CongtyMD(String maCty, String tenCty, String diaChi, String sDT) {
+        MaCty = maCty;
+        TenCty = tenCty;
+        DiaChi = diaChi;
+        SDT = sDT;
+    }
+
     public String getMaCty() {
         return MaCty;
     }
@@ -20,19 +30,19 @@ public class CongtyMD {
         TenCty = tenCty;
     }
     public String getDiaChi() {
-        return diaChi;
+        return DiaChi;
     }
     public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+        this.DiaChi = diaChi;
     }
     public String getSDT() {
         return SDT;
     }
-    public void setSDT(String sDT) {
-        SDT = sDT;
+    public void setSDT(String DDT) {
+        this.SDT = DDT;
     }
     @Override
     public String toSQLString() {
-        return "(" + MaCty + "," + TenCty + "," + diaChi + "," + SDT + ")";
+        return "(" + MaCty + "," + TenCty + "," + DiaChi + "," + SDT + ")";
     }
 }

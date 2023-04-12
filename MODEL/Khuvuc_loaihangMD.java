@@ -1,10 +1,15 @@
 package Model;
 
-public class Khuvuc_loaihangMD {
-    public final String tableName = "khuvuc";
+public class Khuvuc_loaihangMD implements Model{
+    public static final String tableName = "khuvuc";
 
     private String MaKV;
     private String MaLoai;
+    
+    public Khuvuc_loaihangMD(String maKV, String maLoai) {
+        MaKV = maKV;
+        MaLoai = maLoai;
+    }
     public String getMaKV() {
         return MaKV;
     }

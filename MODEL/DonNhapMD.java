@@ -1,13 +1,21 @@
 package Model;
 
-public class DonNhapMD {
-    public final String tableName = "donnhap";
+public class DonNhapMD implements Model{
+    public static final String tableName = "donnhap";
 
     private String MaDonNhap;
     private String MaKho;
     private String MaCty;
     private String MaNV;
     private String NgayNhap;
+
+    public DonNhapMD(String maDonNhap, String maKho, String maCty, String maNV, String ngayNhap) {
+        MaDonNhap = maDonNhap;
+        MaKho = maKho;
+        MaCty = maCty;
+        MaNV = maNV;
+        NgayNhap = ngayNhap;
+    }
     public String getMaDonNhap() {
         return MaDonNhap;
     }

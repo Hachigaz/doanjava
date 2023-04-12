@@ -1,10 +1,15 @@
 package Model;
 
-public class Loai_hangMD {
-    public final String tableName = "loai_hang";
+public class Loai_hangMD implements Model{
+    public static final String tableName = "loai_hang";
 
     private String MaLoai;
     private String Tenloai;
+    
+    public Loai_hangMD(String maLoai, String tenloai) {
+        MaLoai = maLoai;
+        Tenloai = tenloai;
+    }
     public String getMaLoai() {
         return MaLoai;
     }
@@ -21,5 +26,4 @@ public class Loai_hangMD {
     public String toSQLString() {
         return "(" + MaLoai + "," + Tenloai + ")";
     }
-    
 }

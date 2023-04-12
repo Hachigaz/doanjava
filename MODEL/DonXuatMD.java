@@ -1,13 +1,24 @@
 package Model;
 
-public class DonXuatMD {
-    public final String tableName = "donxuat";
+public class DonXuatMD implements Model{
+    public static final String tableName = "donxuat";
 
     private String MaDonXuat;
     private String MaKho;
     private String MaCty;
     private String MaNV;
     private String NgayXuat;
+
+
+    
+    public DonXuatMD(String maDonXuat, String maKho, String maCty, String maNV, String ngayXuat) {
+        MaDonXuat = maDonXuat;
+        MaKho = maKho;
+        MaCty = maCty;
+        MaNV = maNV;
+        NgayXuat = ngayXuat;
+    }
+    
     public String getMaDonXuat() {
         return MaDonXuat;
     }

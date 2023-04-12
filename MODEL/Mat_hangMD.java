@@ -1,18 +1,24 @@
 package Model;
 
-public class Mat_hangMD {
-    public final String tableName = "mat_hang";
+public class Mat_hangMD implements Model{
+    public static final String tableName = "mat_hang";
 
-    @Override
-    public String toSQLString() {
-        return "(" + MaMH + "," + MaCty + "," + MaLoai + "," + TenMH
-                + "," + SoLuongMoiThung + ")";
-    }
     private String MaMH;
     private String MaCty;
     private String MaLoai;
     private String TenMH;
-    private int SoLuongMoiThung;
+    private Integer SoLuongMoiThung;
+
+    
+
+    public Mat_hangMD(String maMH, String maCty, String maLoai, String tenMH, Integer soLuongMoiThung) {
+        MaMH = maMH;
+        MaCty = maCty;
+        MaLoai = maLoai;
+        TenMH = tenMH;
+        SoLuongMoiThung = soLuongMoiThung;
+    }
+    
     public String getMaMH() {
         return MaMH;
     }
@@ -37,10 +43,15 @@ public class Mat_hangMD {
     public void setTenMH(String tenMH) {
         TenMH = tenMH;
     }
-    public int getSoLuongMoiThung() {
+    public Integer getSoLuongMoiThung() {
         return SoLuongMoiThung;
     }
-    public void setSoLuongMoiThung(int soLuongMoiThung) {
+    public void setSoLuongMoiThung(Integer soLuongMoiThung) {
         SoLuongMoiThung = soLuongMoiThung;
+    }
+    @Override
+    public String toSQLString() {
+        return "(" + MaMH + "," + MaCty + "," + MaLoai + "," + TenMH
+                + "," + SoLuongMoiThung + ")";
     }
 }

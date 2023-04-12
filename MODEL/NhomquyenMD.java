@@ -1,10 +1,16 @@
 package Model;
 
-public class NhomquyenMD {
-    public final String tableName = "nhomquyen";
+public class NhomquyenMD implements Model{
+    public static final String tableName = "nhomquyen";
     
     private String MaNhomQuyen;
     private String TenNhomQuyen;
+
+    
+    public NhomquyenMD(String maNhomQuyen, String tenNhomQuyen) {
+        MaNhomQuyen = maNhomQuyen;
+        TenNhomQuyen = tenNhomQuyen;
+    }
     public String getMaNhomQuyen() {
         return MaNhomQuyen;
     }

@@ -1,11 +1,17 @@
 package Model;
 
-public class KhoMD {
-    public final String tableName = "kho";
+public class KhoMD implements Model{
+    public static final String tableName = "kho";
 
     private String MaKho;
     private String TenKho;
     private String DiaChi;
+    
+    public KhoMD(String maKho, String tenKho, String diaChi) {
+        MaKho = maKho;
+        TenKho = tenKho;
+        DiaChi = diaChi;
+    }
     public String getMaKho() {
         return MaKho;
     }

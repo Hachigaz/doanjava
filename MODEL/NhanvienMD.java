@@ -1,7 +1,7 @@
 package Model;
 
-public class NhanvienMD {
-    public final String tableName = "nhanvien";
+public class NhanvienMD implements Model{
+    public static final String tableName = "nhanvien";
 
     private String MaNV;
     private String TenNV;
@@ -10,6 +10,19 @@ public class NhanvienMD {
     private String NgaySinh;
     private String DiaChi;
     private String Kho_lam_viec;
+
+    
+    public NhanvienMD(String maNV, String tenNV, String maCV, String gioiTinh, String ngaySinh, String diaChi,
+            String kho_lam_viec) {
+        MaNV = maNV;
+        TenNV = tenNV;
+        MaCV = maCV;
+        GioiTinh = gioiTinh;
+        NgaySinh = ngaySinh;
+        DiaChi = diaChi;
+        Kho_lam_viec = kho_lam_viec;
+    }
+    
     public String getMaNV() {
         return MaNV;
     }

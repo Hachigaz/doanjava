@@ -1,7 +1,7 @@
 package Model;
 
 public class ChitietdonnhapMD implements Model{
-    public final String tableName = "chitiet_donnhap";
+    public static final String tableName = "chitiet_donnhap";
     @Override
     public String toSQLString() {
         return "(" + MaDonNhap + "," + MaMH + "," + MaKV + "," + SLNhap  + "," + SLConLai + ")";
@@ -9,8 +9,16 @@ public class ChitietdonnhapMD implements Model{
     private String MaDonNhap;
     private String MaMH;
     private String MaKV;
-    private float SLNhap;
-    private float SLConLai;
+    private Float SLNhap;
+    private Float SLConLai;
+
+    public ChitietdonnhapMD(String maDonNhap, String maMH, String maKV, Float sLNhap, Float sLConLai) {
+        MaDonNhap = maDonNhap;
+        MaMH = maMH;
+        MaKV = maKV;
+        SLNhap = sLNhap;
+        SLConLai = sLConLai;
+    }
     public String getMaDonNhap() {
         return MaDonNhap;
     }
@@ -29,16 +37,16 @@ public class ChitietdonnhapMD implements Model{
     public void setMaKV(String maKV) {
         MaKV = maKV;
     }
-    public float getSLNhap() {
+    public Float getSLNhap() {
         return SLNhap;
     }
-    public void setSLNhap(float sLNhap) {
+    public void setSLNhap(Float sLNhap) {
         SLNhap = sLNhap;
     }
-    public float getSLConLai() {
+    public Float getSLConLai() {
         return SLConLai;
     }
-    public void setSLConLai(float sLConLai) {
+    public void setSLConLai(Float sLConLai) {
         SLConLai = sLConLai;
     }
 }

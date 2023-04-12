@@ -1,10 +1,15 @@
 package Model;
 
-public class ChucvuMD {
-    public final String tableName = "chucvu";
+public class ChucvuMD implements Model{
+    public static final String tableName = "chucvu";
 
     private String MaCV;
     private String TenCV;
+
+    public ChucvuMD(String maCV, String tenCV) {
+        MaCV = maCV;
+        TenCV = tenCV;
+    }
     public String getMaCV() {
         return MaCV;
     }

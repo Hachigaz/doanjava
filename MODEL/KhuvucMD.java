@@ -1,12 +1,19 @@
 package Model;
 
-public class KhuvucMD {
-    public final String tableName = "khuvuc_loaihang";
+public class KhuvucMD implements Model {
+    public static final String tableName = "khuvuc_loaihang";
 
     private String MaKho;
     private String MaKV;
     private String TenKV;
-    private String Succhua;
+    private Float SucChua;
+    
+    public KhuvucMD(String maKho, String maKV, String tenKV, Float sucChua) {
+        MaKho = maKho;
+        MaKV = maKV;
+        TenKV = tenKV;
+        SucChua = sucChua;
+    }
     public String getMaKho() {
         return MaKho;
     }
@@ -25,14 +32,14 @@ public class KhuvucMD {
     public void setTenKV(String tenKV) {
         TenKV = tenKV;
     }
-    public String getSucchua() {
-        return Succhua;
+    public Float getSucChua() {
+        return SucChua;
     }
-    public void setSucchua(String succhua) {
-        Succhua = succhua;
+    public void setSucChua(Float SucChua) {
+        this.SucChua = SucChua;
     }
     @Override
     public String toSQLString() {
-        return "(" + MaKho + "," + MaKV + "," + TenKV + "," + Succhua + ")";
+        return "(" + MaKho + "," + MaKV + "," + TenKV + "," + SucChua + ")";
     }
 }
