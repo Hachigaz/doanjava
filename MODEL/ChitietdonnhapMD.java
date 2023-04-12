@@ -1,11 +1,10 @@
-package MODEL;
+package Model;
 
-public class ChitietdonnhapMD {
+public class ChitietdonnhapMD implements Model{
     public final String tableName = "chitiet_donnhap";
     @Override
-    public String toString() {
-        return "(" + MaDonNhap + "," + MaMH + "," + MaKV + "," + SLNhap
-                + "," + SLConLai + ")";
+    public String toSQLString() {
+        return "(" + MaDonNhap + "," + MaMH + "," + MaKV + "," + SLNhap  + "," + SLConLai + ")";
     }
     private String MaDonNhap;
     private String MaMH;

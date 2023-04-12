@@ -1,10 +1,10 @@
-package MODEL;
+package Model;
 
 public class Mat_hangMD {
     public final String tableName = "mat_hang";
 
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaMH + "," + MaCty + "," + MaLoai + "," + TenMH
                 + "," + SoLuongMoiThung + ")";
     }

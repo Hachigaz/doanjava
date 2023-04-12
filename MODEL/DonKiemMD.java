@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class DonKiemMD {
     public final String tableName = "donkiem";
@@ -32,7 +32,7 @@ public class DonKiemMD {
         NgayKiem = ngayKiem;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaDonKiem + "," + MaKho + "," + MaNVNhap + ","
                 + NgayKiem + ")";
     }

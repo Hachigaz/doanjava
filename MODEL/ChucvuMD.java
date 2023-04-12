@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class ChucvuMD {
     public final String tableName = "chucvu";
@@ -18,7 +18,7 @@ public class ChucvuMD {
         TenCV = tenCV;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaCV + "," + TenCV + ")";
     }
 }

@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class DonXuatMD {
     public final String tableName = "donxuat";
@@ -39,7 +39,7 @@ public class DonXuatMD {
         NgayXuat = ngayXuat;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaDonXuat + "," + MaKho + "," + MaCty + "," + MaNV
                 + "," + NgayXuat + ")";
     }

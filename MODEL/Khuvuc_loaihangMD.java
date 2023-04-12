@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class Khuvuc_loaihangMD {
     public final String tableName = "khuvuc";
@@ -18,7 +18,7 @@ public class Khuvuc_loaihangMD {
         MaLoai = maLoai;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaKV + "," + MaLoai + ")";
     }
 }

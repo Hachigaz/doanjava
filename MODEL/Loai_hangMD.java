@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class Loai_hangMD {
     public final String tableName = "loai_hang";
@@ -18,7 +18,7 @@ public class Loai_hangMD {
         Tenloai = tenloai;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaLoai + "," + Tenloai + ")";
     }
     

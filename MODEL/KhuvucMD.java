@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class KhuvucMD {
     public final String tableName = "khuvuc_loaihang";
@@ -32,7 +32,7 @@ public class KhuvucMD {
         Succhua = succhua;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaKho + "," + MaKV + "," + TenKV + "," + Succhua + ")";
     }
 }

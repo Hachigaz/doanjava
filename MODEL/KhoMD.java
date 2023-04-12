@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class KhoMD {
     public final String tableName = "kho";
@@ -25,7 +25,7 @@ public class KhoMD {
         DiaChi = diaChi;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaKho + "," + TenKho + "," + DiaChi + ")";
     }
 }

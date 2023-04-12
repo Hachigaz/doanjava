@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class ChitietnhomquyenMD {
     public final String tableName = "chitiet_nhomquyen";
@@ -18,7 +18,7 @@ public class ChitietnhomquyenMD {
         MaQuyen = maQuyen;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaNhomQuyen + "," + MaQuyen + ")";
     }
 }

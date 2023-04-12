@@ -1,4 +1,4 @@
-package MODEL;
+package Model;
 
 public class CongtyMD {
     public final String tableName = "congty";
@@ -32,7 +32,7 @@ public class CongtyMD {
         SDT = sDT;
     }
     @Override
-    public String toString() {
+    public String toSQLString() {
         return "(" + MaCty + "," + TenCty + "," + diaChi + "," + SDT + ")";
     }
 }
