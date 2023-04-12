@@ -1,7 +1,4 @@
 package Panel;
-
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -16,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -33,7 +29,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import SQL.DataSet;
-
 public class NhaCungCap extends JPanel implements MouseListener{
     JTable table;
     JScrollPane scrollPane;
@@ -50,8 +45,7 @@ public class NhaCungCap extends JPanel implements MouseListener{
 JTextField textField2;
 JTextField textField3;
 JTextField textField4;
-    String[] add;
-    //String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
+    String[] add; 
     public String[] labelForm = {"Mã công ty:","Tên công ty:","Địa chỉ:","SDT:"};
     public String macty;
     public String tencty;
@@ -61,8 +55,6 @@ JTextField textField4;
     public NhaCungCap(DataSet ds){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(1200,500));
-        //this.setBackground(Color.red);
-
         panelInfo = new JPanel();
         panelInfo.setPreferredSize(new Dimension(390,0));
         panelInfo.setBackground(Color.BLUE);
@@ -313,7 +305,7 @@ table.addMouseListener(new MouseAdapter() {
                 btn2.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        // TODO Auto-generated method stub
+
                         add = new String[labelForm.length];
                         for(int i=0;i<labelForm.length;i++){
                             add[i] = textFields[i].getText();
