@@ -53,11 +53,9 @@ public class DataSet {
                     String dataType = metaData.getColumnTypeName(i+1);
                     if(dataType.equals("INT")){
                         rowData.add(rs.getInt(i+1));
-                        System.out.println("Int");
                     }
                     else if(dataType.equals("FLOAT")){
                         rowData.add(rs.getFloat(i+1));
-                        System.out.println("Float");
                     }
                     else{
                         rowData.add(rs.getString(i+1));

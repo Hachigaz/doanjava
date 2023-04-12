@@ -24,7 +24,7 @@ public class DataAccessLayer<T> {
         T t = null;
         try{
             InstanceCreator<T> creator = new InstanceCreator<>(classType);
-            String sql = "SELECT * FROM khuvuc";
+            String sql = "SELECT * FROM ";
             DataSet ds = user.getDataQuery(sql);
             Object[] params = new Object[ds.getColumnCount()];
             for(int i = 0 ; i < ds.getColumnCount();i++){
