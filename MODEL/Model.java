@@ -25,11 +25,4 @@ public abstract class Model {
         }
         return objects;
     }
-    public static void main(String[] args) {
-        KhoMD kho = new KhoMD("asd", "123", "ok");
-        ArrayList<Object> objects = kho.makeArray();
-        for(Object object : objects){
-            System.out.println((String)object);
-        }
-    }
 }
