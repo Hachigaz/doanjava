@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import SQL.*;
 import misc.*;
+import Model.*;
 
 public class TraCuuHangCTR {
     private final String sqlDSMH = 
@@ -13,12 +14,12 @@ public class TraCuuHangCTR {
     "where kv.MaKV = ctdn.MaKV AND mh.MaMH = ctdn.MaMH AND dn.MaDonNhap = ctdn.MaDonNhap AND loai.MaLoai = mh.MaLoai";
 
     private SQLUser master;
-    TaiKhoanDangNhap tkDangNhap;
+    Taikhoan_nhanvienMD tkDangNhap;
 
     private TraCuuHangUI ui;
 
 
-    public TraCuuHangCTR(SQLUser user,TaiKhoanDangNhap tkdn){
+    public TraCuuHangCTR(SQLUser user,Taikhoan_nhanvienMD tkdn){
         this.master = user;
         this.tkDangNhap = tkdn;
 

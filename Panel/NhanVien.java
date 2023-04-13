@@ -39,7 +39,7 @@ import javax.swing.table.TableRowSorter;
 
 import SQL.DataSet;
 import SQL.SQLUser;
-import misc.TaiKhoanDangNhap;
+import Model.*;
 
 public class NhanVien extends JPanel implements MouseListener{
     JTable table;
@@ -57,12 +57,12 @@ public class NhanVien extends JPanel implements MouseListener{
     String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
     private SQLUser master;
-    private TaiKhoanDangNhap tkDangNhap;
+    private Taikhoan_nhanvienMD tkDangNhap;
     DefaultTableModel model;
     TableRowSorter<TableModel> rowSorter;
     private final String sqlDSNV = "select MaNV as 'Mã nhân viên', TenNV as 'Tên nhân viên', TenCV as 'Chức vụ', GioiTinh as 'Giới tính', NgaySinh as 'Ngày sinh', DiaChi as 'Địa chỉ', Kho_lam_viec as 'Kho làm việc' from nhanvien,chucvu where nhanvien.MaCV = chucvu.MaCV";
     public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Mã chức vụ:         ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       "};
-    public NhanVien(SQLUser master,TaiKhoanDangNhap tkdn){
+    public NhanVien(SQLUser master,Taikhoan_nhanvienMD tkdn){
         this.master = master;
         this.tkDangNhap = tkdn;
 

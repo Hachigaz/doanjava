@@ -3,8 +3,7 @@ package DAO;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.KhoMD;
-import Model.KhuvucMD;
+import Model.*;
 import Model.Model;
 import SQL.*;
 import misc.InstanceCreator;
@@ -35,16 +34,60 @@ public class DataAccessLayer<T> {
         }
         return rowsUpdated;
     }
-    public void remove(T t){
-        
+    //chua lam
+    public int update(List<T> t){
+        int rowsUpdated = 0;
+        try{
+            String sql = "UPDATE "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
+            for(int i = 0 ;i < t.size();i++){
+                sql+=((Model)t.get(i)).toSQLString();
+                if(i+1<t.size()){
+                    sql+=',';
+                }
+            }
+            //System.out.println(sql);
+            rowsUpdated = user.updateQuery(sql);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return rowsUpdated;
     }
-    public ArrayList<T> getTable(){
+    //chua lam
+    public int remove(List<T> t){
+        int rowsUpdated = 0;
+        try{
+            String sql = "INSERT INTO "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
+            for(int i = 0 ;i < t.size();i++){
+                sql+=((Model)t.get(i)).toSQLString();
+                if(i+1<t.size()){
+                    sql+=',';
+                }
+            }
+            //System.out.println(sql);
+            rowsUpdated = user.updateQuery(sql);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return rowsUpdated;
+    }
+    public ArrayList<T> getTable(String... statements){
         ArrayList<T> list = null;
         try{
             InstanceCreator<T> creator = new InstanceCreator<>(classType);
+            String whereStatement = " WHERE true";
+            for(int i = 0 ; i < statements.length;i++){
+                String[] statement = statements[i].split("=");
+                if(statement.length == 2){
+                    whereStatement += " AND";
+                    whereStatement +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
+                }
+            }
 
+            String sql = "SELECT * FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
 
-            String sql = "SELECT * FROM "+ util.getClassVariable(classType,"fromStatement");
+            System.out.println(sql);
 
             DataSet ds = user.getDataQuery(sql);
             list = new ArrayList<T>();
@@ -64,10 +107,10 @@ public class DataAccessLayer<T> {
     }
     public static void main(String[] args) {
         SQLUser user = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho","master", "123");
-        DataAccessLayer<KhuvucMD> DAL = new DataAccessLayer<>(user,KhuvucMD.class);
-        ArrayList<KhuvucMD> kv = DAL.getTable();
+        DataAccessLayer<Taikhoan_nhanvienMD> DAL = new DataAccessLayer<>(user,Taikhoan_nhanvienMD.class);
+        ArrayList<Taikhoan_nhanvienMD> kv = DAL.getTable("TenTaiKhoan =Admin","MatKhau= 123");
         for(int i =0  ; i < kv.size();i++){
-            System.out.println(kv.get(i).getSucChua()+"   "+kv.get(i).getSucChua().getClass());
+            System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
         }
         // DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
 

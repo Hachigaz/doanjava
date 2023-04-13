@@ -1,7 +1,7 @@
 package Model;
 
 public class CongtyMD extends Model{
-    public static final String fromStatement = "congty";
+    public static final String fromStatement = "cong_ty";
 
     private String MaCty;
     private String TenCty;

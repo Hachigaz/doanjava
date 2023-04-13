@@ -1,7 +1,7 @@
 package Panel;
 
 import SQL.*;
-import misc.TaiKhoanDangNhap;
+import Model.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,8 +31,8 @@ public class UI extends JFrame implements MouseListener{
     private HashMap<JLabel,JPanel> pnlChucNang = new HashMap<JLabel,JPanel>();
 
     private SQLUser master;
-    private TaiKhoanDangNhap tenTKDangNhap;
-    public UI(SQLUser master,TaiKhoanDangNhap tkDangNhap){
+    private Taikhoan_nhanvienMD tenTKDangNhap;
+    public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
         this.master= master;
         this.tenTKDangNhap=tkDangNhap;
 
@@ -177,7 +177,7 @@ public class UI extends JFrame implements MouseListener{
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
-        themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
+        //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
         TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap);
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
     }

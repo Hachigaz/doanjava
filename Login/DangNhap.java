@@ -3,20 +3,20 @@ package Login;
 import SQL.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
+import DAO.DataAccessLayer;
+import Model.Taikhoan_nhanvienMD;
 import SQL.SQLUser;
-import misc.TaiKhoanDangNhap;
 import misc.ThongBaoDialog;
 public class DangNhap implements ActionListener {
 
     private DangNhapUI dangnhapui;
     private SQLUser master;
-    private DataSet ds;
 
-    private TaiKhoanDangNhap tkDN = null;
+    private Taikhoan_nhanvienMD tkDangNhap = null;
 
     public DangNhap(SQLUser master){
-        ds = null;
         dangnhapui = new DangNhapUI();
         this.master = master;
         dangnhapui.setSubmitAction(this);
@@ -25,18 +25,24 @@ public class DangNhap implements ActionListener {
         String tentk = DangNhapUI.getUsernameInput();
         String mk = dangnhapui.getPasswordInput();
         
-        String sql = "select TenTaiKhoan,MaNV,MaNhomQuyen from taikhoan_nhanvien tknv where tknv.TenTaiKhoan = '"+tentk+"' and '"+mk+"'=tknv.MatKhau";
-        ds = master.getDataQuery(sql);
-        if(ds!=null){//là tìm thấy tài khoản trong csdl
-            tkDN = new TaiKhoanDangNhap(ds.getRow(0)[0].toString(),ds.getRow(0)[1].toString(),ds.getRow(0)[2].toString());
+        //lấy thông tin từ csdl
+        DataAccessLayer<Taikhoan_nhanvienMD> tknvDAL = new DataAccessLayer<>(master, Taikhoan_nhanvienMD.class);
+        ArrayList<Taikhoan_nhanvienMD> tknv = tknvDAL.getTable("TenTaiKhoan="+tentk,"MatKhau = "+mk);
+
+        if(tknv.size()==1){//là tìm thấy tài khoản trong csdl
+            Taikhoan_nhanvienMD tk = tknv.get(0);
+            tkDangNhap = new Taikhoan_nhanvienMD(tk.getMaNV(),tk.getTenTaiKhoan(),tk.getMatKhau(),tk.getMaNhomQuyen());
             dangnhapui.dispose();
         }
-        else{//là không tìm thấy tài khoản trong csdl
+        else if(tknv.size()==0){//là không tìm thấy tài khoản trong csdl
             new ThongBaoDialog("Thông tin đăng nhập không đúng!", dangnhapui);
         }
+        else{
+            new ThongBaoDialog("Lỗi không xác định",dangnhapui);
+        }
     }
-    public TaiKhoanDangNhap getTenTKDangNhap() {
-        return tkDN;
+    public Taikhoan_nhanvienMD getTenTKDangNhap() {
+        return tkDangNhap;
     }
     public void addWindowEvent(WindowAdapter a){
         dangnhapui.addWindowListener(a);

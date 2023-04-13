@@ -1,6 +1,6 @@
 package Model;
 
-public class Taikhoan_nhanvien extends Model{
+public class Taikhoan_nhanvienMD extends Model{
     public static final String fromStatement = "taikhoan_nhanvien";
     private String MaNV;
     private String TenTaiKhoan;
@@ -8,7 +8,7 @@ public class Taikhoan_nhanvien extends Model{
     private String MaNhomQuyen;
 
     
-    public Taikhoan_nhanvien(String maNV, String tenTaiKhoan, String matKhau, String maNhomQuyen) {
+    public Taikhoan_nhanvienMD(String maNV, String tenTaiKhoan, String matKhau, String maNhomQuyen) {
         MaNV = maNV;
         TenTaiKhoan = tenTaiKhoan;
         MatKhau = matKhau;
@@ -39,7 +39,7 @@ public class Taikhoan_nhanvien extends Model{
         MaNhomQuyen = maNhomQuyen;
     }
     public String getFromStatement(){
-        return Taikhoan_nhanvien.fromStatement;
+        return Taikhoan_nhanvienMD.fromStatement;
     }
     @Override
     public String toSQLString() {
