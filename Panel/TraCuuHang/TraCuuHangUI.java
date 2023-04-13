@@ -179,27 +179,25 @@ public class TraCuuHangUI extends JPanel{
     //     return maKho;
     // }
 
-    public void SetTable(DataSet ds){
-        if(ds!=null){
-            if(this.bangDanhSach!=null){
-                this.remove(bangDanhSach);
-            }
-            TableModel tbModel = new DefaultTableModel(ds.getData(),ds.getColumnLabel());
-
-            JTable tableDS = new JTable(tbModel);
-            tableDS.getTableHeader().setReorderingAllowed(false);
-            tableDS.setRowHeight(30);
-            
-            this.rowSorter = new TableRowSorter<>(tbModel);
-            tableDS.setRowSorter(rowSorter);
-
-            this.bangDanhSach = new JScrollPane(tableDS);
-            
-            this.add(bangDanhSach);
-            
-            // Revalidate and repaint the frame
-            this.revalidate();
-            this.repaint();
+    public void SetTable(Object[][] data,String[] columnLabels){
+        if(this.bangDanhSach!=null){
+            this.remove(bangDanhSach);
         }
+        TableModel tbModel = new DefaultTableModel(data,columnLabels);
+
+        JTable tableDS = new JTable(tbModel);
+        tableDS.getTableHeader().setReorderingAllowed(false);
+        tableDS.setRowHeight(30);
+        
+        this.rowSorter = new TableRowSorter<>(tbModel);
+        tableDS.setRowSorter(rowSorter);
+
+        this.bangDanhSach = new JScrollPane(tableDS);
+        
+        this.add(bangDanhSach);
+        
+        // Revalidate and repaint the frame
+        this.revalidate();
+        this.repaint();
     }
 }

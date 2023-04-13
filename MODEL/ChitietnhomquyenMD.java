@@ -1,6 +1,7 @@
 package Model;
 
 public class ChitietnhomquyenMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "chitiet_nhomquyen";
 
     private String MaNhomQuyen;
@@ -21,6 +22,10 @@ public class ChitietnhomquyenMD extends Model{
     }
     public void setMaQuyen(String maQuyen) {
         MaQuyen = maQuyen;
+    }
+    
+    public String getSelectStatement(){
+        return ChitietnhomquyenMD.selectStatement;
     }
     public String getFromStatement(){
         return ChitietnhomquyenMD.fromStatement;

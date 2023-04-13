@@ -1,6 +1,7 @@
 package Model;
 
 public class ChitietdonnhapMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "chitiet_donnhap";
 
     private String MaDonNhap;
@@ -45,6 +46,9 @@ public class ChitietdonnhapMD extends Model{
     }
     public void setSLConLai(Float sLConLai) {
         SLConLai = sLConLai;
+    }
+    public String getSelectStatement(){
+        return ChitietdonnhapMD.selectStatement;
     }
     public String getFromStatement(){
         return ChitietdonnhapMD.fromStatement;

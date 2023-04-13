@@ -1,6 +1,7 @@
 package Model;
 
 public class KhoMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "kho";
 
     private String MaKho;
@@ -29,6 +30,9 @@ public class KhoMD extends Model{
     }
     public void setDiaChi(String diaChi) {
         DiaChi = diaChi;
+    }
+    public String getSelectStatement(){
+        return KhoMD.selectStatement;
     }
     public String getFromStatement(){
         return KhoMD.fromStatement;

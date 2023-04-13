@@ -85,11 +85,14 @@ public class DataAccessLayer<T> {
                 }
             }
 
-            String sql = "SELECT * FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
-
-            System.out.println(sql);
+            String sql = "SELECT " + util.getClassVariable(classType,"selectStatement");
+            sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
 
             DataSet ds = user.getDataQuery(sql);
+
+            this.returnedColumnLabel = ds.getColumnLabel();
+            this.returnedColumnName = ds.getColumnName();
+
             list = new ArrayList<T>();
             Object[] params = new Object[ds.getColumnCount()];
             for(int i = 0 ; i < ds.getRowCount();i++){
@@ -128,5 +131,15 @@ public class DataAccessLayer<T> {
         //     System.out.println(e.getMessage());
         // }
 
+    }
+
+    private String[] returnedColumnLabel= null;
+    private String[] returnedColumnName = null;
+
+    public String[] getReturnedColumnLabel() {
+        return returnedColumnLabel;
+    }
+    public String[] getReturnedColumnName() {
+        return returnedColumnName;
     }
 }

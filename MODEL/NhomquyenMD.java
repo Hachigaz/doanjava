@@ -1,6 +1,7 @@
 package Model;
 
 public class NhomquyenMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "nhomquyen";
     
     private String MaNhomQuyen;
@@ -22,6 +23,9 @@ public class NhomquyenMD extends Model{
     }
     public void setTenNhomQuyen(String tenNhomQuyen) {
         TenNhomQuyen = tenNhomQuyen;
+    }
+    public String getSelectStatement(){
+        return NhomquyenMD.selectStatement;
     }
     public String getFromStatement(){
         return NhomquyenMD.fromStatement;

@@ -1,6 +1,7 @@
 package Model;
 
 public class Mat_hangMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "mat_hang";
 
     private String MaMH;
@@ -48,6 +49,9 @@ public class Mat_hangMD extends Model{
     }
     public void setSoLuongMoiThung(Integer soLuongMoiThung) {
         SoLuongMoiThung = soLuongMoiThung;
+    }
+    public String getSelectStatement(){
+        return Mat_hangMD.selectStatement;
     }
     public String getFromStatement(){
         return Mat_hangMD.fromStatement;

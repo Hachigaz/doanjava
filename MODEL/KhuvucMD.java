@@ -1,6 +1,7 @@
 package Model;
 
 public class KhuvucMD extends Model {
+    public static final String selectStatement = "*";
     public static final String fromStatement = "khuvuc";
 
     private String MaKho;
@@ -37,6 +38,10 @@ public class KhuvucMD extends Model {
     }
     public void setSucChua(Float SucChua) {
         this.SucChua = SucChua;
+    }
+    @Override
+    public String getSelectStatement(){
+        return KhuvucMD.selectStatement;
     }
     @Override
     public String getFromStatement(){

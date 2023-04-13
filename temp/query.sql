@@ -143,3 +143,5 @@ use quanlykho;
 select TenNV as 'Tên nhân viên',DiaChi as 'Chức vụ' from nhanvien 
 
 use quanlykho;SELECT MaKV,TenKV FROM khuvuc WHERE khuvuc.MaKV = 'K01'
+
+mat_hang mh, khuvuc kv,chitiet_donnhap ctdn, donnhap dn, loai_hang loai,cty

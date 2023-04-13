@@ -1,7 +1,9 @@
 package Model;
 
 public class Taikhoan_nhanvienMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "taikhoan_nhanvien";
+        
     private String MaNV;
     private String TenTaiKhoan;
     private String MatKhau;
@@ -38,6 +40,12 @@ public class Taikhoan_nhanvienMD extends Model{
     public void setMaNhomQuyen(String maNhomQuyen) {
         MaNhomQuyen = maNhomQuyen;
     }
+    
+    @Override
+    public String getSelectStatement() {
+        return Taikhoan_nhanvienMD.selectStatement;
+    }
+    @Override
     public String getFromStatement(){
         return Taikhoan_nhanvienMD.fromStatement;
     }

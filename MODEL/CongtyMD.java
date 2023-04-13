@@ -1,6 +1,7 @@
 package Model;
 
 public class CongtyMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "cong_ty";
 
     private String MaCty;
@@ -40,6 +41,10 @@ public class CongtyMD extends Model{
     }
     public void setSDT(String DDT) {
         this.SDT = DDT;
+    }
+    
+    public String getSelectStatement(){
+        return CongtyMD.selectStatement;
     }
     public String getFromStatement(){
         return CongtyMD.fromStatement;

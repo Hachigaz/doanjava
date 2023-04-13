@@ -1,6 +1,7 @@
 package Model;
 
 public class Loai_hangMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "loai_hang";
 
     private String MaLoai;
@@ -21,6 +22,9 @@ public class Loai_hangMD extends Model{
     }
     public void setTenloai(String tenloai) {
         Tenloai = tenloai;
+    }
+    public String getSelectStatement(){
+        return Loai_hangMD.selectStatement;
     }
     public String getFromStatement(){
         return Loai_hangMD.fromStatement;

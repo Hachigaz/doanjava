@@ -1,6 +1,7 @@
 package Model;
 
 public class Khuvuc_loaihangMD extends Model{
+    public static final String selectStatement = "*";
     public static final String fromStatement = "khuvuc_loaihang";
 
     private String MaKV;
@@ -21,6 +22,9 @@ public class Khuvuc_loaihangMD extends Model{
     }
     public void setMaLoai(String maLoai) {
         MaLoai = maLoai;
+    }
+    public String getSelectStatement(){
+        return Khuvuc_loaihangMD.selectStatement;
     }
     public String getFromStatement(){
         return Khuvuc_loaihangMD.fromStatement;
