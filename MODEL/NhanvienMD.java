@@ -1,7 +1,7 @@
 package Model;
 
-public class NhanvienMD implements Model{
-    public static final String tableName = "nhanvien";
+public class NhanvienMD extends Model{
+    public static final String fromStatement = "nhanvien";
 
     private String MaNV;
     private String TenNV;
@@ -65,9 +65,12 @@ public class NhanvienMD implements Model{
     public void setKho_lam_viec(String kho_lam_viec) {
         Kho_lam_viec = kho_lam_viec;
     }
+    public String getFromStatement(){
+        return NhanvienMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaNV + "," + TenNV + "," + MaCV + "," + GioiTinh
-                + "," + NgaySinh + "," + DiaChi + "," + Kho_lam_viec + ")";
+        return "('" + MaNV + "','" + TenNV + "','" + MaCV + "','" + GioiTinh
+                + "','" + NgaySinh + "','" + DiaChi + "','" + Kho_lam_viec + "')";
     }
 }

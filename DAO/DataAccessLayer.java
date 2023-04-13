@@ -1,11 +1,14 @@
 package DAO;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Model.KhoMD;
 import Model.KhuvucMD;
-import Model.Mat_hangMD;
 import Model.Model;
-import Model.NhanvienMD;
 import SQL.*;
 import misc.InstanceCreator;
+import misc.util;
 
 public class DataAccessLayer<T> {
     private SQLUser user;
@@ -14,33 +17,73 @@ public class DataAccessLayer<T> {
         this.classType = classType;
         this.user = user;
     }
-    public void add(T t){
-        user.getDataQuery(((Model)t).toSQLString());
+    public int add(List<T> t){
+        int rowsUpdated = 0;
+        try{
+            String sql = "INSERT INTO "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
+            for(int i = 0 ;i < t.size();i++){
+                sql+=((Model)t.get(i)).toSQLString();
+                if(i+1<t.size()){
+                    sql+=',';
+                }
+            }
+            //System.out.println(sql);
+            rowsUpdated = user.updateQuery(sql);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return rowsUpdated;
     }
     public void remove(T t){
         
     }
-    public T getTable(){
-        T t = null;
+    public ArrayList<T> getTable(){
+        ArrayList<T> list = null;
         try{
             InstanceCreator<T> creator = new InstanceCreator<>(classType);
-            String sql = "SELECT * FROM ";
+
+
+            String sql = "SELECT * FROM "+ util.getClassVariable(classType,"fromStatement");
+
             DataSet ds = user.getDataQuery(sql);
+            list = new ArrayList<T>();
             Object[] params = new Object[ds.getColumnCount()];
-            for(int i = 0 ; i < ds.getColumnCount();i++){
-                params[i] = ds.getRow(1)[i];
+            for(int i = 0 ; i < ds.getRowCount();i++){
+                for(int j = 0 ; j < ds.getColumnCount();j++){
+                    params[j] = ds.getRow(i)[j];
+                }
+                T t = creator.createInstance(params);
+                list.add(t);
             }
-            t = creator.createInstance(params);
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
+            System.out.println(e.getClass()+":"+e.getMessage());
         }
-        return t;
+        return list;
     }
     public static void main(String[] args) {
         SQLUser user = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho","master", "123");
         DataAccessLayer<KhuvucMD> DAL = new DataAccessLayer<>(user,KhuvucMD.class);
-        KhuvucMD kv = DAL.getTable();
-        System.out.println(kv.getSucChua()+"   "+kv.getSucChua().getClass());
+        ArrayList<KhuvucMD> kv = DAL.getTable();
+        for(int i =0  ; i < kv.size();i++){
+            System.out.println(kv.get(i).getSucChua()+"   "+kv.get(i).getSucChua().getClass());
+        }
+        // DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+
+        // ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
+        // kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
+        // kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
+        //DAL2.add(kho);
+        
+        // try{
+        //     Class<Mat_hangMD> d = Mat_hangMD.class;
+        //     Field field = d.getDeclaredField("fromStatement");
+        //     System.out.println(field.get(null));
+        // }
+        // catch(Exception e){
+        //     System.out.println(e.getMessage());
+        // }
+
     }
 }

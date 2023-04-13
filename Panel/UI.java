@@ -175,7 +175,7 @@ public class UI extends JFrame implements MouseListener{
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
-        themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(ds));
+        themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
         TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap);
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
     }

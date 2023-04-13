@@ -1,7 +1,7 @@
 package Model;
 
-public class Mat_hangMD implements Model{
-    public static final String tableName = "mat_hang";
+public class Mat_hangMD extends Model{
+    public static final String fromStatement = "mat_hang";
 
     private String MaMH;
     private String MaCty;
@@ -49,9 +49,11 @@ public class Mat_hangMD implements Model{
     public void setSoLuongMoiThung(Integer soLuongMoiThung) {
         SoLuongMoiThung = soLuongMoiThung;
     }
+    public String getFromStatement(){
+        return Mat_hangMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaMH + "," + MaCty + "," + MaLoai + "," + TenMH
-                + "," + SoLuongMoiThung + ")";
+        return "('" + MaMH + "','" + MaCty + "','" + MaLoai + "','" + TenMH + "'," + SoLuongMoiThung + ")";
     }
 }

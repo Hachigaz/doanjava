@@ -1,7 +1,7 @@
 package Model;
 
-public class DonXuatMD implements Model{
-    public static final String tableName = "donxuat";
+public class DonXuatMD extends Model{
+    public static final String fromStatement = "donxuat";
 
     private String MaDonXuat;
     private String MaKho;
@@ -49,9 +49,12 @@ public class DonXuatMD implements Model{
     public void setNgayXuat(String ngayXuat) {
         NgayXuat = ngayXuat;
     }
+    public String getFromStatement(){
+        return DonXuatMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaDonXuat + "," + MaKho + "," + MaCty + "," + MaNV
-                + "," + NgayXuat + ")";
+        return "('" + MaDonXuat + "','" + MaKho + "','" + MaCty + "','" + MaNV
+                + "','" + NgayXuat + "')";
     }
 }

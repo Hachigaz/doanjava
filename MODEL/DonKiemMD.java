@@ -1,7 +1,7 @@
 package Model;
 
-public class DonKiemMD implements Model{
-    public static final String tableName = "donkiem";
+public class DonKiemMD extends Model{
+    public static final String fromStatement = "donkiem";
 
     private String MaDonKiem;
     private String MaKho;
@@ -39,9 +39,12 @@ public class DonKiemMD implements Model{
     public void setNgayKiem(String ngayKiem) {
         NgayKiem = ngayKiem;
     }
+    public String getFromStatement(){
+        return DonKiemMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaDonKiem + "," + MaKho + "," + MaNVNhap + ","
-                + NgayKiem + ")";
+        return "('" + MaDonKiem + "','" + MaKho + "','" + MaNVNhap + "','"
+                + NgayKiem + "')";
     }
 }

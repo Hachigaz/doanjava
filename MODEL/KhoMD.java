@@ -1,7 +1,7 @@
 package Model;
 
-public class KhoMD implements Model{
-    public static final String tableName = "kho";
+public class KhoMD extends Model{
+    public static final String fromStatement = "kho";
 
     private String MaKho;
     private String TenKho;
@@ -30,8 +30,11 @@ public class KhoMD implements Model{
     public void setDiaChi(String diaChi) {
         DiaChi = diaChi;
     }
+    public String getFromStatement(){
+        return KhoMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaKho + "," + TenKho + "," + DiaChi + ")";
+        return "('" + MaKho + "','" + TenKho + "','" + DiaChi + "')";
     }
 }

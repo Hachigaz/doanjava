@@ -1,11 +1,8 @@
 package Model;
 
-public class ChitietdonnhapMD implements Model{
-    public static final String tableName = "chitiet_donnhap";
-    @Override
-    public String toSQLString() {
-        return "(" + MaDonNhap + "," + MaMH + "," + MaKV + "," + SLNhap  + "," + SLConLai + ")";
-    }
+public class ChitietdonnhapMD extends Model{
+    public static final String fromStatement = "chitiet_donnhap";
+
     private String MaDonNhap;
     private String MaMH;
     private String MaKV;
@@ -48,5 +45,12 @@ public class ChitietdonnhapMD implements Model{
     }
     public void setSLConLai(Float sLConLai) {
         SLConLai = sLConLai;
+    }
+    public String getFromStatement(){
+        return ChitietdonnhapMD.fromStatement;
+    }
+    @Override
+    public String toSQLString() {
+        return "('" + MaDonNhap + "','" + MaMH + "','" + MaKV + "'," + SLNhap  + ",'" + SLConLai + ")";
     }
 }

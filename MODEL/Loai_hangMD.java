@@ -1,7 +1,7 @@
 package Model;
 
-public class Loai_hangMD implements Model{
-    public static final String tableName = "loai_hang";
+public class Loai_hangMD extends Model{
+    public static final String fromStatement = "loai_hang";
 
     private String MaLoai;
     private String Tenloai;
@@ -22,8 +22,11 @@ public class Loai_hangMD implements Model{
     public void setTenloai(String tenloai) {
         Tenloai = tenloai;
     }
+    public String getFromStatement(){
+        return Loai_hangMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaLoai + "," + Tenloai + ")";
+        return "('" + MaLoai + "','" + Tenloai + "')";
     }
 }

@@ -1,7 +1,7 @@
 package Model;
 
-public class Khuvuc_loaihangMD implements Model{
-    public static final String tableName = "khuvuc";
+public class Khuvuc_loaihangMD extends Model{
+    public static final String fromStatement = "khuvuc_loaihang";
 
     private String MaKV;
     private String MaLoai;
@@ -22,8 +22,11 @@ public class Khuvuc_loaihangMD implements Model{
     public void setMaLoai(String maLoai) {
         MaLoai = maLoai;
     }
+    public String getFromStatement(){
+        return Khuvuc_loaihangMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaKV + "," + MaLoai + ")";
+        return "('" + MaKV + "','" + MaLoai + "')";
     }
 }

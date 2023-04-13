@@ -1,7 +1,7 @@
 package Model;
 
-public class CongtyMD implements Model{
-    public static final String tableName = "congty";
+public class CongtyMD extends Model{
+    public static final String fromStatement = "congty";
 
     private String MaCty;
     private String TenCty;
@@ -41,8 +41,11 @@ public class CongtyMD implements Model{
     public void setSDT(String DDT) {
         this.SDT = DDT;
     }
+    public String getFromStatement(){
+        return CongtyMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaCty + "," + TenCty + "," + DiaChi + "," + SDT + ")";
+        return "('" + MaCty + "','" + TenCty + "','" + DiaChi + "','" + SDT + "')";
     }
 }

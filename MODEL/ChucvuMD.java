@@ -1,7 +1,7 @@
 package Model;
 
-public class ChucvuMD implements Model{
-    public static final String tableName = "chucvu";
+public class ChucvuMD extends Model{
+    public static final String fromStatement = "chucvu";
 
     private String MaCV;
     private String TenCV;
@@ -22,8 +22,11 @@ public class ChucvuMD implements Model{
     public void setTenCV(String tenCV) {
         TenCV = tenCV;
     }
+    public String getFromStatement(){
+        return ChucvuMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaCV + "," + TenCV + ")";
+        return "('" + MaCV + "','" + TenCV + "')";
     }
 }

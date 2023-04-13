@@ -1,7 +1,7 @@
 package Model;
 
-public class NhomquyenMD implements Model{
-    public static final String tableName = "nhomquyen";
+public class NhomquyenMD extends Model{
+    public static final String fromStatement = "nhomquyen";
     
     private String MaNhomQuyen;
     private String TenNhomQuyen;
@@ -23,8 +23,11 @@ public class NhomquyenMD implements Model{
     public void setTenNhomQuyen(String tenNhomQuyen) {
         TenNhomQuyen = tenNhomQuyen;
     }
+    public String getFromStatement(){
+        return NhomquyenMD.fromStatement;
+    }
     @Override
     public String toSQLString() {
-        return "(" + MaNhomQuyen + "," + TenNhomQuyen + ")";
+        return "('" + MaNhomQuyen + "','" + TenNhomQuyen + "')";
     }
 }

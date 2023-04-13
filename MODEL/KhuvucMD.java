@@ -1,7 +1,7 @@
 package Model;
 
-public class KhuvucMD implements Model {
-    public static final String tableName = "khuvuc_loaihang";
+public class KhuvucMD extends Model {
+    public static final String fromStatement = "khuvuc";
 
     private String MaKho;
     private String MaKV;
@@ -39,7 +39,10 @@ public class KhuvucMD implements Model {
         this.SucChua = SucChua;
     }
     @Override
+    public String getFromStatement(){
+        return KhuvucMD.fromStatement;
+    }
     public String toSQLString() {
-        return "(" + MaKho + "," + MaKV + "," + TenKV + "," + SucChua + ")";
+        return "('" + MaKho + "','" + MaKV + "','" + TenKV + "'," + SucChua + ")";
     }
 }
