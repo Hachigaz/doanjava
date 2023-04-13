@@ -18,6 +18,7 @@ import java.awt.*;
 import Panel.DonNhap.DonNhapUI;
 import Panel.TraCuuHang.TraCuuHangCTR;
 import Panel.TraCuuHang.TraCuuHangUI;
+import Panel.NhaCungCap;
 
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
@@ -172,6 +173,7 @@ public class UI extends JFrame implements MouseListener{
         String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
         
         DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
+        DataSet ds1 = master.getDataQuery("SELECT * FROM cong_ty");
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));

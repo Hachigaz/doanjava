@@ -52,7 +52,7 @@ JTextField textField4;
     public String diachi;
     public String sdt;
     public String[] label={macty,tencty,diachi,sdt};
-    public NhaCungCap(DataSet ds){
+    public NhaCungCap(DataSet ds1){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(1200,500));
         panelInfo = new JPanel();
@@ -63,8 +63,8 @@ JTextField textField4;
         panelTable.setLayout(new BorderLayout());
         
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));        
-Object[][] data = ds.getData();
-String[] columnLabels = ds.getColumnLabel();
+Object[][] data = ds1.getData();
+String[] columnLabels = ds1.getColumnLabel();
 Object[][] newData = new Object[data.length][columnLabels.length + 1];
 for (int i = 0; i < data.length; i++) {
     for (int j = 0; j < columnLabels.length; j++) {
