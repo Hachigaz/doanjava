@@ -1,8 +1,9 @@
 package Panel.TraCuuHang;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
+
+import javax.swing.table.DefaultTableModel;
 
 import DAO.DataAccessLayer;
 import SQL.*;
@@ -27,7 +28,7 @@ public class TraCuuHangCTR {
         ActionListener onChangeMaKho = new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 ArrayList<DSTraCuuHangMD> dsTraCuu = TraCuuHangDAL.getTable("donnhap.MaKho = "+ui.getSelectedMaKhoKey());
-                ui.SetTable(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName());
+                ui.SetTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
             }
         };
 
@@ -41,15 +42,72 @@ public class TraCuuHangCTR {
 
 
 
-        String[] tenLoc = {"Lọc theo khu vực","Lọc theo loại hàng"};
-        DataSet dsLoc[] = new DataSet[2];
-        dsLoc[0] = master.getDataQuery("SELECT MaKV,TenKV FROM khuvuc WHERE khuvuc.MaKho = '"+ui.getSelectedMaKhoKey()+"'");
-        dsLoc[1] = master.getDataQuery("SELECT MaLoai,TenLoai FROM loai_hang");
-        ui.SetupPanelLoc(dsLoc, tenLoc);
+        String[] locPanelTitle = {"Lọc theo khu vực","Lọc theo loại hàng","Lọc theo sản phẩm của công ty"};
+        int[] columnIndexes = {0,3,4};
+        ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
+
+        
+        DataAccessLayer<KhuvucMD> KhuVucDAL = new DataAccessLayer<KhuvucMD>(user, KhuvucMD.class);
+        ArrayList<KhuvucMD> danhSachKV = KhuVucDAL.getTable("MaKho = "+ui.getSelectedMaKhoKey());
+
+
+        tenLoc.add(new ArrayList<String>());
+        for(KhuvucMD khuvuc : danhSachKV){          
+            tenLoc.get(0).add(khuvuc.getTenKV());
+        }
+
+        DataAccessLayer<Loai_hangMD> LoaiHangDAL = new DataAccessLayer<Loai_hangMD>(user, Loai_hangMD.class);
+        ArrayList<Loai_hangMD> danhSachLH = LoaiHangDAL.getTable();
+        
+
+        tenLoc.add(new ArrayList<String>());
+        for(Loai_hangMD loaihang : danhSachLH){          
+            tenLoc.get(1).add(loaihang.getTenloai());
+        }
+
+        DataAccessLayer<CongtyMD> CongTyDAL = new DataAccessLayer<CongtyMD>(user, CongtyMD.class);
+        ArrayList<CongtyMD> danhSachCT = CongTyDAL.getTable();
+        
+
+        tenLoc.add(new ArrayList<String>());
+        for(CongtyMD cty : danhSachCT){          
+            tenLoc.get(2).add(cty.getTenCty());
+        }
+        
+
+
+
+        MouseListener panelCollapseListener = new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ui.findClickedLocPanel(e.getSource());
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        };
+
+        ItemListener locCheckboxAction = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                ui.sortSelectedCheckbox(e.getSource());
+            }
+        };
+
+        ui.SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc, panelCollapseListener,locCheckboxAction);
 
         //setup bảng        
         ArrayList<DSTraCuuHangMD> dsTraCuu = TraCuuHangDAL.getTable("donnhap.MaKho = "+ui.getSelectedMaKhoKey());
-        ui.SetTable(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName());
+        ui.SetTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
     }
 
     public TraCuuHangUI getUI() {

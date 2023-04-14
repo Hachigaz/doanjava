@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import SQL.DataSet;
+import misc.DataSet;
 
 public class ThongTinSP extends JPanel{
     JTable table;

@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import misc.DataSet;
+
 public class SQLUser {
     private String url;
     private Properties info;

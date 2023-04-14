@@ -37,8 +37,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import SQL.DataSet;
 import SQL.SQLUser;
+import misc.DataSet;
 import Model.*;
 
 public class NhanVien extends JPanel implements MouseListener{

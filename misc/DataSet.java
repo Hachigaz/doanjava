@@ -1,9 +1,10 @@
-package SQL;
+package misc;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataSet {
     private String columnName[];
@@ -31,6 +32,18 @@ public class DataSet {
         this.data = new ArrayList<ArrayList<Object>>(ds.data);
         this.rowCount= ds.rowCount;
         this.columnCount = ds.columnCount;
+    }
+
+    public DataSet(List<List<Object>> list){
+        this.data = new ArrayList<ArrayList<Object>>();
+        for(int i = 0 ; i < list.size();i++){
+            ArrayList<Object> arrTemp = new ArrayList<Object>();
+            for(int j = 0 ; j < list.get(i).size();i++){
+                arrTemp.add(list.get(i).get(j));
+            }
+            this.data.add(arrTemp);
+        }
+
     }
 
     public DataSet(ResultSet rs){

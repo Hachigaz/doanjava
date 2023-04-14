@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,9 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import SQL.DataSet;
+
+import misc.DataSet;
 public class NhaCungCap extends JPanel implements MouseListener{
     JTable table;
     JScrollPane scrollPane;

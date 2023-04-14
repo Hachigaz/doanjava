@@ -1,6 +1,7 @@
 package Panel;
 
 import SQL.*;
+import misc.DataSet;
 import Model.*;
 
 import javax.swing.BorderFactory;

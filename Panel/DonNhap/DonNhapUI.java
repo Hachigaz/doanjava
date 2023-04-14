@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import SQL.DataSet;
+import misc.DataSet;
 
 public class DonNhapUI extends JPanel implements MouseListener{
     private JTable donnhap;

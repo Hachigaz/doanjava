@@ -23,7 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import SQL.DataSet;
+import misc.DataSet;
 
 public class TaoDonNhap extends JPanel implements MouseListener{
     JTable donnhap;

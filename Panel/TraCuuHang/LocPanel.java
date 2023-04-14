@@ -2,31 +2,31 @@ package Panel.TraCuuHang;
 
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.*;
 
 public class LocPanel extends JPanel{
-    private HashMap<JCheckBox,String> options;
+    private int columnIndex;
     public ArrayList<JCheckBox> checkBoxes;
 
-    public LocPanel(String[] name, String[] key){
+    public LocPanel(List<String> name, int columnIndex){
+        this.columnIndex = columnIndex;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.checkBoxes = new ArrayList<JCheckBox>();
-        this.options = new HashMap<JCheckBox,String>();
-        for(int i = 0 ; i < name.length;i++){
-            JCheckBox cb = new JCheckBox(name[i]);
+        for(int i = 0 ; i < name.size();i++){
+            JCheckBox cb = new JCheckBox(name.get(i));
+            cb.setName(name.get(i));
             this.add(cb);
             checkBoxes.add(cb);
-            this.options.put(cb,key[i]);
         }
-    }
-    public String getOptionKey(JCheckBox cb){
-        return this.options.get(cb);
     }
     public void setActionForCheckBoxes(ItemListener a){
         for(int i = 0;i<this.checkBoxes.size();i++){
             this.checkBoxes.get(i).addItemListener(a);
         }
+    }
+    public int getColumnIndex() {
+        return columnIndex;
     }
 }
