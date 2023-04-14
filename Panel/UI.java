@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import DAO.DataAccessLayer;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -103,7 +105,9 @@ public class UI extends JFrame implements MouseListener{
         labelIcon2.setIcon(newIcon2);
         labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
-        labelUserName = new JLabel("Xin chào ");
+        DataAccessLayer<NhanvienMD> nhanVienDAL = new DataAccessLayer<>(master, NhanvienMD.class);
+        NhanvienMD nvDangNhap = nhanVienDAL.getTable("MaNV="+tkDangNhap.getMaNV()).get(0);
+        labelUserName = new JLabel("Xin chào "+nvDangNhap.getTenNV());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
         labelUserName.setVerticalAlignment(JLabel.CENTER);
@@ -178,7 +182,7 @@ public class UI extends JFrame implements MouseListener{
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
-        //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
+        themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
         TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap,new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
     }

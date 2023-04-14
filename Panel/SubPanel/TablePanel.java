@@ -1,6 +1,5 @@
 package Panel.SubPanel;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.*;

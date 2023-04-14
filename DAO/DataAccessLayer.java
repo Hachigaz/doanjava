@@ -111,17 +111,27 @@ public class DataAccessLayer<T> {
     }
     public static void main(String[] args) {
         SQLUser user = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho","master", "123");
-        DataAccessLayer<Taikhoan_nhanvienMD> DAL = new DataAccessLayer<>(user,Taikhoan_nhanvienMD.class);
-        ArrayList<Taikhoan_nhanvienMD> kv = DAL.getTable("TenTaiKhoan =Admin","MatKhau= 123");
-        for(int i =0  ; i < kv.size();i++){
-            System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
-        }
-        // DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+        
+        // DataAccessLayer<Taikhoan_nhanvienMD> DAL = new DataAccessLayer<>(user,Taikhoan_nhanvienMD.class);
+        // ArrayList<Taikhoan_nhanvienMD> kv = DAL.getTable("TenTaiKhoan =Admin","MatKhau= 123");
+        
+        
+        // DataAccessLayer<NhanvienMD> NHANVIENDAL = new DataAccessLayer<>(user, NhanvienMD.class);
 
-        // ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
-        // kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
-        // kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
-        //DAL2.add(kho);
+        // ArrayList<NhanvienMD> dsNV = NHANVIENDAL.getTable();
+        
+
+
+        // for(int i =0  ; i < kv.size();i++){
+        //     System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
+        // }
+        DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+
+        ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
+        kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
+        kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
+        
+        DAL2.add(kho);
         
         // try{
         //     Class<Mat_hangMD> d = Mat_hangMD.class;
