@@ -179,7 +179,7 @@ public class UI extends JFrame implements MouseListener{
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(ds));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
         //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
-        TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap);
+        TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap,new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
     }
     @Override
@@ -241,7 +241,6 @@ public class UI extends JFrame implements MouseListener{
     }
     public void themQuyen(JLabel label,String duongDanIcon,JPanel panel){
         //chỉnh độ lớn của panel
-        panel.setPreferredSize(new Dimension(panelRight.getSize().width-10,panelRight.getSize().height-10));
 
         ImageIcon icon = new ImageIcon(duongDanIcon);
         Image img = icon.getImage();

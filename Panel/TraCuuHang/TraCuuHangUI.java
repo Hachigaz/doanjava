@@ -9,37 +9,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.TableModel;
 
+import Panel.SubPanel.LocPanel;
+import Panel.SubPanel.TablePanel;
 import misc.DataSet;
 import misc.util;
 public class TraCuuHangUI extends JPanel{
 
     private JPanel panelChucNang;
     private JPanel panelLoc;
-    private JPanel panelDanhSach;
+    private TablePanel panelDanhSach;
 
-    private TableRowSorter<TableModel> rowSorter;
 
-    private JScrollPane bangDanhSach;
 
     private JTextField searchBar;
 
 
 
-    public TraCuuHangUI(){
+    public TraCuuHangUI(Dimension d){
 
         this.panelChucNang = new JPanel();
         this.panelLoc = new JPanel();
-        this.panelDanhSach = new JPanel();
+        this.panelDanhSach = new TablePanel();
 
         this.setLayout(new BorderLayout());
 
-        this.setPreferredSize(new Dimension(600,500));
+        this.setPreferredSize(d);
 
-        panelChucNang.setPreferredSize(new Dimension(this.getSize().width,60));
-        panelLoc.setPreferredSize(new Dimension(240,this.getSize().height-60));
-        panelDanhSach.setPreferredSize(new Dimension(this.getSize().width-240,this.getSize().height-60));
+        panelChucNang.setPreferredSize(new Dimension(this.getPreferredSize().width,60));
+        panelLoc.setPreferredSize(new Dimension(240,this.getPreferredSize().height-60));
+        panelDanhSach.setPreferredSize(new Dimension(this.getPreferredSize().width-240,this.getPreferredSize().height-60));
 
         this.add(panelChucNang,BorderLayout.NORTH);
         this.add(panelLoc,BorderLayout.WEST);
@@ -83,13 +83,13 @@ public class TraCuuHangUI extends JPanel{
         
         if(cb.isSelected()){
             String key = cb.getName();
-            DSDKLoc.get(panel.getColumnIndex()).add(key);
-            this.locCacDieuKien();
+            this.panelDanhSach.themDieuKienLoc(panel.getColumnIndex(),key);
+            this.panelDanhSach.locCacDieuKien();
         }
         else{
             String key = cb.getName();
-            DSDKLoc.get(panel.getColumnIndex()).remove(key);
-            this.locCacDieuKien();
+            this.panelDanhSach.xoaDieuKienLoc(panel.getColumnIndex(),key);
+            this.panelDanhSach.locCacDieuKien();
         }
     }
 
@@ -149,21 +149,23 @@ public class TraCuuHangUI extends JPanel{
     public void timTheoGiaTri(){
         String searchText = searchBar.getText();
         if (searchText.length() == 0) {
-            DSDKLoc.get(1).remove(searchedText);
             searchedText="";
-            this.locCacDieuKien();
+            panelDanhSach.themDieuKienLoc(1, searchText);
+            this.panelDanhSach.locCacDieuKien();
         } else {
             try {
-                DSDKLoc.get(1).remove(searchedText);
-                DSDKLoc.get(1).add(searchText);//1 là cột tên sản phẩm
+                this.panelDanhSach.xoaDieuKienLoc(1,searchedText);
+                this.panelDanhSach.themDieuKienLoc(1,searchText);//1 là cột tên sản phẩm
                 searchedText=searchText;
-                this.locCacDieuKien();
+                this.panelDanhSach.locCacDieuKien();
             } catch (PatternSyntaxException ex) {
                 System.err.println("Invalid regex pattern: " + ex.getMessage());
             }
         }
     }
-
+    public void UpdateTable(TableModel table){
+        this.panelDanhSach.SetTable(table);
+    }
 
     // private String getMaKhoHienTai(){
     //     String maKho = null;
@@ -177,64 +179,9 @@ public class TraCuuHangUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
-    public void SetTable(TableModel tableModel){
-        if(this.bangDanhSach!=null){
-            this.remove(bangDanhSach);
-        }
 
-        JTable tableDS = new JTable(tableModel);
-        tableDS.getTableHeader().setReorderingAllowed(false);
-        tableDS.setRowHeight(30);
 
-        DSDKLoc.clear();
-        for(int i = 0 ; i < tableModel.getColumnCount(); i++){
-            DSDKLoc.add(new ArrayList<String>());
-        }
 
-        this.rowSorter = new TableRowSorter<>(tableModel);
-        tableDS.setRowSorter(rowSorter);
 
-        this.bangDanhSach = new JScrollPane(tableDS);
 
-        this.add(bangDanhSach);
-
-        // Revalidate and repaint the frame
-        this.revalidate();
-        this.repaint();
-    }
-
-    private ArrayList<ArrayList<String>> DSDKLoc = new ArrayList<ArrayList<String>>();
-
-    private void resetDieuKieuLoc(){
-        for(ArrayList<String> arr : DSDKLoc){
-            arr.clear();
-        }
-        DSDKLoc.clear();
-        rowSorter.setRowFilter(null);
-    }
-
-    private void locCacDieuKien(){
-        RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
-            public boolean include(Entry<?, ?> entry) {
-                boolean include = true;
-                int columnCount = entry.getValueCount();
-                //duyệt từng cột
-                for(int i = 0 ; i < columnCount && include; i++){
-                    //duyệt từng chuỗi trong mảng
-                    boolean haveString = false;
-                    for(int j  = 0; j <DSDKLoc.get(i).size()&&!haveString;j++){
-                        String entryString = entry.getValue(i).toString();
-                        if(entryString.indexOf(DSDKLoc.get(i).get(j))>=0){
-                            haveString = haveString || true;
-                        }
-                    }
-                    if(DSDKLoc.get(i).size()!=0){
-                        include = include && haveString;
-                    }
-                }
-                return include;
-            }
-        };
-        rowSorter.setRowFilter(filter);
-    }
 }

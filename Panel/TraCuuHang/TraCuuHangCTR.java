@@ -1,5 +1,6 @@
 package Panel.TraCuuHang;
 
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -17,18 +18,18 @@ public class TraCuuHangCTR {
     private TraCuuHangUI ui;
     private DataAccessLayer<DSTraCuuHangMD> TraCuuHangDAL;
 
-    public TraCuuHangCTR(SQLUser user,Taikhoan_nhanvienMD tkdn){
+    public TraCuuHangCTR(SQLUser user,Taikhoan_nhanvienMD tkdn, Dimension d){
         this.master = user;
         this.tkDangNhap = tkdn;
         TraCuuHangDAL = new DataAccessLayer<DSTraCuuHangMD>(user, DSTraCuuHangMD.class);
 
-        ui = new TraCuuHangUI();
+        ui = new TraCuuHangUI(d);
         
 
         ActionListener onChangeMaKho = new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 ArrayList<DSTraCuuHangMD> dsTraCuu = TraCuuHangDAL.getTable("donnhap.MaKho = "+ui.getSelectedMaKhoKey());
-                ui.SetTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
+                ui. UpdateTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
             }
         };
 
@@ -107,7 +108,7 @@ public class TraCuuHangCTR {
 
         //setup bảng        
         ArrayList<DSTraCuuHangMD> dsTraCuu = TraCuuHangDAL.getTable("donnhap.MaKho = "+ui.getSelectedMaKhoKey());
-        ui.SetTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
+        ui. UpdateTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
     }
 
     public TraCuuHangUI getUI() {
