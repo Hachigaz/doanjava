@@ -110,7 +110,7 @@ public class DataAccessLayer<T> {
         return list;
     }
     public static void main(String[] args) {
-        SQLUser user = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho","master", "123");
+        SQLUser user = new SQLUser("jdbc:mysql://26.236.133.174:3306/QuanLyKho","master", "123");
         
         // DataAccessLayer<Taikhoan_nhanvienMD> DAL = new DataAccessLayer<>(user,Taikhoan_nhanvienMD.class);
         // ArrayList<Taikhoan_nhanvienMD> kv = DAL.getTable("TenTaiKhoan =Admin","MatKhau= 123");
@@ -125,13 +125,13 @@ public class DataAccessLayer<T> {
         // for(int i =0  ; i < kv.size();i++){
         //     System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
         // }
-        DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+        // DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
 
-        ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
-        kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
-        kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
+        // ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
+        // kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
+        // kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
         
-        DAL2.add(kho);
+        // DAL2.add(kho);
         
         // try{
         //     Class<Mat_hangMD> d = Mat_hangMD.class;
@@ -141,7 +141,18 @@ public class DataAccessLayer<T> {
         // catch(Exception e){
         //     System.out.println(e.getMessage());
         // }
+        DataAccessLayer<CongtyMD> ctDAO = new DataAccessLayer<>(user, CongtyMD.class);
+        //ArrayList<CongtyMD> dsCongTy = ctDAO.getTable("MaCty = Cty_VMX");
+            
+        //for(int i = 0 ; i < dsCongTy.size();i++){
+        //    CongtyMD ct = dsCongTy.get(i);
+        //    System.out.println(ct.getMaCty()+"   "+ct.getDiaChi());
+        //}
 
+        ArrayList<CongtyMD> dsCT = new ArrayList<CongtyMD>();
+        dsCT.add(new CongtyMD("Cty_A", "A", "123 DA", "12355"));
+       
+        ctDAO.add(dsCT);
     }
 
     private String[] returnedColumnLabel= null;

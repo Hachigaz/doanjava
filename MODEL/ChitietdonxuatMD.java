@@ -1,8 +1,7 @@
 package Model;
 
-public class ChitietdonxuatMD extends Model{
-    public static final String selectStatement = "*";
-    public static final String fromStatement = "chitiet_donxuat";
+public class ChitietdonxuatMD extends Model {
+    public static final String tableName = "chitiet_donxuat";
 
     private String MaDonXuat;
     private String MaDonNhap;
@@ -16,6 +15,11 @@ public class ChitietdonxuatMD extends Model{
         MaMH = maMH;
         MaKV = maKV;
         SoLuong = soLuong;
+    }
+
+    @Override
+    public String toSQLString() {
+        return "(" + MaDonXuat + "," + MaDonNhap + "," + MaMH + ","+ MaKV + "," + SoLuong + ")";
     }
     
     public String getMaDonXuat() {
@@ -58,16 +62,15 @@ public class ChitietdonxuatMD extends Model{
         SoLuong = soLuong;
     }
 
-    public String getSelectStatement(){
-        return ChitietdonxuatMD.selectStatement;
+    @Override
+    public String getSelectStatement() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSelectStatement'");
     }
 
-    public String getFromStatement(){
-        return ChitietdonxuatMD.fromStatement;
-    }
-    
     @Override
-    public String toSQLString() {
-        return "('" + MaDonXuat + "','" + MaDonNhap + "','" + MaMH + "','"+ MaKV + "','" + SoLuong + ")";
+    public String getFromStatement() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFromStatement'");
     }
 }
