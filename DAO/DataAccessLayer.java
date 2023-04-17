@@ -110,8 +110,8 @@ public class DataAccessLayer<T> {
         return list;
     }
     public static void main(String[] args) {
-        SQLUser user = new SQLUser("jdbc:mysql://26.236.133.174:3306/QuanLyKho","master", "123");
-        
+        //SQLUser user = new SQLUser("jdbc:mysql://26.236.133.174:3306/QuanLyKho","master", "123");
+        SQLUser user = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho","master", "123");
         // DataAccessLayer<Taikhoan_nhanvienMD> DAL = new DataAccessLayer<>(user,Taikhoan_nhanvienMD.class);
         // ArrayList<Taikhoan_nhanvienMD> kv = DAL.getTable("TenTaiKhoan =Admin","MatKhau= 123");
         
