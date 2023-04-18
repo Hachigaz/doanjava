@@ -13,6 +13,7 @@ public class util {
         }
         return arrReturn;
     }
+    //dung de lay bien hang so trong class thoi
     public static <T> String getClassVariable(Class<T> classType,String variableName) throws IllegalAccessException,NoSuchFieldException{
         Field field = classType.getDeclaredField(variableName);
         return (String)field.get(null);

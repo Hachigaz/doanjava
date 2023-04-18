@@ -145,3 +145,24 @@ select TenNV as 'Tên nhân viên',DiaChi as 'Chức vụ' from nhanvien
 use quanlykho;SELECT MaKV,TenKV FROM khuvuc WHERE khuvuc.MaKV = 'K01'
 
 mat_hang mh, khuvuc kv,chitiet_donnhap ctdn, donnhap dn, loai_hang loai,cty
+
+use quanlykho;
+insert into chitiet_nhomquyen
+values('NQ_NV','Q5'),('NQ_NV','Q6'),('NQ_NV','Q3')
+
+use quanlykho;
+update chitiet_nhomquyen
+set MaNhomQuyen='NQ_NV',MaQuyen='Q7'
+where MaNhomQuyen='NQ_NV' and MaQuyen='Q3';
+
+use quanlykho;
+update kho
+set TenKho = 'Kho ADV',DiaChi = '273 An Dương Vương'
+where MaKho = 'K01'
+
+use quanlykho;
+insert into kho
+values('K03','Kho TBT','784 Trần Bình Trọng')
+
+use quanlykho;
+delete from kho where MaKho = 'K03'
