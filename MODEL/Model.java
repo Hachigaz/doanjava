@@ -28,6 +28,7 @@ public abstract class Model {
                     if (Modifier.isPrivate(field.getModifiers())) {
                         field.setAccessible(true);
                         objects.add(field.get(this));
+                        field.setAccessible(false);
                     }
                 }
             }

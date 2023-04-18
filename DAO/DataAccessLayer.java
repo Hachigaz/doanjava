@@ -1,5 +1,7 @@
 package DAO;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +37,51 @@ public class DataAccessLayer<T> {
         }
         return rowsUpdated;
     }
-    //chua lam
-    public int update(List<T> t){
+    public int addOne(T t){
         int rowsUpdated = 0;
         try{
-            String sql = "UPDATE "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
-            for(int i = 0 ;i < t.size();i++){
-                sql+=((Model)t.get(i)).toSQLString();
-                if(i+1<t.size()){
-                    sql+=',';
+            String sql = "INSERT INTO "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
+            sql+=((Model)t).toSQLString();
+            rowsUpdated = user.updateQuery(sql);
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        return rowsUpdated;
+    }
+    //xài update thì nhớ truyền khoá chính zo ko nó bị lỗi update(kho,"MaKho = K01")
+    public int update(T tUpdated,String... statements){
+        int rowsUpdated = 0;
+        try{
+            String sql = "UPDATE "+util.getClassVariable(classType,"fromStatement");
+            sql+="\nSET ";
+            Field[] fields = classType.getDeclaredFields();
+            int count = 0;
+            for(Field field : fields){
+                if(Modifier.isPrivate(field.getModifiers())){
+                    field.setAccessible(true);
+                    Object value = field.get(tUpdated);
+                    field.setAccessible(false);
+                    String sValue = "";
+                    if(value.getClass()==String.class){
+                        sValue += "'"+value.toString()+"'";
+                    }
+                    else{
+                        sValue +=value.toString();
+                    }
+                    sql+=field.getName()+"="+sValue;
+                    if(count+1<fields.length){
+                        sql+=",";
+                    }
+                    else{
+                        sql+="\n";
+                    }
                 }
+                count++;
             }
+            String whereStatement = processWhereStatement(statements);
+            sql+= whereStatement;
+
             //System.out.println(sql);
             rowsUpdated = user.updateQuery(sql);
         }
@@ -55,16 +91,12 @@ public class DataAccessLayer<T> {
         return rowsUpdated;
     }
     //chua lam
-    public int remove(List<T> t){
+    public int remove(String... statements){
         int rowsUpdated = 0;
         try{
-            String sql = "INSERT INTO "+util.getClassVariable(classType,"fromStatement")+"\nVALUES";
-            for(int i = 0 ;i < t.size();i++){
-                sql+=((Model)t.get(i)).toSQLString();
-                if(i+1<t.size()){
-                    sql+=',';
-                }
-            }
+            String sql = "DELETE FROM "+util.getClassVariable(classType,"fromStatement")+"\n";
+            String whereStatement = processWhereStatement(statements);
+            sql+= whereStatement;
             //System.out.println(sql);
             rowsUpdated = user.updateQuery(sql);
         }
@@ -77,23 +109,17 @@ public class DataAccessLayer<T> {
         ArrayList<T> list = null;
         try{
             InstanceCreator<T> creator = new InstanceCreator<>(classType);
-            String whereStatement = " WHERE true";
-            for(int i = 0 ; i < statements.length;i++){
-                String[] statement = statements[i].split("=");
-                if(statement.length == 2){
-                    whereStatement += " AND";
-                    whereStatement +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
-                }
-            }
 
             String sql = "SELECT " + util.getClassVariable(classType,"selectStatement");
+            
+            String whereStatement = processWhereStatement(statements);
+
             sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
 
             DataSet ds = user.getDataQuery(sql);
 
             this.returnedColumnLabel = ds.getColumnLabel();
             this.returnedColumnName = ds.getColumnName();
-
             list = new ArrayList<T>();
             Object[] params = new Object[ds.getColumnCount()];
             for(int i = 0 ; i < ds.getRowCount();i++){
@@ -108,6 +134,18 @@ public class DataAccessLayer<T> {
             System.out.println(e.getClass()+":"+e.getMessage());
         }
         return list;
+    }
+
+    private String processWhereStatement(String... statements){
+        String whereStatement = " WHERE true";
+        for(int i = 0 ; i < statements.length;i++){
+            String[] statement = statements[i].split("=");
+            if(statement.length == 2){
+                whereStatement += " AND";
+                whereStatement +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
+            }
+        }
+        return whereStatement;
     }
     public static void main(String[] args) {
         //SQLUser user = new SQLUser("jdbc:mysql://26.236.133.174:3306/QuanLyKho","master", "123");
@@ -125,12 +163,10 @@ public class DataAccessLayer<T> {
         // for(int i =0  ; i < kv.size();i++){
         //     System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
         // }
-        // DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+        DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
 
-        // ArrayList<KhoMD> kho = new ArrayList<KhoMD>();
-        // kho.add(new KhoMD("K03","Kho NVC","293 Nguyễn Văn Cừ"));
-        // kho.add(new KhoMD("K04", "Kho LHP", "784 Lê Hồng Phong"));
-        
+        DAL2.remove("MaKho = K03");
+        //DAL2.update(new KhoMD("K01","Kho TBT","241 Tran Binh Trong"),"MaKho=K01","TenKho= Kho ADV");
         // DAL2.add(kho);
         
         // try{
@@ -141,7 +177,7 @@ public class DataAccessLayer<T> {
         // catch(Exception e){
         //     System.out.println(e.getMessage());
         // }
-        DataAccessLayer<CongtyMD> ctDAO = new DataAccessLayer<>(user, CongtyMD.class);
+        //DataAccessLayer<CongtyMD> ctDAO = new DataAccessLayer<>(user, CongtyMD.class);
         //ArrayList<CongtyMD> dsCongTy = ctDAO.getTable("MaCty = Cty_VMX");
             
         //for(int i = 0 ; i < dsCongTy.size();i++){
@@ -149,10 +185,10 @@ public class DataAccessLayer<T> {
         //    System.out.println(ct.getMaCty()+"   "+ct.getDiaChi());
         //}
 
-        ArrayList<CongtyMD> dsCT = new ArrayList<CongtyMD>();
-        dsCT.add(new CongtyMD("Cty_A", "A", "123 DA", "12355"));
+        //ArrayList<CongtyMD> dsCT = new ArrayList<CongtyMD>();
+        //dsCT.add(new CongtyMD("Cty_A", "A", "123 DA", "12355"));
        
-        ctDAO.add(dsCT);
+        //ctDAO.add(dsCT);
     }
 
     private String[] returnedColumnLabel= null;
