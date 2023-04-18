@@ -108,6 +108,7 @@ public class UI extends JFrame implements MouseListener{
 
         DataAccessLayer<NhanvienMD> nhanVienDAL = new DataAccessLayer<>(master, NhanvienMD.class);
         NhanvienMD nvDangNhap = nhanVienDAL.getTable("MaNV="+tkDangNhap.getMaNV()).get(0);
+        
         labelUserName = new JLabel("Xin chào "+nvDangNhap.getTenNV());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
