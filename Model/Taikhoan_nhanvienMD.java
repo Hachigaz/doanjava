@@ -1,19 +1,13 @@
 package Model;
 
-<<<<<<< Updated upstream:Model/Taikhoan_nhanvienMD.java
 public class Taikhoan_nhanvienMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "taikhoan_nhanvien";
         
-=======
-public class Taikhoan_nhanvien {
-    public final String tableName = "taikhoan_nhanvien";
->>>>>>> Stashed changes:MODEL/Taikhoan_nhanvien.java
     private String MaNV;
     private String TenTaiKhoan;
     private String MatKhau;
     private String MaNhomQuyen;
-<<<<<<< Updated upstream:Model/Taikhoan_nhanvienMD.java
 
     
     public Taikhoan_nhanvienMD(String maNV, String tenTaiKhoan, String matKhau, String maNhomQuyen) {
@@ -22,8 +16,6 @@ public class Taikhoan_nhanvien {
         MatKhau = matKhau;
         MaNhomQuyen = maNhomQuyen;
     }
-=======
->>>>>>> Stashed changes:MODEL/Taikhoan_nhanvien.java
     public String getMaNV() {
         return MaNV;
     }
@@ -58,12 +50,7 @@ public class Taikhoan_nhanvien {
         return Taikhoan_nhanvienMD.fromStatement;
     }
     @Override
-<<<<<<< Updated upstream:Model/Taikhoan_nhanvienMD.java
     public String toSQLString() {
         return "('"+MaNV + "','" + TenTaiKhoan + "','" + MatKhau + "','" + MaNhomQuyen + "')";
-=======
-    public String toString() {
-        return "("+MaNV + "," + TenTaiKhoan + "," + MatKhau + "," + MaNhomQuyen + ")";
->>>>>>> Stashed changes:MODEL/Taikhoan_nhanvien.java
     }
 }

@@ -11,10 +11,11 @@ public class NhanvienMD extends Model{
     private String NgaySinh;
     private String DiaChi;
     private String Kho_lam_viec;
+    private Integer SoGioLamViec;
+    private Float LuongCoBan;
 
-    
     public NhanvienMD(String maNV, String tenNV, String maCV, String gioiTinh, String ngaySinh, String diaChi,
-            String kho_lam_viec) {
+            String kho_lam_viec,Integer soGioLamViec,Float luongCoBan) {
         MaNV = maNV;
         TenNV = tenNV;
         MaCV = maCV;
@@ -22,6 +23,8 @@ public class NhanvienMD extends Model{
         NgaySinh = ngaySinh;
         DiaChi = diaChi;
         Kho_lam_viec = kho_lam_viec;
+        SoGioLamViec = soGioLamViec;
+        LuongCoBan = luongCoBan;
     }
     
     public String getMaNV() {
@@ -66,6 +69,18 @@ public class NhanvienMD extends Model{
     public void setKho_lam_viec(String kho_lam_viec) {
         Kho_lam_viec = kho_lam_viec;
     }
+    public Integer getSoGioLamViec() {
+        return SoGioLamViec;
+    }
+    public void setSoGioLamViec(Integer soGioLamViec) {
+        SoGioLamViec = soGioLamViec;
+    }
+    public Float getLuongCoBan() {
+        return LuongCoBan;
+    }
+    public void setLuongCoBan(Float luongCoBan) {
+        LuongCoBan = luongCoBan;
+    }
     public String getSelectStatement(){
         return NhanvienMD.selectStatement;
     }
@@ -75,6 +90,6 @@ public class NhanvienMD extends Model{
     @Override
     public String toSQLString() {
         return "('" + MaNV + "','" + TenNV + "','" + MaCV + "','" + GioiTinh
-                + "','" + NgaySinh + "','" + DiaChi + "','" + Kho_lam_viec + "')";
+                + "','" + NgaySinh + "','" + DiaChi + "','" + Kho_lam_viec +"',"+ SoGioLamViec +","+ LuongCoBan + ")";
     }
 }
