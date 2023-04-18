@@ -3,6 +3,11 @@ package Panel;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
+import DAO.DataAccessLayer;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -19,6 +24,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
@@ -31,12 +38,17 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -55,12 +67,13 @@ public class NhanVien extends JPanel implements MouseListener{
     JScrollPane scrollPane;
     JScrollBar scrollBar;
     JTextField searchField;
-    JButton searchButton,addButton,infoButton,filterButton;
+    JButton searchButton,addButton,infoButton,salaryButton;
     JButton btn;
-    JPanel searchPanel,panelTable,panelRight,panelInfo,panelFilter;
-    JLabel labelCombobox,labelTitle;
+    JPanel searchPanel,panelTable,panelRight,panelInfo,panelSalary,panelDefault;
+    JLabel labelCombobox,labelTitle,labelDefault;
     JComboBox comboBox;
     JTextField[] textFields;
+    Object[] atributeNV;
     // Object[] obj;
     // String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
@@ -71,8 +84,8 @@ public class NhanVien extends JPanel implements MouseListener{
 
     DefaultTableModel model;
     TableRowSorter<TableModel> rowSorter;
-    private final String sqlDSNV = "select nhanvien.MaNV as 'Mã nhân viên', nhanvien.TenNV as 'Tên nhân viên', chucvu.TenCV as 'Chức vụ', nhanvien.GioiTinh as 'Giới tính', nhanvien.NgaySinh as 'Ngày sinh', nhanvien.DiaChi as 'Địa chỉ', kho.TenKho as 'Kho làm việc' from nhanvien , chucvu, kho where nhanvien.MaCV = chucvu.MaCV and kho.MaKho = nhanvien.Kho_lam_viec";
-    public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Chức vụ:               ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       "};
+    private final String sqlDSNV = "select nhanvien.MaNV as 'Mã nhân viên', nhanvien.TenNV as 'Tên nhân viên', chucvu.TenCV as 'Chức vụ', nhanvien.GioiTinh as 'Giới tính', nhanvien.NgaySinh as 'Ngày sinh', nhanvien.DiaChi as 'Địa chỉ', kho.TenKho as 'Kho làm việc',nhanvien.SoGioLamViec as 'Số giờ làm việc',nhanvien.LuongCoBan as 'Lương cơ bản' from nhanvien , chucvu, kho where nhanvien.MaCV = chucvu.MaCV and kho.MaKho = nhanvien.Kho_lam_viec";
+    public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Chức vụ:               ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       ","Số giờ làm:           ","Lương cơ bản:    "};
     public String[] btnChucNang = {};
     public NhanVien(SQLUser master,Taikhoan_nhanvienMD tkdn){
         this.master = master;
@@ -92,6 +105,13 @@ public class NhanVien extends JPanel implements MouseListener{
         labelTitle.setFont(new Font("Poppins",Font.BOLD,18));
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
 
+        panelDefault = new JPanel();
+        labelDefault = new JLabel("Chọn nhân viên mà\n bạn muốn xem thông tin");
+        labelDefault.setFont(new Font("Poppins",Font.PLAIN,18));
+        panelDefault.setBorder(BorderFactory.createEmptyBorder(100,0,0,0));
+        panelDefault.add(labelDefault);
+        
+
         panelInfo = new JPanel();
         panelInfo.setPreferredSize(new Dimension(370,400));
         panelInfo.setLayout(new FlowLayout());
@@ -103,10 +123,10 @@ public class NhanVien extends JPanel implements MouseListener{
             panelInfo.add(createLabelInfo(labelForm[i]));
         }
 
-        panelFilter = new JPanel();
-        panelFilter.setBackground(Color.red);
-        panelFilter.setVisible(true);
-        panelFilter.setPreferredSize(new Dimension(370, 600));
+        panelSalary = new JPanel();
+        panelSalary.setBackground(Color.red);
+        panelSalary.setVisible(false);
+        panelSalary.setPreferredSize(new Dimension(370, 600));
 
         panelTable = new JPanel();
         panelTable.setLayout(new BorderLayout());
@@ -128,7 +148,7 @@ public class NhanVien extends JPanel implements MouseListener{
                 }
             }
         });
-        searchField.setPreferredSize(new Dimension(300,30));
+        searchField.setPreferredSize(new Dimension(300,35));
         searchField.setFont(new Font("Monospace",Font.PLAIN,15));
         searchField.setForeground(Color.black);
 
@@ -155,7 +175,7 @@ public class NhanVien extends JPanel implements MouseListener{
             }
         });
         searchButton.setBorder(null);
-        searchButton.setPreferredSize(new Dimension(35,35));
+        searchButton.setPreferredSize(new Dimension(45,45));
         searchButton.setFocusable(false);
         searchButton.setBackground(new Color(255,197,70));
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -168,7 +188,7 @@ public class NhanVien extends JPanel implements MouseListener{
         addButton = new JButton(newIconAdd);
         addButton.setToolTipText("Thêm nhân viên");
         addButton.setBackground(new Color(0,255,119));
-        addButton.setPreferredSize(new Dimension(35,35));
+        addButton.setPreferredSize(new Dimension(45,45));
         addButton.setFocusable(false);
         addButton.setBorder(null);
         addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -188,7 +208,7 @@ public class NhanVien extends JPanel implements MouseListener{
         infoButton = new JButton(newIconInfo);
         infoButton.setToolTipText("Thông tin");
         infoButton.setBackground(new Color(0,255,119));
-        infoButton.setPreferredSize(new Dimension(35,35));
+        infoButton.setPreferredSize(new Dimension(45,45));
         infoButton.setFocusable(false);
         infoButton.setBorder(null);
         infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -196,105 +216,51 @@ public class NhanVien extends JPanel implements MouseListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 panelInfo.setVisible(true);
-                panelFilter.setVisible(false);
+                panelSalary.setVisible(false);
+                panelDefault.setVisible(false);
             } 
         });
         infoButton.addMouseListener(this);
 
         
-        ImageIcon iconFilter = new ImageIcon("res/img/filter.png");
+        ImageIcon iconFilter = new ImageIcon("res/img/coin.png");
         Image imgIconFilter = iconFilter.getImage();
-        Image newImgFilter = imgIconFilter.getScaledInstance(20,20,java.awt.Image.SCALE_SMOOTH);
+        Image newImgFilter = imgIconFilter.getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIconFilter = new ImageIcon(newImgFilter);
-        filterButton = new JButton(newIconFilter);
-        filterButton.setToolTipText("Lọc");
-        filterButton.setBackground(new Color(0,255,119));
-        filterButton.setPreferredSize(new Dimension(35,35));
-        filterButton.setFocusable(false);
-        filterButton.setBorder(null);
-        filterButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        filterButton.addActionListener(new ActionListener() {
+        salaryButton = new JButton(newIconFilter);
+        salaryButton.setToolTipText("Lương");
+        salaryButton.setBackground(new Color(0,255,119));
+        salaryButton.setPreferredSize(new Dimension(45,45));
+        salaryButton.setFocusable(false);
+        salaryButton.setBorder(null);
+        salaryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        salaryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 panelInfo.setVisible(false);
-                panelFilter.setVisible(true);
+                panelSalary.setVisible(true);
+                panelDefault.setVisible(false);
             } 
         });
-        filterButton.addMouseListener(this);
+        salaryButton.addMouseListener(this);
 
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         searchPanel.add(addButton);
         searchPanel.add(infoButton);
-        searchPanel.add(filterButton);
+        searchPanel.add(salaryButton);
 
         panelTable.add(searchPanel,BorderLayout.NORTH);
         panelTable.add(scrollPane);
 
         panelRight.add(panelInfo);
-        panelRight.add(panelFilter);
+        panelRight.add(panelSalary);
+        panelRight.add(panelDefault);
 
         this.add(panelTable,BorderLayout.WEST);
         this.add(panelRight,BorderLayout.EAST);
         this.setVisible(false);
     }
-    private ArrayList<JLabel> locArrLabel = new ArrayList<JLabel>();
-    private HashMap<JLabel,JScrollPane> arrLocPanel = new HashMap<JLabel,JScrollPane>();
-
-    public void SetupPanelLoc(String[] panelTitles,int[] columnIndexes,ArrayList<ArrayList<String>> tenLoc,MouseListener panelCollapseListener,ItemListener locCheckboxAction){
-        for(int i = 0 ; i < tenLoc.size();i++){
-            themChucNangLoc(panelTitles[i],columnIndexes[i],tenLoc.get(i),panelCollapseListener,locCheckboxAction);
-        }
-        panelLoc.revalidate();
-        panelLoc.repaint();
-    }
-
-    public void findClickedLocPanel(Object component){
-        for(JLabel label : locArrLabel){
-            if(component==label){
-                JScrollPane panel = arrLocPanel.get(label);
-                panel.setVisible(!panel.isVisible());
-                panelLoc.revalidate();
-                panelLoc.repaint();
-            }
-        }
-    }
-
-    private void themChucNangLoc(String title,int columnIndex,ArrayList<String> locLabelName,MouseListener panelCollapseListener,ItemListener locCheckboxAction){
-
-
-        JLabel label = new JLabel(title);
-        panelLoc.add(label);
-        label.addMouseListener(panelCollapseListener);
-        locArrLabel.add(label);
-
-        LocPanel panel = new LocPanel(locLabelName,columnIndex);
-
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,250));
-        panelLoc.add(scrollPane);
-        arrLocPanel.put(label,scrollPane);
-
-        panel.setActionForCheckBoxes(locCheckboxAction);
-    }
-
-    public void sortSelectedCheckbox(Object checkbox){
-        JCheckBox cb = (JCheckBox)checkbox;
-        LocPanel panel = (LocPanel)cb.getParent();
-        
-        if(cb.isSelected()){
-            String key = cb.getName();
-            this.panelDanhSach.themDieuKienLoc(panel.getColumnIndex(),key);
-            this.panelDanhSach.locCacDieuKien();
-        }
-        else{
-            String key = cb.getName();
-            this.panelDanhSach.xoaDieuKienLoc(panel.getColumnIndex(),key);
-            this.panelDanhSach.locCacDieuKien();
-        }
-    }
-    
-
     public JDialog FormNhanVien(){
                 JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(NhanVien.this);
                 JDialog dialog = new JDialog(parentFrame,"Thêm nhân viên",true);
@@ -309,12 +275,12 @@ public class NhanVien extends JPanel implements MouseListener{
                 panelTop.add(title);
 
                 JPanel panelBottom = new JPanel();
-                panelBottom.setBorder(BorderFactory.createEmptyBorder(0,0,50,0));
+                panelBottom.setBorder(BorderFactory.createEmptyBorder(0,0,30,0));
                 btn = new JButton("Thêm");
                 panelBottom.add(btn);
 
                 JPanel panelDialog = new JPanel();
-                panelDialog.setPreferredSize(new Dimension(800,500));
+                panelDialog.setPreferredSize(new Dimension(1000,700));
                 panelDialog.setLayout(new BorderLayout());
                 panelDialog.add(panelTop,BorderLayout.NORTH);
                 panelDialog.add(panelCenter,BorderLayout.CENTER);
@@ -326,10 +292,38 @@ public class NhanVien extends JPanel implements MouseListener{
                     gbc.gridx = 0;
                     gbc.gridy = i;
                     panelCenter.add(createLabel(labelForm[i]),gbc);
-
-                    gbc.gridx = 1;
-                    gbc.gridy = i;
-                    panelCenter.add(createTextField(i),gbc);
+                    if(i==2){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        String[] chucvu = {"Quản trị","Nhân viên kho","Quản lý kho"}; 
+                        panelCenter.add(createComboBox(chucvu,i),gbc);      
+                    }else if(i==3){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        String[] gioitinh = {"Nam","Nữ"};
+                        panelCenter.add(createComboBox(gioitinh,i),gbc); 
+                    }else if(i==4){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        panelCenter.add(createDateChooser(i),gbc);      
+                    }else if(i==6){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        String[] str = {"Kho ADV","Kho THD","Kho NVC","Kho LHP"};
+                        panelCenter.add(createComboBox(str,i),gbc);      
+                    }else if(i==7){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        panelCenter.add(createSpinner(0,0,192,8,i),gbc);      
+                    }else if(i==8){
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        panelCenter.add(createSpinner(1000000,1000000,10000000,100000,i),gbc);      
+                    }else{
+                        gbc.gridx = 1;
+                        gbc.gridy = i;
+                        panelCenter.add(createTextField(i),gbc);
+                    }
                 }
                 
                 btn.setPreferredSize(new Dimension(300,50));
@@ -341,46 +335,63 @@ public class NhanVien extends JPanel implements MouseListener{
                 btn.setBorder(null);       
                 btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btn.addMouseListener(this);
-                
-                // btn.addActionListener(new ActionListener() {
-                //     @Override
-                //     public void actionPerformed(ActionEvent e) {
-                //         // TODO Auto-generated method stub
-                //         if(model instanceof DefaultTableModel){
-                //             model = (DefaultTableModel) table.getModel();
-                //             add = new String[labelForm.length];
-                //             obj = new Object[labelForm.length];
-                //             for(int i=0;i<labelForm.length;i++){
-                //                 add[i] = textFields[i].getText();
-                //                 obj[i] = (Object)add[i];
-                //             }
-                //             table.setModel(model);
-                //             model.addRow(obj);
-                //             JOptionPane.showMessageDialog(null, "Thêm thành công");
-                //             dialog.dispose();
-                //         }else{
-                //             JOptionPane.showMessageDialog(null, "Lỗi: Đối tượng mô hình bảng không phải là một đối tượng DefaultTableModel");
-                //         }     
-                //     }
-                // });
-                // btn.addActionListener(new ActionListener() {
-                //     @Override
-                //     public void actionPerformed(ActionEvent e) {
-                //         TableModel model = table.getModel();
-                //         if (table.getModel() instanceof DefaultTableModel) {
-                //             DefaultTableModel defaultModel = (DefaultTableModel) model;
-                //             Object[] row = new Object[labelForm.length];
-                //             for (int i = 0; i < labelForm.length; i++) {
-                //                 row[i] = textFields[i].getText();
-                //             }
-                //             defaultModel.addRow(row);
-                //             JOptionPane.showMessageDialog(null, "Thêm thành công");
-                //             dialog.dispose();
-                //         } else {
-                //             JOptionPane.showMessageDialog(null, "Lỗi: Đối tượng mô hình bảng không phải là một đối tượng DefaultTableModel");
-                //         }
-                //     }
-                // });
+
+                btn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JTextField textFieldMaNV = (JTextField)atributeNV[0];
+                        String MaNV = textFieldMaNV.getText();
+                        JTextField textFieldTenNV = (JTextField)atributeNV[1];
+                        String TenNV = textFieldTenNV.getText();
+                        JComboBox comboBoxMaCV = (JComboBox)atributeNV[2];
+                        String MaCV;
+                        if(comboBoxMaCV.getSelectedItem()=="Quản trị"){
+                            MaCV = "CV00";
+                        }else if(comboBoxMaCV.getSelectedItem()=="Quản lý kho"){
+                            MaCV = "CV01";
+                        }else{
+                            MaCV = "CV02";
+                        }
+                        JComboBox comboBoxGioiTinh = (JComboBox)atributeNV[3];
+                        String GioiTinh = (String)comboBoxGioiTinh.getSelectedItem();
+                        JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
+                        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        // String ngaySinh = sdf.format(dateChooserNgaySinh.getDate());
+                        Date NgaySinh = (Date)dateChooserNgaySinh.getDate();
+                        java.sql.Date sqlDate = new java.sql.Date(NgaySinh.getTime());
+                        
+                        JTextField textFieldDiaChi = (JTextField)atributeNV[5];
+                        String DiaChi = textFieldDiaChi.getText();
+                        JComboBox comboBoxKhoLamViec = (JComboBox)atributeNV[6];
+                        String MaKho;
+                        if(comboBoxKhoLamViec.getSelectedItem()=="Kho ADV"){
+                            MaKho = "K01";
+                        }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho THD"){
+                            MaKho = "K02";
+                        }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho NVC"){
+                            MaKho = "K03";
+                        }else{
+                            MaKho = "K04";
+                        }
+                        JSpinner spinnerSoGioLam = (JSpinner)atributeNV[7];
+                        Integer SoGioLam = (Integer)spinnerSoGioLam.getValue();
+                        JSpinner spinnerLuongCoBan = (JSpinner)atributeNV[8];
+                        Float LuongCoBan = (Float)(spinnerLuongCoBan.getValue());
+                        if (MaNV.isEmpty() || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || NgaySinh==null || DiaChi.isEmpty() || MaKho.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        DataAccessLayer<NhanvienMD> NhanVienDAO = new DataAccessLayer<>(master,NhanvienMD.class);
+                        ArrayList<NhanvienMD> DSNV = new ArrayList<NhanvienMD>();
+                        DSNV.add(new NhanvienMD(MaNV, TenNV, MaCV, GioiTinh, sqlDate, DiaChi, MaKho, SoGioLam, LuongCoBan));
+                        NhanVienDAO.add(DSNV);
+                        panelTable.remove(scrollPane);
+                        SetTable(master.getDataQuery(sqlDSNV));
+                        panelTable.add(scrollPane);
+                        JOptionPane.showMessageDialog(null, "Thêm thành công");
+                        dialog.dispose();
+                    }
+                });
 
                 dialog.add(panelDialog);
                 dialog.setPreferredSize(new Dimension(1000,650));
@@ -397,14 +408,36 @@ public class NhanVien extends JPanel implements MouseListener{
         return label;
     }
     private JTextField createTextField(int index) {
-        if (textFields == null) {
-            textFields = new JTextField[labelForm.length];
+        if (atributeNV == null) {
+            atributeNV = new Object[labelForm.length];
         }
         JTextField textField = new JTextField();
-        textField.setPreferredSize(new Dimension(300, 30));
+        textField.setPreferredSize(new Dimension(250, 30));
         textField.setFont(new Font("Monospace", Font.BOLD, 13));
-        textFields[index] = textField;
+        atributeNV[index] = textField;
+        textField.setBorder(null);
         return textField;
+    }
+    private JDateChooser createDateChooser(int index){
+        JDateChooser datecChooser = new JDateChooser();
+        datecChooser.setPreferredSize(new Dimension(150, 30));
+        datecChooser.setFont(new Font("Poppins",Font.PLAIN,15));
+        atributeNV[index] = datecChooser;
+        return datecChooser;
+    }
+    private JComboBox createComboBox(String[] str,int index){
+        JComboBox comboBox = new JComboBox<>(str);
+        comboBox.setPreferredSize(new Dimension(150, 30));
+        atributeNV[index] = comboBox;
+        return comboBox;
+    }
+    private JSpinner createSpinner(int value,int minimum,int maximum,int stepSize,int index){
+        SpinnerModel model = new SpinnerNumberModel(value,minimum,maximum,stepSize);
+        JSpinner spinner = new JSpinner(model);
+        spinner.setPreferredSize(new Dimension(150, 35));
+        spinner.setFont(new Font("Poppins",Font.PLAIN,15));
+        atributeNV[index] = spinner;
+        return spinner;
     }
     private JLabel createLabelInfo(String text){
         JLabel label = new JLabel(text);
@@ -438,9 +471,9 @@ public class NhanVien extends JPanel implements MouseListener{
         }else if(e.getSource()==infoButton){
             infoButton.setBackground(new Color(223,18,133));
             infoButton.setForeground(Color.white);
-        }else if(e.getSource()==filterButton){
-            filterButton.setBackground(new Color(223,18,133));
-            filterButton.setForeground(Color.white);
+        }else if(e.getSource()==salaryButton){
+            salaryButton.setBackground(new Color(223,18,133));
+            salaryButton.setForeground(Color.white);
         }else if(e.getSource()==btn){
             btn.setBackground(Color.GRAY);
         }
@@ -457,9 +490,9 @@ public class NhanVien extends JPanel implements MouseListener{
         }else if(e.getSource()==infoButton){
             infoButton.setBackground(new Color(0,255,119));
             infoButton.setForeground(Color.black);
-        }else if(e.getSource()==filterButton){
-            filterButton.setBackground(new Color(0,255,119));
-            filterButton.setForeground(Color.black);
+        }else if(e.getSource()==salaryButton){
+            salaryButton.setBackground(new Color(0,255,119));
+            salaryButton.setForeground(Color.black);
         }else if(e.getSource()==btn){
             btn.setBackground(Color.red);
         }
@@ -476,20 +509,34 @@ public class NhanVien extends JPanel implements MouseListener{
                     return false;
                 }
             };
-            String[] arr = new String[7];     
+            tableDS.getColumnModel().removeColumn(tableDS.getColumnModel().getColumn(7));
+            tableDS.getColumnModel().removeColumn(tableDS.getColumnModel().getColumn(7));
+            String[] arr = new String[9];     
             tableDS.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e){
                     int rowIndex = tableDS.getSelectedRow();
-                    
-                    arr[0] = tableDS.getValueAt(rowIndex, 0).toString();
-                    arr[1] = tableDS.getValueAt(rowIndex, 1).toString();
-                    arr[2] = tableDS.getValueAt(rowIndex, 2).toString();
-                    arr[3] = tableDS.getValueAt(rowIndex, 3).toString();
-                    arr[4] = tableDS.getValueAt(rowIndex, 4).toString();
-                    arr[5] = tableDS.getValueAt(rowIndex, 5).toString();
-                    arr[6] = tableDS.getValueAt(rowIndex, 6).toString();
+                    for(int i=0;i<arr.length;i++){
+
+                        if(i==7){
+                            arr[i] = tableDS.getModel().getValueAt(rowIndex, i).toString();
+                        }else if(i==8){
+                            float temp = (float) tableDS.getModel().getValueAt(rowIndex, i);
+                            int tempInt = (int) Math.floor(temp);
+                            String formattedNum = String.format("%,d", tempInt).replace(",", ".");
+                            arr[i] = String.valueOf(formattedNum)+" VNĐ";
+                        }else{
+                            arr[i] = tableDS.getValueAt(rowIndex, i).toString();
+                        }
+                    }
+                    panelDefault.setVisible(false);
                     panelInfo.removeAll();    
                     panelInfo.add(labelTitle);
+                    if(panelSalary.isVisible()){
+                        panelInfo.setVisible(false);
+                    }else{
+                        panelInfo.setVisible(true);
+                    }
+                    
                     for(int i=0;i<labelForm.length;i++){
                         JLabel label = createLabelInfo(labelForm[i] + " " + arr[i]);
                         panelInfo.add(label);
