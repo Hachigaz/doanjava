@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -81,7 +82,7 @@ public class NhaCungCap extends JPanel implements MouseListener{
         for(int i=0;i<labelForm.length;i++){
             panelInfo.add(createLabelInfo(labelForm[i]));
         }
-
+        panelInfo.add(Box.createHorizontalGlue());
         panelTable = new JPanel();
         panelTable.setLayout(new BorderLayout());
         
@@ -393,7 +394,7 @@ public class NhaCungCap extends JPanel implements MouseListener{
                 }
             };
             String[] arr = new String[4];     
-            JButton sua = new JButton("Sua");
+            JButton sua = new JButton("Sửa");
             sua.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -401,7 +402,7 @@ public class NhaCungCap extends JPanel implements MouseListener{
             
         }
             });
-            JButton xoa = new JButton("xoa", null);
+            JButton xoa = new JButton("Xóa", null);
             xoa.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -420,6 +421,8 @@ public class NhaCungCap extends JPanel implements MouseListener{
                 panelTable.remove(scrollPane);
                 SetTable(master.getDataQuery(sqlDSNV));
                 panelTable.add(scrollPane);
+                panelInfo.revalidate();
+                panelInfo.repaint();
             } else {
                 // Xử lý không xóa dữ liệu
             }
@@ -434,13 +437,16 @@ public class NhaCungCap extends JPanel implements MouseListener{
                     arr[2] = tableDS.getValueAt(rowIndex, 2).toString();
                     arr[3] = tableDS.getValueAt(rowIndex, 3).toString();
                     panelInfo.removeAll();    
-                    for(int i=0;i<labelForm.length;i++){
+                     for(int i=0;i<labelForm.length;i++){
                         JLabel label = createLabelInfo(labelForm[i] + " " + arr[i]);
-                        panelInfo.add(label);
-                        panelInfo.add(sua);
-                        panelInfo.add( xoa);
-                    }
-            
+                         panelInfo.add(label);
+                        
+                     }
+                     JPanel panelButtons = new JPanel();
+                    panelButtons.setLayout(new FlowLayout());
+                    panelButtons.add(sua);
+                    panelButtons.add(xoa);
+                    panelInfo.add(panelButtons);
                     // Cập nhật lại giao diện người dùng
                     panelInfo.revalidate();
                     panelInfo.repaint();

@@ -21,7 +21,7 @@ import java.awt.*;
 import Panel.DonNhap.DonNhapUI;
 import Panel.ThongTinKho.ThongTinKhoCTR;
 import Panel.TraCuuHang.TraCuuHangCTR;
-
+import Panel.Donxuat.*;
 public class UI extends JFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI,panelTitleBar;
     public JPanel panelRight;
@@ -185,6 +185,8 @@ public class UI extends JFrame implements MouseListener{
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
+        DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
+        themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
         themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap));
         TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
