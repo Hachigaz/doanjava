@@ -62,13 +62,13 @@ public class TablePanel extends JPanel{
         rowSorter.setRowFilter(filter);
     }
 
-    private void resetDieuKieuLoc(){
-        for(ArrayList<String> arr : DSDKLoc){
-            arr.clear();
-        }
-        DSDKLoc.clear();
-        rowSorter.setRowFilter(null);
-    }
+    // private void resetDieuKieuLoc(){
+    //     for(ArrayList<String> arr : DSDKLoc){
+    //         arr.clear();
+    //     }
+    //     DSDKLoc.clear();
+    //     rowSorter.setRowFilter(null);
+    // }
 
     public void themDieuKienLoc(int columnIndex,String value){
         DSDKLoc.get(columnIndex).add(value);

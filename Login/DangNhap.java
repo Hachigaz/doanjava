@@ -1,11 +1,9 @@
 package Login;
 
-import SQL.*;
-
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import DAO.DataAccessLayer;
+import DAL.DataAccessLayer;
 import Model.Taikhoan_nhanvienMD;
 import SQL.SQLUser;
 import misc.ThongBaoDialog;

@@ -6,7 +6,7 @@ import Panel.SubPanel.TablePanel;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
-import DAO.DataAccessLayer;
+import DAL.DataAccessLayer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -1,6 +1,7 @@
 import java.awt.event.*;
 
 import Login.*;
+import Model.Taikhoan_nhanvienMD;
 import Panel.*;
 import SQL.*;
 
@@ -37,7 +38,10 @@ public class Program {
         DangNhap dn = new DangNhap(master);
         dn.addWindowEvent(new WindowAdapter() {
             public void windowClosed(WindowEvent e){
-                UI ui = new UI(master,dn.getTenTKDangNhap());
+                Taikhoan_nhanvienMD tkDangNhap = dn.getTenTKDangNhap();
+                if(tkDangNhap!=null){
+                    UI ui = new UI(master,tkDangNhap);
+                }
             }
         });
     }

@@ -1,4 +1,4 @@
-package DAO;
+package DAL;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -108,6 +108,7 @@ public class DataAccessLayer<T> {
     public ArrayList<T> getTable(String... statements){
         ArrayList<T> list = null;
         try{
+            //class khoi tao doi tuong tu template
             InstanceCreator<T> creator = new InstanceCreator<>(classType);
 
             String sql = "SELECT " + util.getClassVariable(classType,"selectStatement");
@@ -117,6 +118,9 @@ public class DataAccessLayer<T> {
             sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
 
             DataSet ds = user.getDataQuery(sql);
+            if(ds==null){
+                throw new Exception("Danh sách trả về rỗng");
+            }
 
             this.returnedColumnLabel = ds.getColumnLabel();
             this.returnedColumnName = ds.getColumnName();
@@ -134,6 +138,38 @@ public class DataAccessLayer<T> {
             System.out.println(e.getClass()+":"+e.getMessage());
         }
         return list;
+    }
+    //tra ve gia tri dau tien tu table
+    public T getFirst(String... statements){
+            T t = null;
+            try{
+                //class khoi tao doi tuong tu template
+                InstanceCreator<T> creator = new InstanceCreator<>(classType);
+
+                String sql = "SELECT " + util.getClassVariable(classType,"selectStatement");
+                
+                String whereStatement = processWhereStatement(statements);
+
+                sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
+                DataSet ds = user.getDataQuery(sql);
+                if(ds==null){
+                    throw new Exception("Danh sách trả về rỗng");
+                }
+                
+                this.returnedColumnLabel = ds.getColumnLabel();
+                this.returnedColumnName = ds.getColumnName();
+                
+                //lấy danh sách tham số và khởi tạo đối tượng
+                Object[] params = new Object[ds.getColumnCount()];
+                for(int j = 0 ; j < ds.getColumnCount();j++){
+                    params[j] = ds.getRow(0)[j];
+                }
+                t = creator.createInstance(params);
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            return t;
     }
 
     private String processWhereStatement(String... statements){
@@ -165,7 +201,10 @@ public class DataAccessLayer<T> {
         // }
         DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
 
-        DAL2.remove("MaKho = K03");
+
+        Integer a = 1;
+        System.out.println(a.getClass());
+        //DAL2.remove("MaKho = K03");
         //DAL2.update(new KhoMD("K01","Kho TBT","241 Tran Binh Trong"),"MaKho=K01","TenKho= Kho ADV");
         // DAL2.add(kho);
         

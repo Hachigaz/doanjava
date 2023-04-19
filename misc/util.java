@@ -21,8 +21,19 @@ public class util {
     public static<T> Object[] getColumn(T[][] t,int index){
         ArrayList<T> arr = new ArrayList<T>();
         for(int i = 0; i < t[index].length;i++){
-            arr.add(t[index][i]);
+            arr.add(t[i][index]);
         }
         return arr.toArray();
+    }
+    public static Object[][] flip2dArray(Object[][] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                Object temp = arr[i][j];
+                arr[i][j] = arr[i][arr[i].length - j - 1];
+                arr[i][arr[i].length - j - 1] = temp;
+            }
+        }
+
+        return arr;
     }
 }

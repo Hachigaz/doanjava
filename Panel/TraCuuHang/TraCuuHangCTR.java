@@ -5,9 +5,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
 
-import DAO.DataAccessLayer;
+import DAL.DataAccessLayer;
 import SQL.*;
+import misc.util;
 import Model.*;
 import Model.Custom.DSTraCuuHangMD;
 
@@ -38,8 +40,10 @@ public class TraCuuHangCTR {
                 ui.timTheoGiaTri();
             }
         };
-        
-        ui.SetupPanelChucNang(master.getDataQuery("SELECT MaKho,TenKho from kho"), onChangeMaKho, onSubmitSearch);
+        DataAccessLayer<KhoMD> khoDAO = new DataAccessLayer<>(user, KhoMD.class);
+        Object[][] dsKho = Model.to2DArray(khoDAO.getTable(),"MaKho","TenKho");
+
+        ui.SetupPanelChucNang(util.objToString(util.getColumn(dsKho, 1)),util.objToString(util.getColumn(dsKho, 0)), onChangeMaKho, onSubmitSearch);
 
 
 
@@ -47,28 +51,29 @@ public class TraCuuHangCTR {
         int[] columnIndexes = {0,3,4};
         ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
 
-        
+        //Lấy danh sách khu vực và thêm vào bảng lộc
         DataAccessLayer<KhuvucMD> KhuVucDAL = new DataAccessLayer<KhuvucMD>(user, KhuvucMD.class);
         ArrayList<KhuvucMD> danhSachKV = KhuVucDAL.getTable("MaKho = "+ui.getSelectedMaKhoKey());
-
 
         tenLoc.add(new ArrayList<String>());
         for(KhuvucMD khuvuc : danhSachKV){          
             tenLoc.get(0).add(khuvuc.getTenKV());
         }
 
+
+        //Lấy danh sách khu vực và thêm vào bảng lộc
         DataAccessLayer<Loai_hangMD> LoaiHangDAL = new DataAccessLayer<Loai_hangMD>(user, Loai_hangMD.class);
         ArrayList<Loai_hangMD> danhSachLH = LoaiHangDAL.getTable();
-        
 
         tenLoc.add(new ArrayList<String>());
         for(Loai_hangMD loaihang : danhSachLH){          
             tenLoc.get(1).add(loaihang.getTenloai());
         }
 
+
+        //Lấy danh sách khu vực và thêm vào bảng lộc
         DataAccessLayer<CongtyMD> CongTyDAL = new DataAccessLayer<CongtyMD>(user, CongtyMD.class);
-        ArrayList<CongtyMD> danhSachCT = CongTyDAL.getTable();
-        
+        ArrayList<CongtyMD> danhSachCT = CongTyDAL.getTable(); 
 
         tenLoc.add(new ArrayList<String>());
         for(CongtyMD cty : danhSachCT){          

@@ -115,11 +115,11 @@ public class TraCuuHangUI extends JPanel{
     private String[] optionKey;
     private JComboBox<String> cbChonKho;
 
-    public void SetupPanelChucNang(DataSet dsKho,ActionListener onChangeMaKho, ActionListener onSubmitSearch){
+    public void SetupPanelChucNang(String[] dsTenKho,String[]dsMaKho,ActionListener onChangeMaKho, ActionListener onSubmitSearch){
         JLabel labelChonKho = new JLabel("Chọn kho");
 
-        optionName = util.objToString(dsKho.getColumn(1));
-        optionKey = util.objToString(dsKho.getColumn(0));
+        optionName = dsTenKho;
+        optionKey = dsMaKho;
 
         cbChonKho = new JComboBox<String>(optionName);
 

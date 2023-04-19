@@ -1,8 +1,5 @@
 package Model;
 
-import java.sql.Date;
-import java.util.*;
-
 public class NhanvienMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "nhanvien";
@@ -11,14 +8,13 @@ public class NhanvienMD extends Model{
     private String TenNV;
     private String MaCV;
     private String GioiTinh;
-    private Date NgaySinh;
+    private String NgaySinh;
     private String DiaChi;
     private String Kho_lam_viec;
     private Integer SoGioLamViec;
     private Float LuongCoBan;
 
-    public NhanvienMD(String maNV, String tenNV, String maCV, String gioiTinh, Date ngaySinh, String diaChi,
-            String kho_lam_viec,Integer soGioLamViec,Float luongCoBan) {
+    public NhanvienMD(String maNV, String tenNV, String maCV, String gioiTinh, String ngaySinh, String diaChi, String kho_lam_viec,Integer soGioLamViec,Float luongCoBan) {
         MaNV = maNV;
         TenNV = tenNV;
         MaCV = maCV;
@@ -54,10 +50,10 @@ public class NhanvienMD extends Model{
     public void setGioiTinh(String gioiTinh) {
         GioiTinh = gioiTinh;
     }
-    public Date getNgaySinh() {
+    public String getNgaySinh() {
         return NgaySinh;
     }
-    public void setNgaySinh(Date ngaySinh) {
+    public void setNgaySinh(String ngaySinh) {
         NgaySinh = ngaySinh;
     }
     public String getDiaChi() {

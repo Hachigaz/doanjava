@@ -65,13 +65,25 @@ public class DataSet {
                 for(int i = 0 ; i < columnCount;i++){
                     String dataType = metaData.getColumnTypeName(i+1);
                     if(dataType.equals("INT")){
-                        rowData.add(rs.getInt(i+1));
+                        Integer value = rs.getInt(i+1);
+                        if(rs.wasNull()){
+                            value = -1;
+                        }
+                        rowData.add(value);
                     }
                     else if(dataType.equals("FLOAT")){
-                        rowData.add(rs.getFloat(i+1));
+                        Float value = rs.getFloat(i+1);
+                        if(rs.wasNull()){
+                            value = -1.0f;
+                        }
+                        rowData.add(value);
                     }
                     else{
-                        rowData.add(rs.getString(i+1));
+                        String string = rs.getString(i+1);
+                        if(rs.wasNull()){
+                            string="N/A";
+                        };
+                        rowData.add(new String(string));
                     }
                 }
                 this.data.add(rowData);
