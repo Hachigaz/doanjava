@@ -36,6 +36,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.mysql.cj.x.protobuf.MysqlxNotice.Frame;
+
 import DAL.*;
 import SQL.SQLUser;
 import misc.DataSet;
@@ -48,12 +50,13 @@ public class NhaCungCap extends JPanel implements MouseListener{
     JTextField searchField;
     JButton searchButton;
     JButton addButton;
-    JButton btn;
+    JButton btn,btn1;
     JPanel searchPanel,panelTable,panelInfo;
     JLabel labelCombobox;
     JComboBox comboBox;
     JTextField[] textFields;
     JTextField[] textField;
+    String a;
     Object[] obj;
     String[] add;
     String[] arrange = {"Tên","Chức vụ","Kho làm việc"}; 
@@ -71,7 +74,6 @@ public class NhaCungCap extends JPanel implements MouseListener{
         this.setPreferredSize(new Dimension(1200,500));
 
         this.SetTable(master.getDataQuery(sqlDSNV));
-
         panelInfo = new JPanel();
         panelInfo.setPreferredSize(new Dimension(390,0));
         panelInfo.setLayout(new FlowLayout());
@@ -235,6 +237,87 @@ public class NhaCungCap extends JPanel implements MouseListener{
                 dialog.setVisible(true);
                 return dialog;
             }
+        public JDialog FormSuaCongty(){
+                
+                JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(NhaCungCap.this);
+                JDialog dialog = new JDialog(parentFrame,"Sửa công ty",true);
+
+                JPanel panelCenter = new JPanel();
+                panelCenter.setLayout(new GridBagLayout());
+
+                JPanel panelTop = new JPanel();
+                JLabel title = new JLabel("FORM SỬA CÔNG TY");
+                title.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+                title.setFont(new Font("Monospace",Font.BOLD,20));
+                panelTop.add(title);
+
+                JPanel panelBottom = new JPanel();
+                panelBottom.setBorder(BorderFactory.createEmptyBorder(0,0,50,0));
+                btn1 = new JButton("LƯU");
+                panelBottom.add(btn1);
+
+                JPanel panelDialog = new JPanel();
+                panelDialog.setPreferredSize(new Dimension(800,500));
+                panelDialog.setLayout(new BorderLayout());
+                panelDialog.add(panelTop,BorderLayout.NORTH);
+                panelDialog.add(panelCenter,BorderLayout.CENTER);
+                panelDialog.add(panelBottom,BorderLayout.SOUTH);
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10);
+                for(int i=0;i<labelForm.length;i++){
+                    gbc.gridx = 0;
+                    gbc.gridy = i;
+                    panelCenter.add(createLabel(labelForm[i]),gbc);
+
+                    gbc.gridx = 1;
+                    gbc.gridy = i;
+                    panelCenter.add(createTextField(i),gbc);
+                    
+                }
+                
+                btn1.setPreferredSize(new Dimension(300,50));
+                btn1.setFont(new Font("Monospace",Font.BOLD,16));
+                btn1.setForeground(Color.white);
+                btn1.setForeground(Color.white);
+                btn1.setBackground(Color.red);
+                btn1.setFocusable(false);
+                btn1.setBorder(null);       
+                btn1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                btn1.addMouseListener(this);
+                btn1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        // Lấy dữ liệu từ các trường nhập liệu
+                        String maCty = textFields[0].getText();
+                        String tenCty = textFields[1].getText();
+                        String diaChi = textFields[2].getText();
+                        String sdt = textFields[3].getText();
+                        // Kiểm tra tính hợp lệ của dữ liệu
+                        if (maCty.isEmpty() || tenCty.isEmpty() || diaChi.isEmpty() || sdt.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        DataAccessLayer<CongtyMD> ctDAO = new DataAccessLayer<>(master, CongtyMD.class);
+                        
+                        ctDAO.update(new CongtyMD(maCty,tenCty,diaChi,sdt),"MaCty="+a);
+
+                        
+                        panelTable.remove(scrollPane);
+                        SetTable(master.getDataQuery(sqlDSNV));
+                        panelTable.add(scrollPane);
+                        dialog.dispose();
+                    }
+                });
+                
+
+                dialog.add(panelDialog);
+                dialog.setPreferredSize(new Dimension(1000,650));
+                dialog.pack();
+                dialog.setLocationRelativeTo(parentFrame);
+                dialog.setVisible(true);
+                return dialog;
+            }
     private JLabel createLabel(String text){
         JLabel label = new JLabel(text);
         label.setPreferredSize(new Dimension(150, 30)); // đặt kích thước ưu tiên cho nhãn
@@ -297,7 +380,7 @@ public class NhaCungCap extends JPanel implements MouseListener{
             btn.setBackground(Color.red);
         }
     }
-    private void SetTable(DataSet ds){
+     void SetTable(DataSet ds){
         if(ds!=null){
             if(this.scrollPane!=null){
                 this.remove(scrollPane);
@@ -310,9 +393,38 @@ public class NhaCungCap extends JPanel implements MouseListener{
                 }
             };
             String[] arr = new String[4];     
-            JButton sua = new JButton("Sua"){
-                
-            };   
+            JButton sua = new JButton("Sua");
+            sua.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    FormSuaCongty();
+            
+        }
+            });
+            JButton xoa = new JButton("xoa", null);
+            xoa.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int rowIndex = tableDS.getSelectedRow();
+                    
+                    arr[0] = tableDS.getValueAt(rowIndex, 0).toString();
+                    JFrame p = (JFrame) SwingUtilities.getWindowAncestor(NhaCungCap.this);
+                    int result = JOptionPane.showConfirmDialog(p,
+                    "Bạn có muốn xóa dữ liệu này?",
+                    "Xác nhận xóa",
+                    JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                // Xử lý xóa dữ liệu
+                DataAccessLayer<CongtyMD> ctDAO = new DataAccessLayer<>(master, CongtyMD.class);               
+                ctDAO.remove("MaCty = " + arr[0] );                        
+                panelTable.remove(scrollPane);
+                SetTable(master.getDataQuery(sqlDSNV));
+                panelTable.add(scrollPane);
+            } else {
+                // Xử lý không xóa dữ liệu
+            }
+        }
+            });
             tableDS.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e){
                     int rowIndex = tableDS.getSelectedRow();
@@ -326,11 +438,13 @@ public class NhaCungCap extends JPanel implements MouseListener{
                         JLabel label = createLabelInfo(labelForm[i] + " " + arr[i]);
                         panelInfo.add(label);
                         panelInfo.add(sua);
+                        panelInfo.add( xoa);
                     }
             
                     // Cập nhật lại giao diện người dùng
                     panelInfo.revalidate();
                     panelInfo.repaint();
+                    a=arr[0];
                 }
             });    
             TableColumnModel columnModel = tableDS.getColumnModel();

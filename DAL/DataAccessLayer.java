@@ -105,6 +105,8 @@ public class DataAccessLayer<T> {
         }
         return rowsUpdated;
     }
+   
+    
     public ArrayList<T> getTable(String... statements){
         ArrayList<T> list = null;
         try{

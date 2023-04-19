@@ -3,8 +3,8 @@ package Panel;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
+//import com.toedter.calendar.JCalendar;
+//import com.toedter.calendar.JDateChooser;
 
 import DAL.DataAccessLayer;
 
@@ -309,7 +309,7 @@ public class NhanVien extends JPanel implements MouseListener{
                     }else if(i==4){
                         gbc.gridx = 1;
                         gbc.gridy = i;
-                        panelCenter.add(createDateChooser(i),gbc);      
+                       // panelCenter.add(createDateChooser(i),gbc);      
                     }else if(i==6){
                         gbc.gridx = 1;
                         gbc.gridy = i;
@@ -358,10 +358,10 @@ public class NhanVien extends JPanel implements MouseListener{
                         }
                         JComboBox comboBoxGioiTinh = (JComboBox)atributeNV[3];
                         String GioiTinh = (String)comboBoxGioiTinh.getSelectedItem();
-                        JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
-                        Date ngay = dateChooserNgaySinh.getDate();
+                        //JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
+                        //Date ngay = dateChooserNgaySinh.getDate();
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(ngay);
+                        //calendar.setTime(ngay);
                         int nam = calendar.get(Calendar.YEAR);
                         int thang = calendar.get(Calendar.MONTH)+1;
                         int ngay1 = calendar.get(Calendar.DATE);
@@ -431,13 +431,13 @@ public class NhanVien extends JPanel implements MouseListener{
         textField.setBorder(null);
         return textField;
     }
-    private JDateChooser createDateChooser(int index){
-        JDateChooser datecChooser = new JDateChooser();
-        datecChooser.setPreferredSize(new Dimension(150, 30));
-        datecChooser.setFont(new Font("Poppins",Font.PLAIN,15));
-        atributeNV[index] = datecChooser;
-        return datecChooser;
-    }
+    // private JDateChooser createDateChooser(int index){
+    //     JDateChooser datecChooser = new JDateChooser();
+    //     datecChooser.setPreferredSize(new Dimension(150, 30));
+    //     datecChooser.setFont(new Font("Poppins",Font.PLAIN,15));
+    //     atributeNV[index] = datecChooser;
+    //     return datecChooser;
+    // }
     private JComboBox createComboBox(String[] str,int index){
         JComboBox comboBox = new JComboBox<>(str);
         comboBox.setPreferredSize(new Dimension(150, 30));
