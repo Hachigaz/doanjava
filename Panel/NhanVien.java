@@ -24,9 +24,11 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 
@@ -127,6 +129,8 @@ public class NhanVien extends JPanel implements MouseListener{
         panelSalary.setBackground(Color.red);
         panelSalary.setVisible(false);
         panelSalary.setPreferredSize(new Dimension(370, 600));
+
+        
 
         panelTable = new JPanel();
         panelTable.setLayout(new BorderLayout());
@@ -355,10 +359,18 @@ public class NhanVien extends JPanel implements MouseListener{
                         JComboBox comboBoxGioiTinh = (JComboBox)atributeNV[3];
                         String GioiTinh = (String)comboBoxGioiTinh.getSelectedItem();
                         JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
+                        Date ngay = dateChooserNgaySinh.getDate();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(ngay);
+                        int nam = calendar.get(Calendar.YEAR);
+                        int thang = calendar.get(Calendar.MONTH)+1;
+                        int ngay1 = calendar.get(Calendar.DATE);
+                        String date = nam+"-"+thang+"-"+ngay1;
+                        
                         // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         // String ngaySinh = sdf.format(dateChooserNgaySinh.getDate());
-                        Date NgaySinh = (Date)dateChooserNgaySinh.getDate();
-                        java.sql.Date sqlDate = new java.sql.Date(NgaySinh.getTime());
+                        // Date NgaySinh = (Date)dateChooserNgaySinh.getDate();
+                        // java.sql.Date sqlDate = new java.sql.Date(NgaySinh.getTime());
                         
                         JTextField textFieldDiaChi = (JTextField)atributeNV[5];
                         String DiaChi = textFieldDiaChi.getText();
@@ -376,14 +388,15 @@ public class NhanVien extends JPanel implements MouseListener{
                         JSpinner spinnerSoGioLam = (JSpinner)atributeNV[7];
                         Integer SoGioLam = (Integer)spinnerSoGioLam.getValue();
                         JSpinner spinnerLuongCoBan = (JSpinner)atributeNV[8];
-                        Float LuongCoBan = (Float)(spinnerLuongCoBan.getValue());
-                        if (MaNV.isEmpty() || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || NgaySinh==null || DiaChi.isEmpty() || MaKho.isEmpty()) {
+                        Integer value = (Integer) spinnerLuongCoBan.getValue();
+                        Float LuongCoBan = value.floatValue();
+                        if (MaNV.isEmpty() || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || date.isEmpty() || DiaChi.isEmpty() || MaKho.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         DataAccessLayer<NhanvienMD> NhanVienDAO = new DataAccessLayer<>(master,NhanvienMD.class);
                         ArrayList<NhanvienMD> DSNV = new ArrayList<NhanvienMD>();
-                        DSNV.add(new NhanvienMD(MaNV, TenNV, MaCV, GioiTinh, sqlDate, DiaChi, MaKho, SoGioLam, LuongCoBan));
+                        DSNV.add(new NhanvienMD(MaNV, TenNV, MaCV, GioiTinh, date, DiaChi, MaKho, SoGioLam, LuongCoBan));
                         NhanVienDAO.add(DSNV);
                         panelTable.remove(scrollPane);
                         SetTable(master.getDataQuery(sqlDSNV));
