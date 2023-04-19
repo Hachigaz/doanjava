@@ -1,10 +1,12 @@
 package Panel.ThongTinKho;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.*;
+import javax.swing.table.*;
 
 import Panel.SubPanel.TablePanel;
 
@@ -16,6 +18,7 @@ public class ThongTinKhoUI extends JPanel{
     private TablePanel danhSachPanel = new TablePanel();
     
     public ThongTinKhoUI(Dimension size){
+        this.setLayout(new BorderLayout());
         this.setOpaque(true);
         this.setPreferredSize(size);
 
@@ -26,7 +29,6 @@ public class ThongTinKhoUI extends JPanel{
         
         
 
-
         
         this.add(headerPanel,BorderLayout.NORTH);
         this.add(sidePanel,BorderLayout.WEST);
@@ -34,6 +36,9 @@ public class ThongTinKhoUI extends JPanel{
     }
     public void setupSubPanel(String maKhoHienTai){
         this.headerPanel.setupPanel(maKhoHienTai);
+    }
+    public void setupDanhSachPanel(TableModel tableModel){
+        this.danhSachPanel.SetTable(tableModel);
     }
 }
 
@@ -43,21 +48,27 @@ class HeaderOptionPanel extends JPanel{
     public HeaderOptionPanel(){
         
         this.setLayout(new FlowLayout(FlowLayout.TRAILING,20,10));
+        this.setBackground(Color.LIGHT_GRAY);
+        this.setOpaque(true);
 
         this.khoHienTaiLabel=new JLabel("Kho hiện tại");
         this.themKhuVucBtn=new JButton("Thêm khu vực mới");
+        
 
         this.add(this.khoHienTaiLabel);
         this.add(themKhuVucBtn);
     }
     public void setupPanel(String tenKhoHienTai){
+
         this.khoHienTaiLabel.setText("Kho hiện tại: "+tenKhoHienTai);
-        
         this.repaint();
         this.revalidate();
     }
 }
 
 class SideOptionPanel extends JPanel{
-    
+    public SideOptionPanel(){
+        this.setBackground(Color.cyan);
+        this.setOpaque(true);
+    }
 }

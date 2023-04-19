@@ -11,6 +11,9 @@ public class TablePanel extends JPanel{
 
     private ArrayList<ArrayList<String>> DSDKLoc = new ArrayList<ArrayList<String>>();
 
+    public TablePanel(){
+        super();
+    }
     public void SetTable(TableModel tableModel){
         if(this.bangDanhSach!=null){
             this.remove(bangDanhSach);
