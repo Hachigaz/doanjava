@@ -40,7 +40,7 @@ public class DangNhapUI extends JFrame implements MouseListener{
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setLayout(new BorderLayout());
-
+    
         labelHide = new JLabel();
         labelClose = new JLabel();
 

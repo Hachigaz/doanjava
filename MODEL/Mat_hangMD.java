@@ -3,6 +3,7 @@ package Model;
 public class Mat_hangMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "mat_hang";
+    public static final String groupByStatement = "";
 
     private String MaMH;
     private String MaCty;

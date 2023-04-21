@@ -3,6 +3,7 @@ package Model;
 public class Taikhoan_nhanvienMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "taikhoan_nhanvien";
+    public static final String groupByStatement = "";
         
     private String MaNV;
     private String TenTaiKhoan;

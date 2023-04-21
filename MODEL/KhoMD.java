@@ -3,6 +3,7 @@ package Model;
 public class KhoMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "kho";
+    public static final String groupByStatement = "";
 
     private String MaKho;
     private String TenKho;

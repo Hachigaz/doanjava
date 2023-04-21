@@ -1,10 +1,12 @@
 package Model.Custom;
+
 import Model.*;
 
 public class DSTraCuuHangMD extends Model{
     
-    public static final String selectStatement = "khuvuc.TenKV as 'Khu vực', mat_hang.TenMH as 'Tên mặt hàng', chitiet_donnhap.SLConLai as 'Số5 lượng', loai_hang.TenLoai as 'Loại sản phẩm', cong_ty.TenCty as 'Tên công ty', DATE(donnhap.NgayNhap) as 'Ngày nhập'";
+    public static final String selectStatement = "khuvuc.TenKV as 'Khu vực', mat_hang.TenMH as 'Tên mặt hàng', chitiet_donnhap.SLConLai as 'Số lượng', loai_hang.TenLoai as 'Loại sản phẩm', cong_ty.TenCty as 'Tên công ty', DATE(donnhap.NgayNhap) as 'Ngày nhập'";
     public static final String fromStatement = "chitiet_donnhap join mat_hang on chitiet_donnhap.MaMH = mat_hang.MaMH join khuvuc on chitiet_donnhap.MaKV = khuvuc.MaKV join donnhap on chitiet_donnhap.MaDonNhap = donnhap.MaDonNhap join loai_hang on mat_hang.MaLoai = loai_hang.MaLoai join cong_ty on mat_hang.MaCty = cong_ty.MaCty";
+    public static final String groupByStatement = "";
 
     public DSTraCuuHangMD(String tenKV, String tenMH, Float sLConLai, String tenLoai, String tenCty, String ngayNhap) {
         TenKV = tenKV;

@@ -3,6 +3,7 @@ package Model;
 public class Khuvuc_loaihangMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "khuvuc_loaihang";
+    public static final String groupByStatement = "";
 
     private String MaKV;
     private String MaLoai;

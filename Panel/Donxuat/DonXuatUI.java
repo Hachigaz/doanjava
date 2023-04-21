@@ -164,7 +164,7 @@ public class DonXuatUI extends JPanel{
         }
     }
     public void UpdateTable(TableModel table){
-        this.panelDanhSach.SetTable(table);
+        this.panelDanhSach.SetTable(table,null);
     }
 
     // private String getMaKhoHienTai(){

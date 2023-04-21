@@ -171,3 +171,13 @@ values
 ('DN0004','MH_HIJ_007','K02_KV_A002',500,450),
 ('DN0004','MH_HIJ_008','K02_KV_A002',750,640),
 ('DN0004','MH_HIJ_009','K02_KV_A002',300,240)
+
+use quanlykho;
+select donnhap.MaKho,khuvuc.TenKV,sum(chitiet_donnhap.SLConLai) 
+from khuvuc join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV join loai_hang on khuvuc_loaihang.MaLoai = loai_hang.MaLoai join chitiet_donnhap on chitiet_donnhap.MaKV = khuvuc_loaihang.MaKV join donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap
+group by khuvuc.MaKV
+
+use quanlykho;
+select kho.MaKho,khuvuc.TenKV,loai_hang.TenLoai, case when SUM(chitiet_donnhap.SLConLai) is null then 0 else ceil(SUM(chitiet_donnhap.SLConLai/mat_hang.SoLuongMoiThung)) end
+from khuvuc join kho on khuvuc.MaKho = kho.MaKho join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV join loai_hang on khuvuc_loaihang.MaLoai = loai_hang.MaLoai left outer join chitiet_donnhap on chitiet_donnhap.MaKV = khuvuc_loaihang.MaKV left outer join donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap left outer join mat_hang on chitiet_donnhap.MaMh = mat_hang.MaMH
+group by khuvuc.MaKV,loai_hang.MaLoai

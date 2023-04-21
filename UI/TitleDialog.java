@@ -5,36 +5,23 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class TitleFrame extends JFrame{
-    private JLabel labelHide=new JLabel();
+public class TitleDialog extends JDialog{
     private JLabel labelClose=new JLabel();
-    private JPanel titleBar=new JPanel();
+    private JPanel panelTitleBar=new JPanel();
     public JPanel contentPanel;
-    public TitleFrame(){
+    public TitleDialog(){
+        this.setModal(true);
+
         this.setBounds(100, 100, 500, 500);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
-        this.setLayout(new BorderLayout());
-
-        ImageIcon iconHide = new ImageIcon("res/img/minimum.png");
-        Image imgHide = iconHide.getImage();
-        Image newImgHide = imgHide.getScaledInstance(13,13,java.awt.Image.SCALE_SMOOTH);
-        ImageIcon newIconHide = new ImageIcon(newImgHide);
-
+    
         ImageIcon iconClose = new ImageIcon("res/img/close.png");
         Image imgClose = iconClose.getImage();
         Image newImgClose = imgClose.getScaledInstance(13,13,java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIconClose = new ImageIcon(newImgClose);
-
-        labelHide.setIcon(newIconHide);
-        labelHide.setHorizontalAlignment(JLabel.CENTER);
-        labelHide.setPreferredSize(new Dimension(30,20));
-        labelHide.setBackground(new Color(255, 255, 153));
-        labelHide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        labelHide.setOpaque(true);
-        labelHide.addMouseListener(listener);
-
+    
         labelClose.setIcon(newIconClose);
         labelClose.setHorizontalAlignment(JLabel.CENTER);
         labelClose.setPreferredSize(new Dimension(30,20));
@@ -42,48 +29,39 @@ public class TitleFrame extends JFrame{
         labelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelClose.setOpaque(true);
         labelClose.addMouseListener(listener);
-
-        titleBar = new JPanel();
-        titleBar.setPreferredSize(new Dimension(0,30));
-        titleBar.setBackground(new Color(255, 255, 153));
-        titleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
-
-        titleBar.add(labelHide);
-        titleBar.add(labelClose);
-        
-        this.add(titleBar,BorderLayout.NORTH);
+    
+        panelTitleBar = new JPanel();
+        panelTitleBar.setPreferredSize(new Dimension(0,30));
+        panelTitleBar.setBackground(new Color(255, 255, 153));
+        panelTitleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
+    
+        panelTitleBar.add(labelClose);
+        this.add(panelTitleBar,BorderLayout.NORTH);
     }
-    public void setContentPanel(JPanel panel){
-        this.contentPanel = panel;
-        this.add(contentPanel,BorderLayout.CENTER);
-    }
+    
     private MouseListener listener = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent e) {
             // TODO Auto-generated method stub
-            if(e.getSource()==labelHide){
-                setExtendedState(JFrame.ICONIFIED); 
-            }else if(e.getSource()==labelClose){
+            if(e.getSource()==labelClose){
                 dispose();
             }
         }
         @Override
         public void mousePressed(MouseEvent e) {
             // TODO Auto-generated method stub
-
+    
         }
         @Override
         public void mouseReleased(MouseEvent e) {
             // TODO Auto-generated method stub
-
+    
         }
         @Override
         public void mouseEntered(MouseEvent e) {
             // TODO Auto-generated method stub
             if(e.getSource()==labelClose){
                 labelClose.setBackground(Color.red);
-            }else if(e.getSource()==labelHide){
-                labelHide.setBackground(Color.gray);
             }
         }
         @Override
@@ -91,9 +69,11 @@ public class TitleFrame extends JFrame{
             // TODO Auto-generated method stub
             if(e.getSource()==labelClose){
                 labelClose.setBackground(new Color(255, 255, 153));
-            }else if(e.getSource()==labelHide){
-                labelHide.setBackground(new Color(255, 255, 153));
             }
         }
-    };
+    };    
+    public void setContentPanel(JPanel panel){
+        this.contentPanel = panel;
+        this.add(contentPanel,BorderLayout.CENTER);
+    }
 }

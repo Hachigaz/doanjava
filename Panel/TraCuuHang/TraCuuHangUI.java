@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
@@ -13,8 +14,6 @@ import javax.swing.table.TableModel;
 
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
-import misc.DataSet;
-import misc.util;
 public class TraCuuHangUI extends JPanel{
 
     private JPanel panelChucNang;
@@ -164,9 +163,8 @@ public class TraCuuHangUI extends JPanel{
         }
     }
     public void UpdateTable(TableModel table){
-        this.panelDanhSach.SetTable(table);
+        this.panelDanhSach.SetTable(table,null);
     }
-
     // private String getMaKhoHienTai(){
     //     String maKho = null;
     //     String selected = cbChonKho.getSelectedItem().toString();

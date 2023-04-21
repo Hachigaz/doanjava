@@ -3,7 +3,8 @@ package Model;
 public class DonKiemMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "donkiem";
-
+    public static final String groupByStatement = "";
+    
     private String MaDonKiem;
     private String MaKho;
     private String MaNVNhap;

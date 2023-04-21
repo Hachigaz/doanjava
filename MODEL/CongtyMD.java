@@ -3,7 +3,8 @@ package Model;
 public class CongtyMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "cong_ty";
-
+    public static final String groupByStatement = "";
+    
     private String MaCty;
     private String TenCty;
     private String DiaChi;

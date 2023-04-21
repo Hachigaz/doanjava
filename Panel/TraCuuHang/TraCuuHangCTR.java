@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import DAL.DataAccessLayer;
 import SQL.*;
@@ -22,7 +23,7 @@ public class TraCuuHangCTR {
     public TraCuuHangCTR(SQLUser user,Taikhoan_nhanvienMD tkdn, Dimension d){
         this.master = user;
         this.tkDangNhap = tkdn;
-        TraCuuHangDAL = new DataAccessLayer<DSTraCuuHangMD>(user, DSTraCuuHangMD.class);
+        TraCuuHangDAL = new DataAccessLayer<DSTraCuuHangMD>(master, DSTraCuuHangMD.class);
 
         ui = new TraCuuHangUI(d);
         
@@ -39,7 +40,7 @@ public class TraCuuHangCTR {
                 ui.timTheoGiaTri();
             }
         };
-        DataAccessLayer<KhoMD> khoDAO = new DataAccessLayer<>(user, KhoMD.class);
+        DataAccessLayer<KhoMD> khoDAO = new DataAccessLayer<>(master, KhoMD.class);
         Object[][] dsKho = Model.to2DArray(khoDAO.getTable(),"MaKho","TenKho");
 
         ui.SetupPanelChucNang(util.objToString(util.getColumn(dsKho, 1)),util.objToString(util.getColumn(dsKho, 0)), onChangeMaKho, onSubmitSearch);
@@ -51,7 +52,7 @@ public class TraCuuHangCTR {
         ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
 
         //Lấy danh sách khu vực và thêm vào bảng lộc
-        DataAccessLayer<KhuvucMD> KhuVucDAL = new DataAccessLayer<KhuvucMD>(user, KhuvucMD.class);
+        DataAccessLayer<KhuvucMD> KhuVucDAL = new DataAccessLayer<KhuvucMD>(master, KhuvucMD.class);
         ArrayList<KhuvucMD> danhSachKV = KhuVucDAL.getTable("MaKho = "+ui.getSelectedMaKhoKey());
 
         tenLoc.add(new ArrayList<String>());
@@ -61,7 +62,7 @@ public class TraCuuHangCTR {
 
 
         //Lấy danh sách khu vực và thêm vào bảng lộc
-        DataAccessLayer<Loai_hangMD> LoaiHangDAL = new DataAccessLayer<Loai_hangMD>(user, Loai_hangMD.class);
+        DataAccessLayer<Loai_hangMD> LoaiHangDAL = new DataAccessLayer<Loai_hangMD>(master, Loai_hangMD.class);
         ArrayList<Loai_hangMD> danhSachLH = LoaiHangDAL.getTable();
 
         tenLoc.add(new ArrayList<String>());
@@ -71,11 +72,11 @@ public class TraCuuHangCTR {
 
 
         //Lấy danh sách khu vực và thêm vào bảng lộc
-        DataAccessLayer<CongtyMD> CongTyDAL = new DataAccessLayer<CongtyMD>(user, CongtyMD.class);
+        DataAccessLayer<CongtyMD> CongTyDAL = new DataAccessLayer<CongtyMD>(master, CongtyMD.class);
         ArrayList<CongtyMD> danhSachCT = CongTyDAL.getTable(); 
 
         tenLoc.add(new ArrayList<String>());
-        for(CongtyMD cty : danhSachCT){          
+        for(CongtyMD cty : danhSachCT){
             tenLoc.get(2).add(cty.getTenCty());
         }
         
@@ -112,7 +113,13 @@ public class TraCuuHangCTR {
 
         //setup bảng        
         ArrayList<DSTraCuuHangMD> dsTraCuu = TraCuuHangDAL.getTable("donnhap.MaKho = "+ui.getSelectedMaKhoKey());
-        ui. UpdateTable(new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnName()));
+        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),TraCuuHangDAL.getReturnedColumnLabel()){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        ui. UpdateTable(tableDanhSach);
     }
 
     public TraCuuHangUI getUI() {

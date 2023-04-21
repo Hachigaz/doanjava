@@ -1,12 +1,14 @@
 package DAL;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.*;
 import Model.Model;
+import Model.Custom.DSChiTietKhuVucLoaiMD;
 import SQL.*;
 import misc.DataSet;
 import misc.InstanceCreator;
@@ -119,9 +121,15 @@ public class DataAccessLayer<T> {
 
             sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
 
+            //group by statement
+            String groupByStatement = util.getClassVariable(classType,"groupByStatement");
+            if(!groupByStatement.equals("")){
+                sql+="\nGROUP BY ";
+                sql+=groupByStatement;
+            }
             DataSet ds = user.getDataQuery(sql);
             if(ds==null){
-                throw new Exception("Danh sách trả về rỗng");
+                throw new NullDALReturnException("Danh sách trả về rỗng");
             }
 
             this.returnedColumnLabel = ds.getColumnLabel();
@@ -136,8 +144,23 @@ public class DataAccessLayer<T> {
                 list.add(t);
             }
         }
-        catch(Exception e){
-            System.out.println(e.getClass()+":"+e.getMessage());
+        catch(IllegalAccessException e){
+            System.out.println(e.getMessage());
+        }
+        catch(NoSuchFieldException e){
+            System.out.println(e.getMessage());
+        }
+        catch(NoSuchMethodException e){
+            System.out.println(e.getMessage());
+        } 
+        catch (InvocationTargetException e) {
+            System.out.println(e.getMessage());
+        } 
+        catch (InstantiationException e) {
+            System.out.println(e.getMessage());
+        }
+        catch(NullDALReturnException e){
+
         }
         return list;
     }
@@ -155,7 +178,7 @@ public class DataAccessLayer<T> {
                 sql+= " FROM "+ util.getClassVariable(classType,"fromStatement") +whereStatement;
                 DataSet ds = user.getDataQuery(sql);
                 if(ds==null){
-                    throw new Exception("Danh sách trả về rỗng");
+                    throw new NullDALReturnException("Danh sách trả về rỗng");
                 }
                 
                 this.returnedColumnLabel = ds.getColumnLabel();
@@ -168,8 +191,23 @@ public class DataAccessLayer<T> {
                 }
                 t = creator.createInstance(params);
             }
-            catch(Exception e){
+            catch(IllegalAccessException e){
                 System.out.println(e.getMessage());
+            }
+            catch(NoSuchFieldException e){
+                System.out.println(e.getMessage());
+            }
+            catch(NoSuchMethodException e){
+                System.out.println(e.getMessage());
+            } 
+            catch (InvocationTargetException e) {
+                System.out.println(e.getMessage());
+            } 
+            catch (InstantiationException e) {
+                System.out.println(e.getMessage());
+            }
+            catch(NullDALReturnException e){
+
             }
             return t;
     }
@@ -201,11 +239,9 @@ public class DataAccessLayer<T> {
         // for(int i =0  ; i < kv.size();i++){
         //     System.out.println(kv.get(i).getTenTaiKhoan()+"   "+kv.get(i).getTenTaiKhoan().getClass());
         // }
-        DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
+        //DataAccessLayer<KhoMD> DAL2 = new DataAccessLayer<>(user,KhoMD.class);
 
 
-        Integer a = 1;
-        System.out.println(a.getClass());
         //DAL2.remove("MaKho = K03");
         //DAL2.update(new KhoMD("K01","Kho TBT","241 Tran Binh Trong"),"MaKho=K01","TenKho= Kho ADV");
         // DAL2.add(kho);
@@ -230,6 +266,8 @@ public class DataAccessLayer<T> {
         //dsCT.add(new CongtyMD("Cty_A", "A", "123 DA", "12355"));
        
         //ctDAO.add(dsCT);
+        DataAccessLayer<DSChiTietKhuVucLoaiMD> dal = new DataAccessLayer<>(user, DSChiTietKhuVucLoaiMD.class);
+        dal.getTable();
     }
 
     private String[] returnedColumnLabel= null;

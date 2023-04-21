@@ -3,6 +3,7 @@ package Model;
 public class Loai_hangMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "loai_hang";
+    public static final String groupByStatement = "";
 
     private String MaLoai;
     private String Tenloai;

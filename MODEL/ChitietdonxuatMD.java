@@ -1,7 +1,9 @@
 package Model;
 
 public class ChitietdonxuatMD extends Model {
-    public static final String tableName = "chitiet_donxuat";
+    public static final String selectStatement = "*";
+    public static final String fromStatement = "chitiet_donxuat";
+    public static final String groupByStatement = "";
 
     private String MaDonXuat;
     private String MaDonNhap;
