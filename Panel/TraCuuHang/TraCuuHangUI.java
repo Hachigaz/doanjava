@@ -45,11 +45,11 @@ public class TraCuuHangUI extends JPanel{
         this.add(panelDanhSach,BorderLayout.CENTER);
 
 
-        panelChucNang.setBackground(Color.DARK_GRAY);
+        panelChucNang.setBackground(new Color(255, 182, 87,255));
         panelChucNang.setOpaque(true);
         panelLoc.setBackground(Color.LIGHT_GRAY);
         panelLoc.setOpaque(true);
-        panelDanhSach.setBackground(Color.GREEN);
+        panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
     }
 

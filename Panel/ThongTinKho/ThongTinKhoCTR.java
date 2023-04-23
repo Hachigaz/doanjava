@@ -10,15 +10,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
 
 import DAL.DataAccessLayer;
-import Model.KhoMD;
-import Model.KhuvucMD;
-import Model.Khuvuc_loaihangMD;
-import Model.Loai_hangMD;
-import Model.Model;
-import Model.NhanvienMD;
-import Model.Taikhoan_nhanvienMD;
-import Model.Custom.DSChiTietKhuVucLoaiMD;
-import Panel.ThongTinKho.Form.FormThemKhuVuc;
+import Model.*;
+import Model.Custom.*;
+import Panel.ThongTinKho.Form.*;
 import SQL.SQLUser;
 import misc.ThongBaoDialog;
 import misc.util;

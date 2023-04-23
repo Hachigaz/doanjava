@@ -1,5 +1,7 @@
 package Model;
 
+import DAL.DataAccessLayer;
+
 public class KhuvucMD extends Model {
     public static final String selectStatement = "*";
     public static final String fromStatement = "khuvuc";

@@ -5,8 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -20,7 +20,6 @@ public class ThongTinKhoUI extends JPanel{
     private InfoDisplayPanel sidePanel = new InfoDisplayPanel();
     //danh sách có nút sửa thong tin và xoá khu vực
     private TablePanel danhSachPanel = new TablePanel();
-    
     public ThongTinKhoUI(Dimension size){
         this.setLayout(new BorderLayout());
         this.setOpaque(true);
@@ -59,6 +58,8 @@ class HeaderOptionPanel extends JPanel{
     public JLabel khoHienTaiLabel;
     public JLabel tongSucChuaLabel;
     public JButton themKhuVucBtn;
+    private Font buttonFont = new Font("Helvetica",Font.BOLD,14);
+    private Font displayFont = new Font("Tahoma",Font.BOLD,20);
     public HeaderOptionPanel(){
         
         this.setLayout(new FlowLayout(FlowLayout.LEFT,20,10));
@@ -66,9 +67,11 @@ class HeaderOptionPanel extends JPanel{
         this.setOpaque(true);
 
         this.khoHienTaiLabel=new JLabel("Kho hiện tại");
+        this.khoHienTaiLabel.setFont(displayFont);
         this.tongSucChuaLabel = new JLabel("Tổng sức chứa");
+        this.tongSucChuaLabel.setFont(displayFont);
         this.themKhuVucBtn=new JButton("Thêm khu vực mới");
-        
+        this.themKhuVucBtn.setFont(buttonFont);
         
         this.add(this.khoHienTaiLabel);
         this.add(this.tongSucChuaLabel);
@@ -91,6 +94,9 @@ class InfoDisplayPanel extends JPanel{
     //panel hiện chi tiết khu vực và option
     public JPanel infoPanel = new JPanel(new BorderLayout());
     
+    private Font buttonFont = new Font("Helvetica",Font.BOLD,14);
+    private Font displayFont = new Font("Helvetica",Font.BOLD,16);
+
     public JPanel optionPanel = new JPanel();
     private JButton themLoaiBtn = new JButton("Thêm loại hàng vào khu vực");
     private JButton xoaLoaiBtn = new JButton("Xoá loại hàng đã chọn");
@@ -101,15 +107,20 @@ class InfoDisplayPanel extends JPanel{
     //panel form nhập ctkv
     public JPanel themCTKVPanel = new JPanel();
     private JComboBox<String> loaiHangCB = new JComboBox<>();
+    private JPanel themCTKVOptionPanel = new JPanel();
     private JButton submitCTKVBtn = new JButton("Thêm");
     private JButton cancelCTKVBtn = new JButton("Huỷ");
         public InfoDisplayPanel(){
         startPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
-        startPanel.add(new JLabel("Chọn vào một khu vực để xem chi tiết"));
+        JLabel startLabel =new JLabel("Chọn vào một khu vực để xem chi tiết");
+        startLabel.setFont(displayFont);
+        startPanel.add(startLabel);
 
 
         tableNullMessagePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-        tableNullMessagePanel.add(new JLabel("Khu vực chưa thêm loại hàng"));
+        JLabel tableNullMsgLabel =new JLabel("Khu vực chưa thêm loại hàng");
+        tableNullMsgLabel.setFont(displayFont);
+        tableNullMessagePanel.add(tableNullMsgLabel);
         tableNullMessagePanel.setBackground(Color.orange);
         tableNullMessagePanel.setOpaque(true);
 
@@ -118,18 +129,38 @@ class InfoDisplayPanel extends JPanel{
         optionPanel.setOpaque(true);
         optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
 
+        themLoaiBtn.setFont(buttonFont);
         optionPanel.add(themLoaiBtn);
+        xoaLoaiBtn.setFont(buttonFont);
         optionPanel.add(xoaLoaiBtn);
 
         infoPanel.add(optionPanel,BorderLayout.NORTH);
         infoPanel.add(chiTietKhuVucPanel,BorderLayout.CENTER);
         
-        themCTKVPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,20));
+        themCTKVPanel.setLayout(new BoxLayout(themCTKVPanel,BoxLayout.Y_AXIS));
+
+        JPanel headerCTKVOptionPanel=new JPanel(new FlowLayout(FlowLayout.CENTER,20,0));
+        JLabel themLoaiLabel = new JLabel("Thêm loại mới vào khu vực");
+        themLoaiLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        headerCTKVOptionPanel.add(themLoaiLabel);
+        themCTKVPanel.add(headerCTKVOptionPanel);
+        JPanel inputOptionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,20,0));
         
-        themCTKVPanel.add(new JLabel("Thêm loại mới vào khu vực"));
-        themCTKVPanel.add(loaiHangCB);
-        themCTKVPanel.add(submitCTKVBtn);
-        themCTKVPanel.add(cancelCTKVBtn);
+        JLabel loaiHangCBLabel = new JLabel("Chọn loại hàng");
+        loaiHangCBLabel.setFont(displayFont);
+        inputOptionPanel.add(loaiHangCBLabel);
+        loaiHangCB.setFont(buttonFont); 
+        inputOptionPanel.add(loaiHangCB);
+        
+        themCTKVPanel.add(inputOptionPanel);
+
+        submitCTKVBtn.setFont(buttonFont);
+        cancelCTKVBtn.setFont(buttonFont);
+        themCTKVOptionPanel.setLayout(new FlowLayout(FlowLayout.CENTER,20, 0));
+        themCTKVOptionPanel.add(submitCTKVBtn);
+        themCTKVOptionPanel.add(cancelCTKVBtn);
+
+        themCTKVPanel.add(themCTKVOptionPanel);
         
 
         infoPanel.setVisible(false);

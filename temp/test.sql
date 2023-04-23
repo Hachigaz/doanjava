@@ -4,43 +4,31 @@ VALUES('K01','Kho ADV','273 An Dương Vương'),
       ('K02','Kho THD','348 Trần Hưng Đạo')
 
 
+
+
+use quanlykho;
+INSERT INTO `khuvuc` (`MaKho`, `MaKV`,`TenKV`, `SucChua`) VALUES 
+('K01', 'K01_001','Khu vực 001', '6000'), 
+('K01', 'K01_002','Khu vực 002', '9500'), 
+('K01', 'K01_003','Khu vực 003', '12000'), 
+('K01', 'K01_004','Khu vực 004', '8000'),
+('K01', 'K01_005','Khu vực 005', '7800'), 
+('K01', 'K01_006','Khu vực 006', '14000')
 use quanlykho;
 INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES 
-('K01_KV_A001', 'LC01'), 
-('K01_KV_A001', 'LC02'), 
-('K01_KV_A002', 'LD01'), 
-('K01_KV_A002', 'LD02'), 
-('K01_KV_B001', 'LC04'), 
-('K01_KV_B001', 'LC05'), 
-('K01_KV_B001', 'LB01'), 
-('K01_KV_B001', 'LB02'), 
-('K01_KV_B002', 'LA01'), 
-('K01_KV_B002', 'LA03'), 
-('K01_KV_C001', 'LA01'), 
-('K01_KV_C001', 'LA02'), 
-('K01_KV_D001', 'LC03')
-
-use quanlykho;
-INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES 
-('K01_KV_A002', 'LD01'), 
-('K01_KV_A002', 'LD02'), 
-('K01_KV_B001', 'LC04'), 
-('K01_KV_B001', 'LC05'), 
-('K01_KV_B001', 'LB01'), 
-('K01_KV_B001', 'LB02'), 
-('K01_KV_B002', 'LA01'), 
-('K01_KV_B002', 'LA03'), 
-('K01_KV_D001', 'LC03')
-
-use quanlykho;
-INSERT INTO `khuvuc` (`MaKho`, `MaKV`, `SucChua`) VALUES 
-('K01', 'K01_KV_A001', '6000'), 
-('K01', 'K01_KV_A002', '9500'), 
-('K01', 'K01_KV_B001', '12000'), 
-('K01', 'K01_KV_B002', '8000'),
-('K01', 'K01_KV_C001', '7800'), 
-('K01', 'K01_KV_D001', '14000')
-
+('K01_001', 'LC01'), 
+('K01_001', 'LC02'), 
+('K01_002', 'LD01'), 
+('K01_002', 'LD02'), 
+('K01_003', 'LC04'), 
+('K01_003', 'LC05'), 
+('K01_003', 'LB01'), 
+('K01_003', 'LB02'), 
+('K01_004', 'LA01'), 
+('K01_004', 'LA03'), 
+('K01_005', 'LA01'), 
+('K01_005', 'LA02'), 
+('K01_006', 'LC03')
 use quanlykho;
 insert into loai_hang
 values
@@ -157,30 +145,53 @@ values
 ('DN0003','K02','Cty_ABC','NV2001',2021/12/1),
 ('DN0004','K02','Cty_HIJ','NV2003',2021/2/4)
 
+use quanlykho;
+insert into khuvuc
+values
+('K02','K02_001','Khu vực 001',7500),
+('K02','K02_002','Khu vực 002',9000)
 
 use quanlykho;
 INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES 
-('K02_KV_A001', 'LA01'), 
-('K02_KV_A001', 'LA02'),
-('K02_KV_A002', 'LC01'), 
-('K02_KV_A002', 'LC02'),
-('K02_KV_A002', 'LC03')
+('K02_001', 'LA01'), 
+('K02_001', 'LA02'),
+('K02_002', 'LC01'), 
+('K02_002', 'LC02'),
+('K02_002', 'LC03')
 
 use quanlykho;
 insert into chitiet_donnhap
 values
-('DN0003','MH_ABC_012','K02_KV_A001',250,230),
-('DN0003','MH_ABC_013','K02_KV_A001',300,280),
-('DN0003','MH_ABC_016','K02_KV_A001',240,240),
-('DN0003','MH_ABC_008','K02_KV_A001',240,240)
+('DN0003','MH_ABC_012','K02_001',250,230),
+('DN0003','MH_ABC_013','K02_001',300,280),
+('DN0003','MH_ABC_016','K02_001',240,240),
+('DN0003','MH_ABC_008','K02_001',240,240)
 
 
 use quanlykho;
 insert into chitiet_donnhap
 values
-('DN0004','MH_HIJ_007','K02_KV_A002',500,450),
-('DN0004','MH_HIJ_008','K02_KV_A002',750,640),
-('DN0004','MH_HIJ_009','K02_KV_A002',300,240)
+('DN0004','MH_HIJ_007','K02_002',500,450),
+('DN0004','MH_HIJ_008','K02_002',750,640),
+('DN0004','MH_HIJ_009','K02_002',300,240)
+
+
+use quanlykho;
+insert into chitiet_donnhap
+values
+('DN0001','MH_ABC_001','K01_005',2500,2350),
+('DN0001','MH_ABC_002','K01_005',3000,2800),
+('DN0001','MH_ABC_003','K01_004',2400,2400),
+('DN0001','MH_ABC_004','K01_004',2400,2400),
+('DN0001','MH_ABC_005','K01_004',5800,5700)
+
+
+use quanlykho;
+insert into chitiet_donnhap
+values
+('DN0002','MH_HIJ_001','K01_001',1200,950),
+('DN0002','MH_HIJ_003','K01_001',1500,1640),
+('DN0002','MH_HIJ_005','K01_001',1750,1440)
 
 use quanlykho;
 select donnhap.MaKho,khuvuc.TenKV,sum(chitiet_donnhap.SLConLai) 
