@@ -1,10 +1,15 @@
 package Panel.ThongTinKho;
 
 import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
@@ -116,7 +121,8 @@ public class ThongTinKhoCTR {
                                     //duyệt trong dsctkv hiện tại coi nó có tồn tại trong csdl chưa
                                     String maKVHienTai = layMaKVSelected();
                                     boolean timThay = false;
-                                    for(Khuvuc_loaihangMD kvLoai : khuVucLoaiDAL.getTable("MaKV="+maKVHienTai)){
+                                    ArrayList<Khuvuc_loaihangMD> dsKhuVucLoai = khuVucLoaiDAL.getTable("MaKV="+maKVHienTai);
+                                    for(Khuvuc_loaihangMD kvLoai : dsKhuVucLoai){
                                         if(kvLoai.getMaLoai().equals(loaiHang.getMaLoai())){
                                             timThay=true;
                                         }
@@ -163,7 +169,57 @@ public class ThongTinKhoCTR {
     //==================action listeners=========================
     private ActionListener themKVListener = new ActionListener() {
         public void actionPerformed(ActionEvent e){
-            new FormThemKhuVuc();
+            Window mainWindow = SwingUtilities.getWindowAncestor(ui);
+            mainWindow.setEnabled(false);
+
+            ArrayList<FormInput> inputFields = new ArrayList<FormInput>();
+            inputFields.add(new FormInput("Tên khu vực",new JTextField("",20)));
+            inputFields.add(new FormInput("Sức chứa",new JTextField("",20)));
+            
+            ActionListener themKVSubmitListener = new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+                    String maKho = nvDAL.getFirst("MaNV = "+tkDangNhap.getMaNV()).getKho_lam_viec();
+                    DecimalFormat df = new DecimalFormat("000");
+                    String maKVMoi = maKho + "_" +df.format(kvDAL.getTable("MaKho ="+maKho).size()+1);
+                    System.out.println(maKVMoi);
+                    JTextField tenKVField = (JTextField)(inputFields.get(0).getInputComponent());
+                    String tenKV = tenKVField.getText();
+                    Float soLuong = 0.0f;
+                    try{
+                        JTextField soLuongField = (JTextField)(inputFields.get(1).getInputComponent());
+                        soLuong = Float.parseFloat(soLuongField.getText());
+                        if(soLuong > 0){
+                            kvDAL.addOne(new KhuvucMD(maKho, maKVMoi, tenKV, soLuong));
+                            new ThongBaoDialog("Thêm khu vực thành công", null);
+                            Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
+                            formThemDialog.dispose();
+                            mainWindow.setEnabled(true);
+                            mainWindow.setAlwaysOnTop(true);
+                            mainWindow.setAlwaysOnTop(false);
+                            updateTable();
+                        }
+                        else{
+                            new ThongBaoDialog("Số lượng nhập vào phải lớn hơn 0", null);
+                        }
+                    }
+                    catch(NumberFormatException exception){
+                        new ThongBaoDialog("Số lượng nhập vào không phải là số",null);
+                    }
+                }
+            };
+            ActionListener themKVCancelListener = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                    Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
+                    formThemDialog.dispose();
+                    mainWindow.setEnabled(true);
+                    mainWindow.setAlwaysOnTop(true);
+                    mainWindow.setAlwaysOnTop(false);
+                }
+            };
+            new FormThem("Thêm khu vực mới",inputFields,themKVSubmitListener,themKVCancelListener);
+            
         }
     };
     //listener khi chọn vào một dòng trong bảng khu vực

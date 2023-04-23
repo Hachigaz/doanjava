@@ -135,7 +135,10 @@ class InfoDisplayPanel extends JPanel{
         optionPanel.add(xoaLoaiBtn);
 
         infoPanel.add(optionPanel,BorderLayout.NORTH);
-        infoPanel.add(chiTietKhuVucPanel,BorderLayout.CENTER);
+        JPanel infoSubPanel = new JPanel(new CardLayout());
+        infoPanel.add(infoSubPanel,BorderLayout.CENTER);
+        infoSubPanel.add(chiTietKhuVucPanel);
+        infoSubPanel.add(tableNullMessagePanel);
         
         themCTKVPanel.setLayout(new BoxLayout(themCTKVPanel,BoxLayout.Y_AXIS));
 
@@ -171,7 +174,6 @@ class InfoDisplayPanel extends JPanel{
         this.setLayout(new CardLayout());
         this.add(startPanel);
         this.add(infoPanel);
-        this.add(tableNullMessagePanel);
         this.add(themCTKVPanel);
 
         setupXoaButton(null);
@@ -215,11 +217,13 @@ class InfoDisplayPanel extends JPanel{
 
     public void setDisplayNullMessage(){
         hideAllPanels();
+        infoPanel.setVisible(true);
         tableNullMessagePanel.setVisible(true);
     }
     public void setDisplayTable(){
         hideAllPanels();
         infoPanel.setVisible(true);
+        chiTietKhuVucPanel.setVisible(true);
     }
     public void setDisplayThemCTKVPanel(){
         hideAllPanels();
@@ -231,8 +235,9 @@ class InfoDisplayPanel extends JPanel{
         if(startPanel.isVisible()){
             startPanel.setVisible(false);
         }
-        infoPanel.setVisible(false);
+        chiTietKhuVucPanel.setVisible(false);
         tableNullMessagePanel.setVisible(false);
+        infoPanel.setVisible(false);
         themCTKVPanel.setVisible(false);
     }
     public int getSelectedTableRow(){
