@@ -40,7 +40,7 @@ public class Program {
             public void windowClosed(WindowEvent e){
                 Taikhoan_nhanvienMD tkDangNhap = dn.getTenTKDangNhap();
                 if(tkDangNhap!=null){
-                    UI ui = new UI(master,tkDangNhap);
+                    new UI(master,tkDangNhap);
                 }
             }
         });

@@ -6,11 +6,11 @@ public class Loai_hangMD extends Model{
     public static final String groupByStatement = "";
 
     private String MaLoai;
-    private String Tenloai;
+    private String TenLoai;
     
     public Loai_hangMD(String maLoai, String tenloai) {
         MaLoai = maLoai;
-        Tenloai = tenloai;
+        TenLoai = tenloai;
     }
     public String getMaLoai() {
         return MaLoai;
@@ -19,10 +19,10 @@ public class Loai_hangMD extends Model{
         MaLoai = maLoai;
     }
     public String getTenloai() {
-        return Tenloai;
+        return TenLoai;
     }
     public void setTenloai(String tenloai) {
-        Tenloai = tenloai;
+        TenLoai = tenloai;
     }
     public String getSelectStatement(){
         return Loai_hangMD.selectStatement;
@@ -32,6 +32,6 @@ public class Loai_hangMD extends Model{
     }
     @Override
     public String toSQLString() {
-        return "('" + MaLoai + "','" + Tenloai + "')";
+        return "('" + MaLoai + "','" + TenLoai + "')";
     }
 }

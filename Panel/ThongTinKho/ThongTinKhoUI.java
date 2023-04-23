@@ -86,47 +86,125 @@ class HeaderOptionPanel extends JPanel{
 }
 
 class InfoDisplayPanel extends JPanel{
+    //panel hiện lên khi vừa bấm vào chức năng
+    public JPanel startPanel = new JPanel();
+    //panel hiện chi tiết khu vực và option
     public JPanel infoPanel = new JPanel(new BorderLayout());
-    public JPanel optionPanel = new JPanel();
-    public ArrayList<JButton> actionButtons = new ArrayList<JButton>();
-    public TablePanel chiTietKhuVucPanel = new TablePanel();
     
-    public JPanel tableNullMessagePanel = new JPanel();
+    public JPanel optionPanel = new JPanel();
+    private JButton themLoaiBtn = new JButton("Thêm loại hàng vào khu vực");
+    private JButton xoaLoaiBtn = new JButton("Xoá loại hàng đã chọn");
 
-    public InfoDisplayPanel(){
+    public TablePanel chiTietKhuVucPanel = new TablePanel();
+    //panel hiện khi bảng trống
+    public JPanel tableNullMessagePanel = new JPanel();
+    //panel form nhập ctkv
+    public JPanel themCTKVPanel = new JPanel();
+    private JComboBox<String> loaiHangCB = new JComboBox<>();
+    private JButton submitCTKVBtn = new JButton("Thêm");
+    private JButton cancelCTKVBtn = new JButton("Huỷ");
+        public InfoDisplayPanel(){
+        startPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+        startPanel.add(new JLabel("Chọn vào một khu vực để xem chi tiết"));
+
+
         tableNullMessagePanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
         tableNullMessagePanel.add(new JLabel("Khu vực chưa thêm loại hàng"));
         tableNullMessagePanel.setBackground(Color.orange);
         tableNullMessagePanel.setOpaque(true);
 
+
         optionPanel.setBackground(Color.orange);
         optionPanel.setOpaque(true);
-        
+        optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
+
+        optionPanel.add(themLoaiBtn);
+        optionPanel.add(xoaLoaiBtn);
+
         infoPanel.add(optionPanel,BorderLayout.NORTH);
         infoPanel.add(chiTietKhuVucPanel,BorderLayout.CENTER);
+        
+        themCTKVPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,20));
+        
+        themCTKVPanel.add(new JLabel("Thêm loại mới vào khu vực"));
+        themCTKVPanel.add(loaiHangCB);
+        themCTKVPanel.add(submitCTKVBtn);
+        themCTKVPanel.add(cancelCTKVBtn);
+        
+
+        infoPanel.setVisible(false);
+        tableNullMessagePanel.setVisible(false);
+        themCTKVPanel.setVisible(false);
+
 
         this.setLayout(new CardLayout());
-
+        this.add(startPanel);
         this.add(infoPanel);
         this.add(tableNullMessagePanel);
+        this.add(themCTKVPanel);
 
-        this.setDisplayTable();
+        setupXoaButton(null);
+    }
+    public void setupThemButton(ActionListener themKVAction){
+        removeButtonListeners(themLoaiBtn);
+        themLoaiBtn.addActionListener(themKVAction);
     }
 
-    public void setupButtons(ArrayList<JButton> buttons){
-        this.actionButtons = buttons;
-        optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
-        for(JButton button : actionButtons){
-            optionPanel.add(button);
+    public void setupXoaButton(ActionListener xoaKVAction){
+        if(xoaKVAction!=null){
+            xoaLoaiBtn.setEnabled(true);
+            removeButtonListeners(xoaLoaiBtn);
+            xoaLoaiBtn.addActionListener(xoaKVAction);
         }
-        this.add(optionPanel);
+        else{
+            xoaLoaiBtn.setEnabled(false);
+        }
     }
+
+    public void removeButtonListeners(JButton button){
+        for(ActionListener listener : button.getActionListeners()){
+            button.removeActionListener(listener);
+        }
+    }
+
+    public void setupThemCTKVForm(String[] tenLoai,ActionListener submitAction,ActionListener cancelAction){
+        for(int i = 0 ; i < tenLoai.length;i++){
+            loaiHangCB.addItem(tenLoai[i]);
+        }
+        removeButtonListeners(submitCTKVBtn);
+        submitCTKVBtn.addActionListener(submitAction);
+        removeButtonListeners(cancelCTKVBtn);
+        cancelCTKVBtn.addActionListener(cancelAction);
+
+    }
+
+    public String getSelectedItemInComboBox(){
+        return loaiHangCB.getSelectedItem().toString();
+    }
+
     public void setDisplayNullMessage(){
-        infoPanel.setVisible(false);
+        hideAllPanels();
         tableNullMessagePanel.setVisible(true);
     }
     public void setDisplayTable(){
+        hideAllPanels();
         infoPanel.setVisible(true);
+    }
+    public void setDisplayThemCTKVPanel(){
+        hideAllPanels();
+        themCTKVPanel.setVisible(true);
+    }
+
+
+    private void hideAllPanels(){
+        if(startPanel.isVisible()){
+            startPanel.setVisible(false);
+        }
+        infoPanel.setVisible(false);
         tableNullMessagePanel.setVisible(false);
+        themCTKVPanel.setVisible(false);
+    }
+    public int getSelectedTableRow(){
+        return chiTietKhuVucPanel.getSelectedRow();
     }
 }

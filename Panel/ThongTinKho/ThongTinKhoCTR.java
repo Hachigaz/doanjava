@@ -12,16 +12,19 @@ import javax.swing.table.*;
 import DAL.DataAccessLayer;
 import Model.KhoMD;
 import Model.KhuvucMD;
+import Model.Khuvuc_loaihangMD;
+import Model.Loai_hangMD;
 import Model.Model;
 import Model.NhanvienMD;
 import Model.Taikhoan_nhanvienMD;
 import Model.Custom.DSChiTietKhuVucLoaiMD;
 import Panel.ThongTinKho.Form.FormThemKhuVuc;
 import SQL.SQLUser;
+import misc.ThongBaoDialog;
+import misc.util;
 
 public class ThongTinKhoCTR {
     private ThongTinKhoUI ui;
-    private SQLUser user;
     private Taikhoan_nhanvienMD tkDangNhap;
 
     private String maKhoHT;
@@ -29,18 +32,28 @@ public class ThongTinKhoCTR {
     private TableModel currentTable;
 
     
+    private DataAccessLayer<KhoMD> khoDAL;
+    private DataAccessLayer<NhanvienMD> nvDAL;
+    private DataAccessLayer<KhuvucMD> kvDAL;
+    private DataAccessLayer<DSChiTietKhuVucLoaiMD>  chiTietKVLoaiDAL;
+    private DataAccessLayer<Loai_hangMD> loaiHangDAL;
+    private DataAccessLayer<Khuvuc_loaihangMD> khuVucLoaiDAL;
+
     public ThongTinKhoCTR(SQLUser user,Taikhoan_nhanvienMD taiKhoanDangNhap,Dimension size){
-        this.user=user;
+        khoDAL = new DataAccessLayer<>(user, KhoMD.class);
+        nvDAL = new DataAccessLayer<>(user, NhanvienMD.class);
+        kvDAL = new DataAccessLayer<>(user, KhuvucMD.class);
+        chiTietKVLoaiDAL = new DataAccessLayer<>(user, DSChiTietKhuVucLoaiMD.class);
+        loaiHangDAL = new DataAccessLayer<>(user, Loai_hangMD.class);
+        khuVucLoaiDAL = new DataAccessLayer<>(user, Khuvuc_loaihangMD.class);
+
         this.tkDangNhap=taiKhoanDangNhap;
         ui = new ThongTinKhoUI(size);
         
         //lay ten kho dang nhap
-        DataAccessLayer<KhoMD> khoDAL = new DataAccessLayer<>(user, KhoMD.class);
-        DataAccessLayer<NhanvienMD> nvDAL = new DataAccessLayer<>(user, NhanvienMD.class);
         maKhoHT = nvDAL.getFirst("MaNV = "+tkDangNhap.getMaNV()).getKho_lam_viec();
         tenKhoHT = khoDAL.getFirst("MaKho= "+maKhoHT).getTenKho();
         //lay tong suc chua cua ca kho
-        DataAccessLayer<KhuvucMD> kvDAL = new DataAccessLayer<>(user, KhuvucMD.class);
         Float tongSucChua = 0.0f;
         for(KhuvucMD kv : kvDAL.getTable("MaKho = "+maKhoHT)){
             tongSucChua+=kv.getSucChua();
@@ -53,7 +66,6 @@ public class ThongTinKhoCTR {
         return ui;
     }
     private void updateTable(){
-        DataAccessLayer<KhuvucMD> kvDAL = new DataAccessLayer<>(user, KhuvucMD.class);
         ArrayList<KhuvucMD> dsKhuVuc = kvDAL.getTable("MaKho = "+maKhoHT);
         String[] columnNames = {"Mã khu vực","Tên khu vực", "Sức chứa"};
         currentTable = new DefaultTableModel(Model.to2DArray(dsKhuVuc,"MaKV","TenKV","SucChua"),columnNames){
@@ -62,53 +74,137 @@ public class ThongTinKhoCTR {
                 return false;
             }
         };
-        ui.setupDanhSachPanel(currentTable,selectedRowListener);
+        ui.setupDanhSachPanel(currentTable,selectedKhuVucRowListener);
     }
 
-    //action listeners
+    //update bảng CTKVL
+    private void UpdateCTKVLTable(){
+        //lay ma khu vuc duoc chon
+        String maKVChon = layMaKVSelected();
+        //lay ma kho cua tai khoan dang nhap
+        String maKhoDN = nvDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec();
+        //lay du lieu de tao bang
+        String[] columnNames = {"Khu vực","Tên loại hàng","Mức chứa hiện tại"};
+        dsChiTietKVL = chiTietKVLoaiDAL.getTable("kho.MaKho = "+maKhoDN,"khuvuc.MaKV = " + maKVChon);
+        if(dsChiTietKVL!=null){
+            
+            // float tongSLHang = 0;
+            // for(DSChiTietKhuVucLoaiMD chiTietKVL : dsChiTietKVLDAL.getTable("kho.MaKho = "+maKhoHT)){
+            //     tongSLHang+=chiTietKVL.getSoLuongChua();
+            // };
+            
+            //hiện panel table
+            ui.getSidePanel().setDisplayTable();
+            //thêm dữ liệu vào cho table
+            Object[][] data = Model.to2DArray(dsChiTietKVL,"TenKhuVuc","TenLoai","SoLuongChua");
+            TableModel chiTietKVLoaiTable = new DefaultTableModel(data,columnNames){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            //set table
+            ui.getSidePanel().chiTietKhuVucPanel.SetTable(chiTietKVLoaiTable,selectedCTKVAction);
+
+
+            //action cho nút thêm loại vào khu vực
+            ActionListener themCTKVLoaiAction = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //hiện form thêm ctkv
+                    ui.getSidePanel().setDisplayThemCTKVPanel();
+                    Object[][] dsLoaiHang  = util.flip2dArray(Model.to2DArray(loaiHangDAL.getTable(),"MaLoai","TenLoai"));
+                    ActionListener submitAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            String TenLoai = ui.getSidePanel().getSelectedItemInComboBox();
+                            for(Loai_hangMD loaiHang : loaiHangDAL.getTable()){
+                                if(TenLoai.equals(loaiHang.getTenloai())){
+                                    //duyệt trong dsctkv hiện tại coi nó có tồn tại trong csdl chưa
+                                    String maKVHienTai = layMaKVSelected();
+                                    boolean timThay = false;
+                                    for(Khuvuc_loaihangMD kvLoai : khuVucLoaiDAL.getTable("MaKV="+maKVHienTai)){
+                                        if(kvLoai.getMaLoai().equals(loaiHang.getMaLoai())){
+                                            timThay=true;
+                                        }
+                                    }
+                                    if(!timThay){
+                                        khuVucLoaiDAL.addOne(new Khuvuc_loaihangMD(maKVHienTai, loaiHang.getMaLoai()));
+                                        new ThongBaoDialog("Thêm loại hàng vào khu vực "+ layTenKVSelected() +" thành công", null);
+                                        UpdateCTKVLTable();
+                                    }
+                                    else{
+                                        new ThongBaoDialog("Loại hàng muốn thêm đã có trong khu vực", null);
+                                        UpdateCTKVLTable();
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    ActionListener cancelAction = new ActionListener() {
+                        public void actionPerformed(ActionEvent e){
+                            UpdateCTKVLTable();
+                        }
+                    };
+                    ui.getSidePanel().setupThemCTKVForm(util.objToString(dsLoaiHang[1]),submitAction,cancelAction);
+                }
+            };
+            //thêm listener cho nút thêm khu vực
+            ui.getSidePanel().setupThemButton(themCTKVLoaiAction);
+            //reset nút xoá
+            ui.getSidePanel().setupXoaButton(null);
+        }
+        else{
+            //hiện thông báo bảng trống
+            ui.getSidePanel().setDisplayNullMessage();
+        }
+    }
+    private ArrayList<DSChiTietKhuVucLoaiMD> dsChiTietKVL;
+    //lấy mã khu vực được chọn trong bảng
+    private String layMaKVSelected(){
+        return currentTable.getValueAt(ui.getDanhSachPanel().getSelectedRow(),0).toString();
+    }
+    private String layTenKVSelected(){
+        return currentTable.getValueAt(ui.getDanhSachPanel().getSelectedRow(),1).toString();
+    }
+    //==================action listeners=========================
     private ActionListener themKVListener = new ActionListener() {
         public void actionPerformed(ActionEvent e){
             new FormThemKhuVuc();
         }
     };
-    private TableModel chiTietKVLoaiTable;
-    private ListSelectionListener selectedRowListener = new ListSelectionListener() {
+    //listener khi chọn vào một dòng trong bảng khu vực
+    private ListSelectionListener selectedKhuVucRowListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            //lay ma khu vuc duoc chon
-            String maKVChon = currentTable.getValueAt(ui.getDanhSachPanel().getSelectedRow(),0).toString();
-            //lay ma kho cua tai khoan dang nhap
-            DataAccessLayer<NhanvienMD> nhanvienDAL = new DataAccessLayer<>(user, NhanvienMD.class);
-            String maKhoDN = nhanvienDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec();
-            //lay du lieu de tao bang
-            DataAccessLayer<DSChiTietKhuVucLoaiMD> chiTietKVLoaiDAL = new DataAccessLayer<>(user, DSChiTietKhuVucLoaiMD.class);
-            String[] columnNames = {"Tên kho","Tên khu vực","Tên loại hàng","Số lượng hiện tại"};
-            ArrayList<DSChiTietKhuVucLoaiMD> dsChiTietKVL = chiTietKVLoaiDAL.getTable("kho.MaKho = "+maKhoDN,"khuvuc.MaKV = " + maKVChon);
-            if(dsChiTietKVL!=null){
-                
-                // DataAccessLayer<DSChiTietKhuVucLoaiMD> dsChiTietKVLDAL = new DataAccessLayer<>(user,DSChiTietKhuVucLoaiMD.class);
-                // float tongSLHang = 0;
-                // for(DSChiTietKhuVucLoaiMD chiTietKVL : dsChiTietKVLDAL.getTable("kho.MaKho = "+maKhoHT)){
-                //     tongSLHang+=chiTietKVL.getSoLuongChua();
-                // };
-                
-                //hiện panel table
-                ui.getSidePanel().setDisplayTable();
-                //thêm dữ liệu vào cho table
-                Object[][] data = Model.to2DArray(dsChiTietKVL);
-                chiTietKVLoaiTable = new DefaultTableModel(data,columnNames){
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
+            UpdateCTKVLTable();
+        }
+    };
+    //action cho chọn một dòng trong chi tiet kv
+    private ListSelectionListener selectedCTKVAction = new ListSelectionListener(){
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            //xoá một ctkv trong khu vực
+            ActionListener xoaCTKVAction = new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRowIndex = ui.getSidePanel().chiTietKhuVucPanel.getSelectedRow();
+                    float soLuong = Float.parseFloat(dsChiTietKVL.get(selectedRowIndex).getSoLuongChua().toString());
+                    if(soLuong>0){
+                        new ThongBaoDialog("Không thể xoá chi tiết khu vực còn hàng",null);
                     }
-                };;
-                //set table
-                ui.getSidePanel().chiTietKhuVucPanel.SetTable(chiTietKVLoaiTable,null);
-            }
-            else{
-                //hiện thông báo bảng trống
-                ui.getSidePanel().setDisplayNullMessage();
-            }
+                    else{
+                        String maKVDelete = dsChiTietKVL.get(selectedRowIndex).getMaKV().toString();
+                        String maLoaiDelete = dsChiTietKVL.get(selectedRowIndex).getMaLoai();
+                        khuVucLoaiDAL.remove("MaKV = "+maKVDelete,"MaLoai="+maLoaiDelete);
+                        new ThongBaoDialog("Xoá thành công",null);
+                        UpdateCTKVLTable();
+                    }
+                    
+                }
+                
+            };
+            ui.getSidePanel().setupXoaButton(xoaCTKVAction);
         }
     };
 }

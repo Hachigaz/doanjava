@@ -20,7 +20,17 @@ INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES
 ('K01_KV_C001', 'LA02'), 
 ('K01_KV_D001', 'LC03')
 
-
+use quanlykho;
+INSERT INTO `khuvuc_loaihang` (`MaKV`, `MaLoai`) VALUES 
+('K01_KV_A002', 'LD01'), 
+('K01_KV_A002', 'LD02'), 
+('K01_KV_B001', 'LC04'), 
+('K01_KV_B001', 'LC05'), 
+('K01_KV_B001', 'LB01'), 
+('K01_KV_B001', 'LB02'), 
+('K01_KV_B002', 'LA01'), 
+('K01_KV_B002', 'LA03'), 
+('K01_KV_D001', 'LC03')
 
 use quanlykho;
 INSERT INTO `khuvuc` (`MaKho`, `MaKV`, `SucChua`) VALUES 
@@ -179,5 +189,24 @@ group by khuvuc.MaKV
 
 use quanlykho;
 select kho.MaKho,khuvuc.TenKV,loai_hang.TenLoai, case when SUM(chitiet_donnhap.SLConLai) is null then 0 else ceil(SUM(chitiet_donnhap.SLConLai/mat_hang.SoLuongMoiThung)) end
-from khuvuc join kho on khuvuc.MaKho = kho.MaKho join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV join loai_hang on khuvuc_loaihang.MaLoai = loai_hang.MaLoai left outer join chitiet_donnhap on chitiet_donnhap.MaKV = khuvuc_loaihang.MaKV left outer join donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap left outer join mat_hang on chitiet_donnhap.MaMh = mat_hang.MaMH
+from khuvuc join kho on khuvuc.MaKho = kho.MaKho join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV left outer join chitiet_donnhap on chitiet_donnhap.MaKV = khuvuc_loaihang.MaKV left outer join donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap left outer join mat_hang on chitiet_donnhap.MaMh = mat_hang.MaMH left outer join loai_hang on khuvuc_loaihang.MaLoai = loai_hang.MaLoai and mat_hang.MaLoai = loai_hang.MaLoai
 group by khuvuc.MaKV,loai_hang.MaLoai
+
+use quanlykho;
+select *
+from khuvuc join kho on khuvuc.MaKho = kho.MaKho join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV left outer join chitiet_donnhap on chitiet_donnhap.MaKV = khuvuc_loaihang.MaKV left outer join donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap left outer join mat_hang on chitiet_donnhap.MaMh = mat_hang.MaMH 
+where khuvuc.MaKV = 'K01_KV_A001'
+group by khuvuc.MaKV,loai_hang.MaLoai
+
+use quanlykho;
+select kho.TenKho,khuvuc.MaKV,khuvuc.TenKV,loai_hang.MaLoai,loai_hang.TenLoai, case when SUM(chitiet_donnhap.SLConLai) is null then 0 else ceil(SUM(chitiet_donnhap.SLConLai/mat_hang.SoLuongMoiThung)) end
+from kho join khuvuc on kho.MaKho=khuvuc.MaKho
+
+use quanlykho;
+select kho.MaKho,khuvuc.MaKV,khuvuc.TenKV,khuvuc_loaihang.MaLoai, case when SUM(SLH.SoLuong) is null then 0 else SUM(SLH.SoLuong) end
+from kho join khuvuc on kho.MaKho=khuvuc.MaKho join khuvuc_loaihang on khuvuc.MaKV = khuvuc_loaihang.MaKV
+left outer join
+(select donnhap.MaDonNhap,chitiet_donnhap.MaKV,mat_hang.MaMH,loai_hang.MaLoai, CEIL(chitiet_donnhap.SLConLai/mat_hang.SoLuongMoiThung) SoLuong
+from donnhap join chitiet_donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap  join mat_hang on chitiet_donnhap.MaMH = mat_hang.MaMh join loai_hang on mat_hang.MaLoai = loai_hang.MaLoai
+) as SLH on SLH.MaLoai = khuvuc_loaihang.MaLoai and SLH.MaKV=khuvuc.MaKV
+group by khuvuc.MaKV,khuvuc_loaihang.MaLoai
