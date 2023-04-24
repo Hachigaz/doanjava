@@ -58,6 +58,7 @@ class HeaderOptionPanel extends JPanel{
     public JLabel khoHienTaiLabel;
     public JLabel tongSucChuaLabel;
     public JButton themKhuVucBtn;
+    public JButton xoaKhuVucBtn;
     private Font buttonFont = new Font("Helvetica",Font.BOLD,14);
     private Font displayFont = new Font("Tahoma",Font.BOLD,20);
     public HeaderOptionPanel(){
@@ -72,12 +73,14 @@ class HeaderOptionPanel extends JPanel{
         this.tongSucChuaLabel.setFont(displayFont);
         this.themKhuVucBtn=new JButton("Thêm khu vực mới");
         this.themKhuVucBtn.setFont(buttonFont);
+        this.xoaKhuVucBtn=new JButton("Xoá khu vực đã chọn");
+        this.xoaKhuVucBtn.setFont(buttonFont);
         
         this.add(this.khoHienTaiLabel);
         this.add(this.tongSucChuaLabel);
         this.add(themKhuVucBtn);
     }
-    public void setupPanel(String tenKhoHienTai,String tongSucChua,ActionListener themKhuVucAction){
+    public void setupPanel(String tenKhoHienTai,String tongSucChua,ActionListener themKhuVucAction,ActionListener xoaKhuVucAction){
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 20,20));
         this.khoHienTaiLabel.setText("Kho hiện tại: "+tenKhoHienTai);
         this.tongSucChuaLabel.setText("Tổng sức chứa: "+tongSucChua);
@@ -85,6 +88,7 @@ class HeaderOptionPanel extends JPanel{
         this.revalidate();
 
         this.themKhuVucBtn.addActionListener(themKhuVucAction);
+        this.xoaKhuVucBtn.addActionListener(xoaKhuVucAction);
     }
 }
 

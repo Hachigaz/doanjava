@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -57,7 +59,7 @@ public class ThongTinKhoCTR {
         for(KhuvucMD kv : kvDAL.getTable("MaKho = "+maKhoHT)){
             tongSucChua+=kv.getSucChua();
         }
-        ui.getHeaderPanel().setupPanel(tenKhoHT,tongSucChua.toString(),this.themKVListener);
+        ui.getHeaderPanel().setupPanel(tenKhoHT,tongSucChua.toString(),this.themKVListener,this.xoaKVListener);
         
         this.updateTable();
     }
@@ -85,6 +87,52 @@ public class ThongTinKhoCTR {
         //lay du lieu de tao bang
         String[] columnNames = {"Khu vực","Tên loại hàng","Mức chứa hiện tại"};
         dsChiTietKVL = chiTietKVLoaiDAL.getTable("kho.MaKho = "+maKhoDN,"khuvuc.MaKV = " + maKVChon);
+
+        //action cho nút thêm loại vào khu vực
+        ActionListener themCTKVLoaiAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //hiện form thêm ctkv
+                ui.getSidePanel().setDisplayThemCTKVPanel();
+                Object[][] dsLoaiHang  = util.flip2dArray(Model.to2DArray(loaiHangDAL.getTable(),"MaLoai","TenLoai"));
+                ActionListener submitAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        String TenLoai = ui.getSidePanel().getSelectedItemInComboBox();
+                        for(Loai_hangMD loaiHang : loaiHangDAL.getTable()){
+                            if(TenLoai.equals(loaiHang.getTenloai())){
+                                //duyệt trong dsctkv hiện tại coi nó có tồn tại trong csdl chưa
+                                String maKVHienTai = layMaKVSelected();
+                                boolean timThay = false;
+                                ArrayList<Khuvuc_loaihangMD> dsKhuVucLoai = khuVucLoaiDAL.getTable("MaKV="+maKVHienTai);
+                                if(dsKhuVucLoai!=null){
+                                    for(Khuvuc_loaihangMD kvLoai : dsKhuVucLoai){
+                                        if(kvLoai.getMaLoai().equals(loaiHang.getMaLoai())){
+                                            timThay=true;
+                                        }
+                                    }
+                                }
+                                if(!timThay){
+                                    khuVucLoaiDAL.addOne(new Khuvuc_loaihangMD(maKVHienTai, loaiHang.getMaLoai()));
+                                    new ThongBaoDialog("Thêm loại hàng vào "+ layTenKVSelected() +" thành công", null);
+                                    UpdateCTKVLTable();
+                                }
+                                else{
+                                    new ThongBaoDialog("Loại hàng muốn thêm đã có trong khu vực", null);
+                                    UpdateCTKVLTable();
+                                }
+                            }
+                        }
+                    }
+                };
+                ActionListener cancelAction = new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        UpdateCTKVLTable();
+                    }
+                };
+                ui.getSidePanel().setupThemCTKVForm(util.objToString(dsLoaiHang[1]),submitAction,cancelAction);
+            }
+        };
+
         if(dsChiTietKVL!=null){
             
             // float tongSLHang = 0;
@@ -106,48 +154,7 @@ public class ThongTinKhoCTR {
             ui.getSidePanel().chiTietKhuVucPanel.SetTable(chiTietKVLoaiTable,selectedCTKVAction);
 
 
-            //action cho nút thêm loại vào khu vực
-            ActionListener themCTKVLoaiAction = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    //hiện form thêm ctkv
-                    ui.getSidePanel().setDisplayThemCTKVPanel();
-                    Object[][] dsLoaiHang  = util.flip2dArray(Model.to2DArray(loaiHangDAL.getTable(),"MaLoai","TenLoai"));
-                    ActionListener submitAction = new ActionListener() {
-                        public void actionPerformed(ActionEvent e){
-                            String TenLoai = ui.getSidePanel().getSelectedItemInComboBox();
-                            for(Loai_hangMD loaiHang : loaiHangDAL.getTable()){
-                                if(TenLoai.equals(loaiHang.getTenloai())){
-                                    //duyệt trong dsctkv hiện tại coi nó có tồn tại trong csdl chưa
-                                    String maKVHienTai = layMaKVSelected();
-                                    boolean timThay = false;
-                                    ArrayList<Khuvuc_loaihangMD> dsKhuVucLoai = khuVucLoaiDAL.getTable("MaKV="+maKVHienTai);
-                                    for(Khuvuc_loaihangMD kvLoai : dsKhuVucLoai){
-                                        if(kvLoai.getMaLoai().equals(loaiHang.getMaLoai())){
-                                            timThay=true;
-                                        }
-                                    }
-                                    if(!timThay){
-                                        khuVucLoaiDAL.addOne(new Khuvuc_loaihangMD(maKVHienTai, loaiHang.getMaLoai()));
-                                        new ThongBaoDialog("Thêm loại hàng vào khu vực "+ layTenKVSelected() +" thành công", null);
-                                        UpdateCTKVLTable();
-                                    }
-                                    else{
-                                        new ThongBaoDialog("Loại hàng muốn thêm đã có trong khu vực", null);
-                                        UpdateCTKVLTable();
-                                    }
-                                }
-                            }
-                        }
-                    };
-                    ActionListener cancelAction = new ActionListener() {
-                        public void actionPerformed(ActionEvent e){
-                            UpdateCTKVLTable();
-                        }
-                    };
-                    ui.getSidePanel().setupThemCTKVForm(util.objToString(dsLoaiHang[1]),submitAction,cancelAction);
-                }
-            };
+
             //thêm listener cho nút thêm khu vực
             ui.getSidePanel().setupThemButton(themCTKVLoaiAction);
             //reset nút xoá
@@ -156,6 +163,9 @@ public class ThongTinKhoCTR {
         else{
             //hiện thông báo bảng trống
             ui.getSidePanel().setDisplayNullMessage();
+            ui.getSidePanel().setupThemButton(themCTKVLoaiAction);
+            //reset nút xoá
+            ui.getSidePanel().setupXoaButton(null);
         }
     }
     private ArrayList<DSChiTietKhuVucLoaiMD> dsChiTietKVL;
@@ -191,12 +201,9 @@ public class ThongTinKhoCTR {
                         if(soLuong > 0){
                             kvDAL.addOne(new KhuvucMD(maKho, maKVMoi, tenKV, soLuong));
                             new ThongBaoDialog("Thêm khu vực thành công", null);
+                            updateTable();
                             Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
                             formThemDialog.dispose();
-                            mainWindow.setEnabled(true);
-                            mainWindow.setAlwaysOnTop(true);
-                            mainWindow.setAlwaysOnTop(false);
-                            updateTable();
                         }
                         else{
                             new ThongBaoDialog("Số lượng nhập vào phải lớn hơn 0", null);
@@ -210,17 +217,28 @@ public class ThongTinKhoCTR {
             ActionListener themKVCancelListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
                     Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
                     formThemDialog.dispose();
+                }
+            };
+            WindowAdapter themKVFormAdapter = new WindowAdapter() {
+                public void windowClosed(WindowEvent e){
                     mainWindow.setEnabled(true);
                     mainWindow.setAlwaysOnTop(true);
                     mainWindow.setAlwaysOnTop(false);
                 }
             };
-            new FormThem("Thêm khu vực mới",inputFields,themKVSubmitListener,themKVCancelListener);
-            
+            FormThem formThemKV =  new FormThem("Thêm khu vực mới",inputFields,themKVSubmitListener,themKVCancelListener);
+            formThemKV.addWindowListener(themKVFormAdapter);
         }
+    };
+    private ActionListener xoaKVListener = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+        
     };
     //listener khi chọn vào một dòng trong bảng khu vực
     private ListSelectionListener selectedKhuVucRowListener = new ListSelectionListener() {
