@@ -57,7 +57,7 @@ public class DangNhapUI extends JFrame implements MouseListener{
         labelHide.setIcon(newIconHide);
         labelHide.setHorizontalAlignment(JLabel.CENTER);
         labelHide.setPreferredSize(new Dimension(30,20));
-        labelHide.setBackground(new Color(255, 255, 153));
+        labelHide.setBackground(new Color(0,155,254));
         labelHide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelHide.setOpaque(true);
         labelHide.addMouseListener(this);
@@ -65,14 +65,14 @@ public class DangNhapUI extends JFrame implements MouseListener{
         labelClose.setIcon(newIconClose);
         labelClose.setHorizontalAlignment(JLabel.CENTER);
         labelClose.setPreferredSize(new Dimension(30,20));
-        labelClose.setBackground(new Color(255, 255, 153));
+        labelClose.setBackground(new Color(0,155,254));
         labelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelClose.setOpaque(true);
         labelClose.addMouseListener(this);
 
         panelTitleBar = new JPanel();
         panelTitleBar.setPreferredSize(new Dimension(0,30));
-        panelTitleBar.setBackground(new Color(255, 255, 153));
+        panelTitleBar.setBackground(new Color(0,155,254));
         panelTitleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
 
         panelTitleBar.add(labelHide);
@@ -138,8 +138,8 @@ public class DangNhapUI extends JFrame implements MouseListener{
             public void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                Color color1 = new Color(255, 255, 153);
-                Color color2 = new Color(255, 102, 0);
+                Color color1 = new Color(0,155,254);
+                Color color2 = new Color(37,83,111);
                 GradientPaint gp = new GradientPaint(0, 0, color1, 0,getHeight(), color2);
                 g2d.setPaint(gp);
                 g2d.fillRect(0, 0, getWidth(),getHeight());
@@ -213,9 +213,9 @@ public class DangNhapUI extends JFrame implements MouseListener{
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==labelClose){
-            labelClose.setBackground(new Color(255, 255, 153));
+            labelClose.setBackground(new Color(0,155,254));
         }else if(e.getSource()==labelHide){
-            labelHide.setBackground(new Color(255, 255, 153));
+            labelHide.setBackground(new Color(0,155,254));
         }
     }
     public void disableAll(){

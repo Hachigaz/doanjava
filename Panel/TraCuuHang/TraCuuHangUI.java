@@ -44,8 +44,9 @@ public class TraCuuHangUI extends JPanel{
         this.add(panelDanhSach,BorderLayout.CENTER);
 
 
-        panelChucNang.setBackground(new Color(255, 182, 87,255));
+        panelChucNang.setBackground(new Color(27,101,147));
         panelChucNang.setOpaque(true);
+        panelChucNang.setLayout(new BorderLayout());
         panelLoc.setBackground(Color.LIGHT_GRAY);
         panelLoc.setOpaque(true);
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
@@ -114,6 +115,12 @@ public class TraCuuHangUI extends JPanel{
     private JComboBox<String> cbChonKho;
 
     public void SetupPanelChucNang(String[] dsTenKho,String[]dsMaKho,ActionListener onChangeMaKho, ActionListener onSubmitSearch){
+        JPanel panelChonKho = new JPanel();
+        JPanel panelSearch = new JPanel();
+        panelChonKho.setOpaque(false);
+        panelChonKho.setBorder(BorderFactory.createEmptyBorder(14,10,0,0));
+        panelSearch.setOpaque(false);
+        panelSearch.setBorder(BorderFactory.createEmptyBorder(14,0,0,10));
         JLabel labelChonKho = new JLabel("Chọn kho");
 
         optionName = dsTenKho;
@@ -121,15 +128,20 @@ public class TraCuuHangUI extends JPanel{
 
         cbChonKho = new JComboBox<String>(optionName);
 
-        panelChucNang.add(labelChonKho);
-        panelChucNang.add(cbChonKho);
+        panelChonKho.add(labelChonKho);
+        panelChonKho.add(cbChonKho);
+        panelChucNang.add(panelChonKho,BorderLayout.WEST);
 
         cbChonKho.addActionListener(onChangeMaKho);
 
+        JLabel timkiem = new JLabel("Tìm kiếm");
         searchBar = new JTextField(20);
+        searchBar.setPreferredSize(new Dimension(0,25));
+        panelSearch.add(timkiem);
+        panelSearch.add(searchBar);
         searchBar.addActionListener(onSubmitSearch);
 
-        panelChucNang.add(searchBar);
+        panelChucNang.add(panelSearch,BorderLayout.EAST);
     }
 
     //lấy mã kho đang chọn trong combobox

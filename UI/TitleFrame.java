@@ -30,7 +30,7 @@ public class TitleFrame extends JFrame{
         labelHide.setIcon(newIconHide);
         labelHide.setHorizontalAlignment(JLabel.CENTER);
         labelHide.setPreferredSize(new Dimension(30,20));
-        labelHide.setBackground(new Color(255, 255, 153));
+        labelHide.setBackground(new Color(0,155,254));
         labelHide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelHide.setOpaque(true);
         labelHide.addMouseListener(listener);
@@ -38,14 +38,14 @@ public class TitleFrame extends JFrame{
         labelClose.setIcon(newIconClose);
         labelClose.setHorizontalAlignment(JLabel.CENTER);
         labelClose.setPreferredSize(new Dimension(30,20));
-        labelClose.setBackground(new Color(255, 255, 153));
+        labelClose.setBackground(new Color(0,155,254));
         labelClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelClose.setOpaque(true);
         labelClose.addMouseListener(listener);
 
         titleBar = new JPanel();
         titleBar.setPreferredSize(new Dimension(0,30));
-        titleBar.setBackground(new Color(255, 255, 153));
+        titleBar.setBackground(new Color(0,155,254));
         titleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
 
         titleBar.add(labelHide);
@@ -70,7 +70,6 @@ public class TitleFrame extends JFrame{
             }else if(e.getSource()==labelClose){
                 dispose();
             }
-
         }
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -90,9 +89,9 @@ public class TitleFrame extends JFrame{
         public void mouseExited(MouseEvent e) {
             // TODO Auto-generated method stub
             if(e.getSource()==labelClose){
-                labelClose.setBackground(new Color(255, 255, 153));
+                labelClose.setBackground(new Color(0,155,254));
             }else if(e.getSource()==labelHide){
-                labelHide.setBackground(new Color(255, 255, 153));
+                labelHide.setBackground(new Color(0,155,254));
             }
         }
     };

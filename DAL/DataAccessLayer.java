@@ -127,7 +127,6 @@ public class DataAccessLayer<T> {
                 sql+="\nGROUP BY ";
                 sql+=groupByStatement;
             }
-            System.out.println(sql);
             DataSet ds = user.getDataQuery(sql);
             if(ds==null){
                 throw new NullDALReturnException("Danh sách trả về rỗng");

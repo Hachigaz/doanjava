@@ -55,8 +55,8 @@ public class UI extends TitleFrame implements MouseListener{
                 Graphics2D g2d = (Graphics2D) g;
                 
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(255,197,70),
-                    0, getHeight(), new Color(255,145,83)
+                    0, 0, new Color(4,155,254),
+                    0, getHeight(), new Color(37,83,111)
                 );
 
                 g2d.setPaint(gradient);
@@ -84,8 +84,8 @@ public class UI extends TitleFrame implements MouseListener{
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
                 GradientPaint gradient = new GradientPaint(
-                    0, 0, new Color(255,209,67),
-                    0, getHeight(), new Color(255,197,70)
+                    0, 0, new Color(0,155,254),
+                    0, getHeight(), new Color(4,156,255)
                 );
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -93,10 +93,11 @@ public class UI extends TitleFrame implements MouseListener{
         };
         panelTop.setLayout(new BorderLayout());
         panelTop.setPreferredSize(new Dimension(0,120));
-
+ 
         panelUser = new JPanel();
         panelUser.setPreferredSize(new Dimension(250,170));
         panelUser.setOpaque(false);
+        panelUser.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 
         ImageIcon icon2 = new ImageIcon("res/img/user.png");
         Image img2 = icon2.getImage();
@@ -112,7 +113,6 @@ public class UI extends TitleFrame implements MouseListener{
         labelUserName = new JLabel("Xin chào "+nvDangNhap.getTenNV());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
         labelUserName.setForeground(Color.WHITE);
-        labelUserName.setVerticalAlignment(JLabel.CENTER);
 
         labelTitle = new JLabel("PHẦN MỀM QUẢN LÝ KHO");
         labelTitle.setHorizontalAlignment(JLabel.CENTER);

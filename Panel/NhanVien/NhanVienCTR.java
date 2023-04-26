@@ -91,7 +91,6 @@ public class NhanVienCTR {
                 NhanVienDAO.add(DSNV);
                 ui.updateTable(new DefaultTableModel(Model.to2DArray(DSNV),NhanVienDAO.getReturnedColumnName()));
                 // panelDanhSach.setPreferredSize(new Dimension(830, 700));
-                
             }
         };
         ActionListener displayForm = new ActionListener() {
