@@ -1,6 +1,9 @@
 package Panel.SubPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -24,10 +27,25 @@ public class TablePanel extends JPanel{
 
         JTable tableDS = new JTable(tableModel);
         tableDS.getTableHeader().setReorderingAllowed(false);
-        tableDS.setRowHeight(30);
+        tableDS.setRowHeight(40);
+        tableDS.setFont(new Font("Poppins",Font.PLAIN,13));
+
+        JTableHeader header = tableDS.getTableHeader();
+        header.setPreferredSize(new Dimension(40, 35));
+
+        TableColumnModel columnModel = tableDS.getColumnModel();
+        for(int i=0;i<tableDS.getColumnCount();i++){
+            columnModel.getColumn(i).setResizable(false);
+        }
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for(int i=0;i<tableDS.getColumnCount();i++){
+            tableDS.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         //cho phep thay doi kich thuoc cac cot
-        tableDS.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        // tableDS.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         //chi duoc chon mot dong trong bang
         tableDS.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //them listener
@@ -43,6 +61,8 @@ public class TablePanel extends JPanel{
         tableDS.setRowSorter(rowSorter);
 
         this.bangDanhSach = new JScrollPane(tableDS);
+        bangDanhSach.getVerticalScrollBar().setPreferredSize(new Dimension(13, 0));
+        this.bangDanhSach.setPreferredSize(this.getPreferredSize());
         this.add(bangDanhSach,BorderLayout.CENTER);
 
         // Revalidate and repaint the frame
@@ -56,13 +76,6 @@ public class TablePanel extends JPanel{
         return getTable().getSelectedRow();
     }
     
-    //xu ly loc bang
-    public void themDieuKienLoc(int columnIndex,String value){
-        DSDKLoc.get(columnIndex).add(value);
-    }
-    public void xoaDieuKienLoc(int columnIndex,String value){
-        DSDKLoc.get(columnIndex).remove(value);
-    }
     public void locCacDieuKien(){
         RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
             public boolean include(Entry<?, ?> entry) {
@@ -94,4 +107,17 @@ public class TablePanel extends JPanel{
     //     DSDKLoc.clear();
     //     rowSorter.setRowFilter(null);
     // }
+
+    public void themDieuKienLoc(int columnIndex,String value){
+        DSDKLoc.get(columnIndex).add(value);
+    }
+    public void xoaDieuKienLoc(int columnIndex,String value){
+        DSDKLoc.get(columnIndex).remove(value);
+    }
+    public JScrollPane getBangDanhSach(){
+        return bangDanhSach;
+    }
+    public JTable getTableDS() {
+        return (JTable) bangDanhSach.getViewport().getView();
+    }
 }

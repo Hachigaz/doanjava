@@ -127,14 +127,15 @@ public class DataAccessLayer<T> {
                 sql+="\nGROUP BY ";
                 sql+=groupByStatement;
             }
+            System.out.println(sql);
             DataSet ds = user.getDataQuery(sql);
             if(ds==null){
                 throw new NullDALReturnException("Danh sách trả về rỗng");
             }
-
             this.returnedColumnLabel = ds.getColumnLabel();
             this.returnedColumnName = ds.getColumnName();
             list = new ArrayList<T>();
+
             Object[] params = new Object[ds.getColumnCount()];
             for(int i = 0 ; i < ds.getRowCount();i++){
                 for(int j = 0 ; j < ds.getColumnCount();j++){

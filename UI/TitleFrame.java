@@ -61,15 +61,15 @@ public class TitleFrame extends JFrame{
         @Override
         public void mouseClicked(MouseEvent e) {
             // TODO Auto-generated method stub
+        }
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
             if(e.getSource()==labelHide){
                 setExtendedState(JFrame.ICONIFIED); 
             }else if(e.getSource()==labelClose){
                 dispose();
             }
-        }
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
 
         }
         @Override
