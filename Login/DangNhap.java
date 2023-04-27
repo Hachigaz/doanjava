@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 import DAL.DataAccessLayer;
-import Model.Taikhoan_nhanvienMD;
+import DTO.Taikhoan_nhanvienMD;
 import SQL.SQLUser;
 import misc.ThongBaoDialog;
 public class DangNhap implements ActionListener {

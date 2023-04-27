@@ -1,9 +1,8 @@
 package Panel;
 
 import SQL.*;
-import UI.TitleFrame;
 import misc.DataSet;
-import Model.*;
+import misc.TitleFrame;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -12,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import DAL.DataAccessLayer;
+import DTO.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,8 +22,8 @@ import java.awt.*;
 import Panel.DonNhap.DonNhapUI;
 import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienCTR;
-import Panel.ThongTinKho.ThongTinKhoCTR;
-import Panel.TraCuuHang.TraCuuHangCTR;
+import Panel.ThongTinKho.ThongTinKhoUI;
+import Panel.TraCuuHang.TraCuuHangUI;
 
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
@@ -34,12 +34,17 @@ public class UI extends TitleFrame implements MouseListener{
     //mảng chứa panel chức năng
     private HashMap<JLabel,JPanel> pnlChucNang = new HashMap<JLabel,JPanel>();
 
-    private SQLUser master;
-    private Taikhoan_nhanvienMD tenTKDangNhap;
+    public static SQLUser master;
+    public static Taikhoan_nhanvienMD tenTKDangNhap;
+    public static KhoMD khoNVDangNhap;
     
     public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
-        this.master= master;
-        this.tenTKDangNhap=tkDangNhap;
+        UI.master= master;
+        UI.tenTKDangNhap=tkDangNhap;
+        //lấy kho đăng nhập
+        DataAccessLayer<KhoMD> khoDAL = new DataAccessLayer<>(master, KhoMD.class);
+        DataAccessLayer<NhanvienMD> nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
+        UI.khoNVDangNhap =  khoDAL.getFirst("MaKho = "+nvDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec());
         
         this.setSize(1400,750);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,6 +74,7 @@ public class UI extends TitleFrame implements MouseListener{
         
         panelRight = new JPanel();
         panelRight.setBackground(Color.white);
+        panelRight.setLayout(new CardLayout());
         // Giảm kích thước icon
         ImageIcon icon = new ImageIcon("res/img/logo_kho.png");
         Image imgIcon = icon.getImage();
@@ -153,10 +159,8 @@ public class UI extends TitleFrame implements MouseListener{
         // themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
         NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
         themQuyen(new JLabel("Nhân viên"), "res/img/username.png", cnNhanVien.getUI());
-        TraCuuHangCTR cnTraCuuHang = new TraCuuHangCTR(master, tkDangNhap,panelRightSize);
-        themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", cnTraCuuHang.getUI());
-        ThongTinKhoCTR cnThongTinKho = new ThongTinKhoCTR(master,tkDangNhap,panelRightSize);
-        themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", cnThongTinKho.getUI());
+        themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+        themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
     }
     @Override
     public void mouseClicked(MouseEvent e) {

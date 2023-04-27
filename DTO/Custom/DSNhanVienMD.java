@@ -1,5 +1,5 @@
-package Model.Custom;
-import Model.*;
+package DTO.Custom;
+import DTO.*;
 
 public class DSNhanVienMD extends Model{
     

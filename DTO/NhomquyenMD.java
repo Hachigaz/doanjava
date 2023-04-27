@@ -1,4 +1,4 @@
-package Model;
+package DTO;
 
 public class NhomquyenMD extends Model{
     public static final String selectStatement = "*";

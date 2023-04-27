@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import DAL.DataAccessLayer;
+import DTO.*;
+import DTO.Custom.DSTraCuuHangMD;
 import SQL.*;
 import misc.util;
-import Model.*;
-import Model.Custom.DSTraCuuHangMD;
 
 public class DonXuatCTR {
     private SQLUser master;

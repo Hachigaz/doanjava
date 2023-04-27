@@ -1,6 +1,6 @@
-package Model.Custom;
+package DTO.Custom;
 
-import Model.*;
+import DTO.*;
 
 public class DSTraCuuHangMD extends Model{
     

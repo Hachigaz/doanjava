@@ -7,6 +7,8 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import DAL.DataAccessLayer;
+import DTO.*;
+import DTO.Custom.DSNhanVienMD;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -62,8 +64,6 @@ import javax.swing.table.TableRowSorter;
 
 import SQL.SQLUser;
 import misc.DataSet;
-import Model.*;
-import Model.Custom.DSNhanVienMD;
 
 public class NhanVien extends JPanel implements MouseListener{
     public DefaultTableCellRenderer center;

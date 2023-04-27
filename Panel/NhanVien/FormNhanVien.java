@@ -29,7 +29,7 @@ import com.mysql.cj.protocol.a.NativeConstants.IntegerDataType;
 import com.toedter.calendar.JDateChooser;
 
 import DAL.DataAccessLayer;
-import Model.NhanvienMD;
+import DTO.NhanvienMD;
 
 public class FormNhanVien extends JDialog{
     private JButton btn;

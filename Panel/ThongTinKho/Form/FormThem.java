@@ -1,5 +1,7 @@
 package Panel.ThongTinKho.Form;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import UI.TitleFrame;
+import misc.TitleFrame;
 
 public class FormThem extends TitleFrame {
 
@@ -25,13 +27,19 @@ public class FormThem extends TitleFrame {
     public FormThem(String dialogTitle,ArrayList<FormInput> inputFields,ActionListener submitAction,ActionListener cancelAction){
         inputs = inputFields;
         inputPanel = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+
+        SpringLayout layout = new SpringLayout();
+        content.setLayout(layout);
         
         JLabel titleLabel = new JLabel(dialogTitle);
         titleLabel.setFont(new Font("Helvetica", Font.BOLD, 18));
         content.add(titleLabel);
 
+        layout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, content);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 10, SpringLayout.HORIZONTAL_CENTER, content);
+        
 
+        
         submitBtn = new JButton("Thêm");
         submitBtn.addActionListener(submitAction);
 
@@ -41,16 +49,25 @@ public class FormThem extends TitleFrame {
     
         submitPanel.add(submitBtn);
         submitPanel.add(cancelBtn);
-        
-
-        inputPanel.setLayout(new GridLayout(inputs.size(),1));
+        inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         for(FormInput inputField : inputs){
             inputPanel.add(inputField);
+            inputPanel.add(Box.createVerticalStrut(10));
         }
+
+
+        inputPanel.setOpaque(true);
         content.add(inputPanel);
+        layout.putConstraint(SpringLayout.NORTH, inputPanel, 100, SpringLayout.NORTH,content);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, inputPanel, 0, SpringLayout.HORIZONTAL_CENTER, content);
+
 
         this.content.add(submitPanel);
+        layout.putConstraint(SpringLayout.SOUTH, submitPanel, -40, SpringLayout.SOUTH, content);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitPanel, 0, SpringLayout.HORIZONTAL_CENTER, content);
+        
         this.setContentPanel(content);
+
         this.setVisible(true);
     }
 }

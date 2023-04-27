@@ -12,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.BorderFactory;
@@ -32,7 +30,7 @@ import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
 
 import DAL.DataAccessLayer;
-import Model.NhanvienMD;
+import DTO.NhanvienMD;
 
 import javax.swing.RowFilter;
 

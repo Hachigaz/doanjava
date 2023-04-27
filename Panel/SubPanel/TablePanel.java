@@ -1,7 +1,6 @@
 package Panel.SubPanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class TablePanel extends JPanel{
     private JScrollPane bangDanhSach;
     private TableRowSorter<TableModel> rowSorter;
     private ArrayList<ArrayList<String>> DSDKLoc = new ArrayList<ArrayList<String>>();
-
+    private ListSelectionListener currentListener;
     public TablePanel(){
         super();
         this.setLayout(new BorderLayout());
@@ -48,9 +47,13 @@ public class TablePanel extends JPanel{
         // tableDS.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         //chi duoc chon mot dong trong bang
         tableDS.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //xoa listener cu
+        tableDS.getSelectionModel().removeListSelectionListener(currentListener);
+        currentListener=null;
         //them listener
         if(listener!=null){
             tableDS.getSelectionModel().addListSelectionListener(listener);
+            currentListener = listener;
         }
 
         for(int i = 0 ; i < tableModel.getColumnCount(); i++){

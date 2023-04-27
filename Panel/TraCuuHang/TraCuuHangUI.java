@@ -2,18 +2,32 @@ package Panel.TraCuuHang;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import DTO.CongtyMD;
+import DTO.KhuvucMD;
+import DTO.Loai_hangMD;
+import DTO.Model;
+import DTO.Custom.DSTraCuuHangMD;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+import misc.util;
 public class TraCuuHangUI extends JPanel{
+    //BLL
+    private TraCuuHangBLL traCuuHangBLL = new TraCuuHangBLL();
 
     private JPanel panelChucNang;
     private JPanel panelLoc;
@@ -49,27 +63,91 @@ public class TraCuuHangUI extends JPanel{
         panelChucNang.setLayout(new BorderLayout());
         panelLoc.setBackground(Color.LIGHT_GRAY);
         panelLoc.setOpaque(true);
+        panelLoc.setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
+
+        Object[][] dsKho = Model.to2DArray(traCuuHangBLL.getDanhSachKho(),"MaKho","TenKho");
+
+        SetupPanelChucNang(util.objToString(util.getColumn(dsKho, 1)),util.objToString(util.getColumn(dsKho, 0)));
+
+        setupPanel();
+    }
+    public void setupPanel(){
+        String[] locPanelTitle = {"Lọc theo khu vực","Lọc theo loại hàng","Lọc theo sản phẩm của công ty"};
+        int[] columnIndexes = {0,3,4};
+        ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
+
+
+
+        //Lấy danh sách khu vực và thêm vào bảng lộc
+        ArrayList<KhuvucMD> danhSachKV = traCuuHangBLL.getDanhSachKV("MaKho = "+getSelectedMaKhoKey());
+
+        tenLoc.add(new ArrayList<String>());
+        for(KhuvucMD khuvuc : danhSachKV){          
+            tenLoc.get(0).add(khuvuc.getTenKV());
+        }
+
+        //Lấy danh sách khu vực và thêm vào bảng lộc
+        ArrayList<Loai_hangMD> danhSachLH = traCuuHangBLL.getDanhSachLoaiHang();
+
+        tenLoc.add(new ArrayList<String>());
+        for(Loai_hangMD loaihang : danhSachLH){          
+            tenLoc.get(1).add(loaihang.getTenloai());
+        }
+
+
+        //Lấy danh sách khu vực và thêm vào bảng lộc
+        ArrayList<CongtyMD> danhSachCT = traCuuHangBLL.getDanhSachCongTy(); 
+
+        tenLoc.add(new ArrayList<String>());
+        for(CongtyMD cty : danhSachCT){
+            tenLoc.get(2).add(cty.getTenCty());
+        }
+        
+
+        SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
+
+        //setup bảng
+        String[] columnNames = {"Khu vực","Tên hàng","Số lượng","Loại sản phẩm","Công ty","Ngày nhập"};
+        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+getSelectedMaKhoKey());
+        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        UpdateTable(tableDanhSach);
+
+    }
+    //lọc theo loại sp và khu vực
+    private ArrayList<JPanel> arrLocLabel = new ArrayList<JPanel>();
+    private HashMap<JPanel,JScrollPane> arrLocPanel = new HashMap<JPanel,JScrollPane>();
+    private ArrayList<JPanel> arrLocPanelWrapper = new ArrayList<JPanel>();
+
+    private void xoaChucNangLocCu(){
+        for(JPanel panelWrapper : arrLocPanelWrapper){
+            panelLoc.remove(panelWrapper);
+        }
+        arrLocPanel.clear();
+        arrLocLabel.clear();
+        arrLocPanelWrapper.clear();
     }
 
-    //lọc theo loại sp và khu vực
-    private ArrayList<JLabel> locArrLabel = new ArrayList<JLabel>();
-    private HashMap<JLabel,JScrollPane> arrLocPanel = new HashMap<JLabel,JScrollPane>();
-
-    public void SetupPanelLoc(String[] panelTitles,int[] columnIndexes,ArrayList<ArrayList<String>> tenLoc,MouseListener panelCollapseListener,ItemListener locCheckboxAction){
+    public void SetupPanelLoc(String[] panelTitles,int[] columnIndexes,ArrayList<ArrayList<String>> tenLoc){
+        xoaChucNangLocCu();
         for(int i = 0 ; i < tenLoc.size();i++){
-            themChucNangLoc(panelTitles[i],columnIndexes[i],tenLoc.get(i),panelCollapseListener,locCheckboxAction);
+            themChucNangLoc(panelTitles[i],columnIndexes[i],tenLoc.get(i));
         }
         panelLoc.revalidate();
         panelLoc.repaint();
     }
 
-    public void findClickedLocPanel(Object component){
-        for(JLabel label : locArrLabel){
-            if(component==label){
-                JScrollPane panel = arrLocPanel.get(label);
-                panel.setVisible(!panel.isVisible());
+    public void collapseClickedLocPanel(Object component){
+        for(JPanel panel : arrLocLabel){
+            if(component==panel){
+                JScrollPane paneLoc = arrLocPanel.get(panel);
+                paneLoc.setVisible(!paneLoc.isVisible());
                 panelLoc.revalidate();
                 panelLoc.repaint();
             }
@@ -91,21 +169,64 @@ public class TraCuuHangUI extends JPanel{
             this.panelDanhSach.locCacDieuKien();
         }
     }
+    MouseListener panelCollapseListener = new MouseListener() {
 
-    private void themChucNangLoc(String title,int columnIndex,ArrayList<String> locLabelName,MouseListener panelCollapseListener,ItemListener locCheckboxAction){
+        @Override
+        public void mouseClicked(MouseEvent e) {            
+            collapseClickedLocPanel(e.getSource());
+        }
 
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        
+        }
+
+    };
+
+    ItemListener locCheckboxAction = new ItemListener() {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            sortSelectedCheckbox(e.getSource());
+        }
+        
+    };
+    private void themChucNangLoc(String title,int columnIndex,ArrayList<String> locLabelName){
+        
 
         JLabel label = new JLabel(title);
-        panelLoc.add(label);
-        label.addMouseListener(panelCollapseListener);
-        locArrLabel.add(label);
-
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
+        labelPanel.add(label);
+        labelPanel.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,30));
+        labelPanel.addMouseListener(panelCollapseListener);
+        arrLocLabel.add(labelPanel);
         LocPanel panel = new LocPanel(locLabelName,columnIndex);
-
         JScrollPane scrollPane = new JScrollPane(panel);
+
+        JPanel panelWrapper = new JPanel();
+        arrLocPanelWrapper.add(panelWrapper);
+        
+        panelWrapper.setLayout(new BoxLayout(panelWrapper, BoxLayout.Y_AXIS));
+        panelWrapper.add(labelPanel);
+        panelWrapper.add(scrollPane);
         scrollPane.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,250));
-        panelLoc.add(scrollPane);
-        arrLocPanel.put(label,scrollPane);
+        panelLoc.add(panelWrapper);
+        arrLocPanel.put(labelPanel,scrollPane);
 
         panel.setActionForCheckBoxes(locCheckboxAction);
     }
@@ -114,7 +235,22 @@ public class TraCuuHangUI extends JPanel{
     private String[] optionKey;
     private JComboBox<String> cbChonKho;
 
-    public void SetupPanelChucNang(String[] dsTenKho,String[]dsMaKho,ActionListener onChangeMaKho, ActionListener onSubmitSearch){
+    ActionListener onChangeMaKho = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setupPanel();
+        }
+
+    };
+
+    ActionListener onSubmitSearch = new ActionListener() {
+        public void actionPerformed(ActionEvent e){
+            timTheoGiaTri();
+        }
+    };
+    
+    public void SetupPanelChucNang(String[] dsTenKho,String[]dsMaKho){
         JPanel panelChonKho = new JPanel();
         JPanel panelSearch = new JPanel();
         panelChonKho.setOpaque(false);

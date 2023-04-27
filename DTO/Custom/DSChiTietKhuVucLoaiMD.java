@@ -1,6 +1,6 @@
-package Model.Custom;
+package DTO.Custom;
 
-import Model.Model;
+import DTO.Model;
 
 public class DSChiTietKhuVucLoaiMD extends Model{
 

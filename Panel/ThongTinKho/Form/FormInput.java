@@ -1,7 +1,7 @@
 package Panel.ThongTinKho.Form;
 
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.*;
 
@@ -14,13 +14,14 @@ public class FormInput extends JPanel{
         this.inputLabel.setFont(inputFont);
 
         this.inputType = inputField;
-        this.setLayout(new GridLayout(1,2));
         SpringLayout layout = new SpringLayout();
         this.setLayout(layout);
         layout.putConstraint(SpringLayout.WEST, inputLabel, 20, SpringLayout.WEST, this);
+        layout.putConstraint(inputName, inputField, null, inputName, inputField);
         layout.putConstraint(SpringLayout.WEST, inputType, 180, SpringLayout.WEST, this);
         this.add(inputLabel);
         this.add(inputType);
+        this.setPreferredSize(new Dimension(180+inputType.getPreferredSize().width, inputType.getPreferredSize().height));
     }
     public JComponent getInputComponent() {
         return inputType;

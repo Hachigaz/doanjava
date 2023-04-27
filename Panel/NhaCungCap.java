@@ -40,9 +40,9 @@ import javax.swing.table.TableRowSorter;
 import com.mysql.cj.x.protobuf.MysqlxNotice.Frame;
 
 import DAL.*;
+import DTO.*;
 import SQL.SQLUser;
 import misc.DataSet;
-import Model.*;
 
 public class NhaCungCap extends JPanel implements MouseListener{
     JTable table;

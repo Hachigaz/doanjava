@@ -1,4 +1,4 @@
-package Model;
+package DTO;
 
 public class Khuvuc_loaihangMD extends Model{
     public static final String selectStatement = "*";

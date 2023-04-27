@@ -1,4 +1,4 @@
-package Model;
+package DTO;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

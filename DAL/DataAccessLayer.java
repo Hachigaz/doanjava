@@ -6,9 +6,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.*;
-import Model.Model;
-import Model.Custom.DSChiTietKhuVucLoaiMD;
+import DTO.*;
+import DTO.Custom.DSChiTietKhuVucLoaiMD;
 import SQL.*;
 import misc.DataSet;
 import misc.InstanceCreator;

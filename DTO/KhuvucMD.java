@@ -1,6 +1,5 @@
-package Model;
+package DTO;
 
-import DAL.DataAccessLayer;
 
 public class KhuvucMD extends Model {
     public static final String selectStatement = "*";

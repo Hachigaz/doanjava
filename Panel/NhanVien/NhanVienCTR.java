@@ -21,10 +21,10 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import DAL.DataAccessLayer;
-import Model.Model;
-import Model.NhanvienMD;
-import Model.Taikhoan_nhanvienMD;
-import Model.Custom.DSNhanVienMD;
+import DTO.Model;
+import DTO.NhanvienMD;
+import DTO.Taikhoan_nhanvienMD;
+import DTO.Custom.DSNhanVienMD;
 import SQL.SQLUser;
 
 public class NhanVienCTR {
