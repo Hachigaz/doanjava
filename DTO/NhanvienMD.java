@@ -76,6 +76,6 @@ public class NhanvienMD extends Model{
     @Override
     public String toSQLString() {
         return "('" + MaNV + "','" + TenNV + "','" + MaCV + "','" + GioiTinh
-                + "','" + NgaySinh + "','" + DiaChi + "','" + Kho_lam_viec +")";
+                + "','" + NgaySinh + "','" + DiaChi + "','" + Kho_lam_viec +"')";
     }
 }
