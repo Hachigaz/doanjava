@@ -1,6 +1,7 @@
 package Panel.NhanVien;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -40,9 +41,10 @@ public class FormNhanVien extends JDialog{
     public FormNhanVien(){
         // JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(NhanVien.this);
         this.setTitle("Thêm nhân viên");
-        this.setModal(true);
+        // this.setModal(true);
         
         panelCenter = new JPanel();
+        // panelCenter.setBackground(Color.red);
 
         panelTop = new JPanel();
         title = new JLabel("FORM THÊM NHÂN VIÊN");
@@ -66,113 +68,155 @@ public class FormNhanVien extends JDialog{
         // setLocationRelativeTo(parentFrame);
         setVisible(true);
 
-        this.add(panelBottom);
-        this.add(panelCenter);
-        this.add(panelTop);
-        this.add(panelDialog);
-
-        panelCenter.setOpaque(true);
-        panelBottom.setOpaque(true);
-        panelTop.setOpaque(true);
-        panelDialog.setOpaque(true);
-    }
-
-    public void setUpForm(ActionListener add){
         panelCenter.setLayout(new GridBagLayout());
+        panelCenter.setPreferredSize(new Dimension(800,500));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         btn = new JButton("Thêm");
         panelBottom.add(btn);
-        btn.addActionListener(add);
-        for(int i=0;i<labelForm.length;i++){
-            gbc.gridx = 0;
-            gbc.gridy = i;
-            panelCenter.add(createLabel(labelForm[i]),gbc);
-            if(i==2){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                String[] chucvu = {"Quản trị","Nhân viên kho","Quản lý kho"}; 
-                panelCenter.add(createComboBox(chucvu,i),gbc);      
-            }else if(i==3){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                String[] gioitinh = {"Nam","Nữ"};
-                panelCenter.add(createComboBox(gioitinh,i),gbc); 
-            }else if(i==4){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-               panelCenter.add(createDateChooser(i),gbc);      
-            }else if(i==6){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                String[] str = {"Kho ADV","Kho THD","Kho NVC","Kho LHP"};
-                panelCenter.add(createComboBox(str,i),gbc);      
-            }else if(i==7){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                panelCenter.add(createSpinner(0,0,192,8,i),gbc);      
-            }else if(i==8){
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                panelCenter.add(createSpinner(1000000,1000000,10000000,100000,i),gbc);      
-            }else{
-                gbc.gridx = 1;
-                gbc.gridy = i;
-                panelCenter.add(createTextField(i),gbc);
-            }
-        }
-        JTextField textFieldMaNV = (JTextField)atributeNV[0];
-                String MaNV = textFieldMaNV.getText();
-                JTextField textFieldTenNV = (JTextField)atributeNV[1];
-                String TenNV = textFieldTenNV.getText();
-                JComboBox comboBoxMaCV = (JComboBox)atributeNV[2];
-                String MaCV;
-                if(comboBoxMaCV.getSelectedItem()=="Quản trị"){
-                    MaCV = "CV00";
-                }else if(comboBoxMaCV.getSelectedItem()=="Quản lý kho"){
-                    MaCV = "CV01";
-                }else{
-                    MaCV = "CV02";
-                }
-                JComboBox comboBoxGioiTinh = (JComboBox)atributeNV[3];
-                String GioiTinh = (String)comboBoxGioiTinh.getSelectedItem();
-                JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
-                Date ngayDaChon = dateChooserNgaySinh.getDate();
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(ngayDaChon);
-                int nam = calendar.get(Calendar.YEAR);
-                int thang = calendar.get(Calendar.MONTH)+1;
-                int ngay = calendar.get(Calendar.DATE);
-                String date = nam+"-"+thang+"-"+ngay;
-                
-                // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                // String ngaySinh = sdf.format(dateChooserNgaySinh.getDate());
-                // Date NgaySinh = (Date)dateChooserNgaySinh.getDate();
-                // java.sql.Date sqlDate = new java.sql.Date(NgaySinh.getTime());
-                
-                JTextField textFieldDiaChi = (JTextField)atributeNV[5];
-                String DiaChi = textFieldDiaChi.getText();
-                JComboBox comboBoxKhoLamViec = (JComboBox)atributeNV[6];
-                String MaKho;
-                if(comboBoxKhoLamViec.getSelectedItem()=="Kho ADV"){
-                    MaKho = "K01";
-                }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho THD"){
-                    MaKho = "K02";
-                }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho NVC"){
-                    MaKho = "K03";
-                }else{
-                    MaKho = "K04";
-                }
-                JSpinner spinnerSoGioLam = (JSpinner)atributeNV[7];
-                Integer SoGioLam = (Integer)spinnerSoGioLam.getValue();
-                JSpinner spinnerLuongCoBan = (JSpinner)atributeNV[8];
-                Integer value = (Integer) spinnerLuongCoBan.getValue();
-                Float LuongCoBan = value.floatValue();
-                if (MaNV.isEmpty() || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || date.isEmpty() || DiaChi.isEmpty() || MaKho.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelCenter.add(createLabel("Mã nhân viên"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        panelCenter.add(createTextField(0),gbc);
+        // btn.addActionListener(add);
+        // for(int i=0;i<labelForm.length;i++){
+        //     gbc.gridx = 0;
+        //     gbc.gridy = i;
+        //     panelCenter.add(createLabel(labelForm[i]),gbc);
+        //     if(i==2){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         String[] chucvu = {"Quản trị","Nhân viên kho","Quản lý kho"}; 
+        //         panelCenter.add(createComboBox(chucvu,i),gbc);      
+        //     }else if(i==3){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         String[] gioitinh = {"Nam","Nữ"};
+        //         panelCenter.add(createComboBox(gioitinh,i),gbc); 
+        //     }else if(i==4){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //        panelCenter.add(createDateChooser(i),gbc);      
+        //     }else if(i==6){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         String[] str = {"Kho ADV","Kho THD","Kho NVC","Kho LHP"};
+        //         panelCenter.add(createComboBox(str,i),gbc);      
+        //     }else if(i==7){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         panelCenter.add(createSpinner(0,0,192,8,i),gbc);      
+        //     }else if(i==8){
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         panelCenter.add(createSpinner(1000000,1000000,10000000,100000,i),gbc);      
+        //     }else{
+        //         gbc.gridx = 1;
+        //         gbc.gridy = i;
+        //         panelCenter.add(createTextField(i),gbc);
+        //     }
+        // }
     }
+
+    // public void setUpForm(ActionListener add){
+    //     panelCenter.setLayout(new GridBagLayout());
+    //     GridBagConstraints gbc = new GridBagConstraints();
+    //     gbc.insets = new Insets(10, 10, 10, 10);
+    //     btn = new JButton("Thêm");
+    //     panelBottom.add(btn);
+    //     btn.addActionListener(add);
+    //     for(int i=0;i<labelForm.length;i++){
+    //         gbc.gridx = 0;
+    //         gbc.gridy = i;
+    //         panelCenter.add(createLabel(labelForm[i]),gbc);
+    //         if(i==2){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             String[] chucvu = {"Quản trị","Nhân viên kho","Quản lý kho"}; 
+    //             panelCenter.add(createComboBox(chucvu,i),gbc);      
+    //         }else if(i==3){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             String[] gioitinh = {"Nam","Nữ"};
+    //             panelCenter.add(createComboBox(gioitinh,i),gbc); 
+    //         }else if(i==4){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //            panelCenter.add(createDateChooser(i),gbc);      
+    //         }else if(i==6){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             String[] str = {"Kho ADV","Kho THD","Kho NVC","Kho LHP"};
+    //             panelCenter.add(createComboBox(str,i),gbc);      
+    //         }else if(i==7){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             panelCenter.add(createSpinner(0,0,192,8,i),gbc);      
+    //         }else if(i==8){
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             panelCenter.add(createSpinner(1000000,1000000,10000000,100000,i),gbc);      
+    //         }else{
+    //             gbc.gridx = 1;
+    //             gbc.gridy = i;
+    //             panelCenter.add(createTextField(i),gbc);
+    //         }
+    //     }
+    //     JTextField textFieldMaNV = (JTextField)atributeNV[0];
+    //             String MaNV = textFieldMaNV.getText();
+    //             JTextField textFieldTenNV = (JTextField)atributeNV[1];
+    //             String TenNV = textFieldTenNV.getText();
+    //             JComboBox comboBoxMaCV = (JComboBox)atributeNV[2];
+    //             String MaCV;
+    //             if(comboBoxMaCV.getSelectedItem()=="Quản trị"){
+    //                 MaCV = "CV00";
+    //             }else if(comboBoxMaCV.getSelectedItem()=="Quản lý kho"){
+    //                 MaCV = "CV01";
+    //             }else{
+    //                 MaCV = "CV02";
+    //             }
+    //             JComboBox comboBoxGioiTinh = (JComboBox)atributeNV[3];
+    //             String GioiTinh = (String)comboBoxGioiTinh.getSelectedItem();
+    //             JDateChooser dateChooserNgaySinh = (JDateChooser)atributeNV[4];
+    //             Date ngayDaChon = dateChooserNgaySinh.getDate();
+    //             Calendar calendar = Calendar.getInstance();
+    //             calendar.setTime(ngayDaChon);
+    //             int nam = calendar.get(Calendar.YEAR);
+    //             int thang = calendar.get(Calendar.MONTH)+1;
+    //             int ngay = calendar.get(Calendar.DATE);
+    //             String date = nam+"-"+thang+"-"+ngay;
+                
+    //             // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    //             // String ngaySinh = sdf.format(dateChooserNgaySinh.getDate());
+    //             // Date NgaySinh = (Date)dateChooserNgaySinh.getDate();
+    //             // java.sql.Date sqlDate = new java.sql.Date(NgaySinh.getTime());
+                
+    //             JTextField textFieldDiaChi = (JTextField)atributeNV[5];
+    //             String DiaChi = textFieldDiaChi.getText();
+    //             JComboBox comboBoxKhoLamViec = (JComboBox)atributeNV[6];
+    //             String MaKho;
+    //             if(comboBoxKhoLamViec.getSelectedItem()=="Kho ADV"){
+    //                 MaKho = "K01";
+    //             }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho THD"){
+    //                 MaKho = "K02";
+    //             }else if(comboBoxKhoLamViec.getSelectedItem()=="Kho NVC"){
+    //                 MaKho = "K03";
+    //             }else{
+    //                 MaKho = "K04";
+    //             }
+    //             JSpinner spinnerSoGioLam = (JSpinner)atributeNV[7];
+    //             Integer SoGioLam = (Integer)spinnerSoGioLam.getValue();
+    //             JSpinner spinnerLuongCoBan = (JSpinner)atributeNV[8];
+    //             Integer value = (Integer) spinnerLuongCoBan.getValue();
+    //             Float LuongCoBan = value.floatValue();
+    //             if (MaNV.isEmpty() || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || date.isEmpty() || DiaChi.isEmpty() || MaKho.isEmpty()) {
+    //                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
+    //                 return;
+    //             }
+    // }
     public String getMaNV() {
         JTextField textFieldMaNV = (JTextField) atributeNV[0]; // Lấy đối tượng JTextField tại vị trí i=1
         return textFieldMaNV.getText(); // Lấy giá trị của JTextField
@@ -267,5 +311,9 @@ public class FormNhanVien extends JDialog{
         spinner.setFont(new Font("Poppins",Font.PLAIN,15));
         atributeNV[index] = spinner;
         return spinner;
+    }
+    public static void main(String[] args)
+    {
+        FormNhanVien a = new FormNhanVien();
     }
 }

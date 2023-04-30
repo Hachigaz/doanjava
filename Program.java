@@ -7,7 +7,7 @@ import SQL.*;
 
 
 public class Program {
-    private final String url = "jdbc:mysql://26.236.133.174:3306/QuanLyKho";
+    private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
 
     private final String username = "master";
     private final String password = "123";

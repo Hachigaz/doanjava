@@ -29,29 +29,15 @@ import SQL.SQLUser;
 
 public class NhanVienCTR {
     private Object atributeNV[];
-    private NhanVienUI ui;
+    private NhanVienUI2 ui;
     private SQLUser master;
     private Taikhoan_nhanvienMD tkDangNhap;
     private DataAccessLayer<DSNhanVienMD> NhanVienDAL;
-    private FormNhanVien form;
     public NhanVienCTR(SQLUser user,Taikhoan_nhanvienMD tkdn, Dimension d){
         this.master = user;
         this.tkDangNhap = tkdn;
         NhanVienDAL = new DataAccessLayer<DSNhanVienMD>(user, DSNhanVienMD.class);
-        ui = new NhanVienUI(d);
-
-        ActionListener searchAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ui.timKiem();
-            }
-        };
-
-        ActionListener infoAction = new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                ui.displayInfo();
-            }
-        };
+        ui = new NhanVienUI2(d);
 
         MouseListener Buttons = new MouseListener() {
 
@@ -81,31 +67,12 @@ public class NhanVienCTR {
             }
         };
 
-        ActionListener addAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                DataAccessLayer<NhanvienMD> NhanVienDAO = new DataAccessLayer<>(user,NhanvienMD.class);
-                ArrayList<NhanvienMD> DSNV = new ArrayList<NhanvienMD>();
-                DSNV.add(new NhanvienMD(form.getMaNV(), form.getTenNV(), form.getMaCV(), form.getGioiTinh(), form.getNgaySinh(), form.getDiaChi(), form.getMaKho(), form.getSoGio(), form.getLuongCoBan()));
-                NhanVienDAO.add(DSNV);
-                ui.updateTable(new DefaultTableModel(Model.to2DArray(DSNV),NhanVienDAO.getReturnedColumnName()));
-                // panelDanhSach.setPreferredSize(new Dimension(830, 700));
-            }
-        };
-        ActionListener displayForm = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                form = new FormNhanVien();
-                form.setUpForm(addAction);
-            }
-        };
         ui.setUpSearchPanel(searchAction, displayForm, infoAction, Buttons);
 
         ArrayList<DSNhanVienMD> DSNVMD2 = NhanVienDAL.getTable();
         ui.updateTable(new DefaultTableModel(Model.to2DArray(DSNVMD2),NhanVienDAL.getReturnedColumnName()));
     }
-    public NhanVienUI getUI(){
+    public NhanVienUI2 getUI(){
         return ui;
     }
     

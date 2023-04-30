@@ -3,7 +3,7 @@ import DTO.*;
 
 public class DSNhanVienMD extends Model{
     
-    public static final String selectStatement = "nv.MaNV as 'Mã nhân viên',nv.TenNV as 'Tên nhân viên',cv.TenCV as 'Chức vụ',nv.GioiTinh as 'Giới tính',DATE_FORMAT(NgaySinh, '%d/%m/%Y') as 'Ngày sinh',nv.DiaChi as 'Địa chỉ',kho.TenKho as 'Kho làm việc',nv.SoGioLamViec as 'Số giờ làm việc',nv.LuongCoBan as 'Lương cơ bản'";
+    public static final String selectStatement = "nv.MaNV as 'Mã nhân viên',nv.TenNV as 'Tên nhân viên',cv.TenCV as 'Chức vụ',nv.GioiTinh as 'Giới tính',DATE_FORMAT(NgaySinh, '%d/%m/%Y') as 'Ngày sinh',nv.DiaChi as 'Địa chỉ',kho.TenKho as 'Kho làm việc'";
     public static final String fromStatement = "nhanvien as nv join chucvu as cv on cv.MaCV = nv.MaCV join kho on kho.MaKho = nv.Kho_lam_viec";//where nv.MaNV not in ('ADMIN')
     public static final String groupByStatement = "";
    
@@ -14,9 +14,7 @@ public class DSNhanVienMD extends Model{
     private String NgaySinh;
     private String DiaChi;
     private String TenKho;
-    private Integer SoGioLamViec;
-    private Float LuongCoBan;
-    public DSNhanVienMD(String maNV, String tenNV, String chucVu, String gioiTinh, String ngaySinh, String diaChi,String khoLamViec,Integer soGioLamViec,Float luongCoBan) {
+    public DSNhanVienMD(String maNV, String tenNV, String chucVu, String gioiTinh, String ngaySinh, String diaChi,String khoLamViec) {
         MaNV = maNV;
         TenNV = tenNV;
         TenCV = chucVu;
@@ -24,8 +22,6 @@ public class DSNhanVienMD extends Model{
         NgaySinh = ngaySinh;
         DiaChi = diaChi;
         TenKho = khoLamViec;
-        SoGioLamViec = soGioLamViec;
-        LuongCoBan = luongCoBan;
     }
 
     public static String getSelectstatement() {
@@ -77,18 +73,6 @@ public class DSNhanVienMD extends Model{
     public void setTenKho(String tenKho) {
         TenKho = tenKho;
     }
-    public Integer getSoGioLamViec() {
-        return SoGioLamViec;
-    }
-    public void setSoGioLamViec(Integer soGioLamViec) {
-        SoGioLamViec = soGioLamViec;
-    }
-    public Float getLuongCoBan() {
-        return LuongCoBan;
-    }
-    public void setLuongCoBan(Float luongCoBan) {
-        LuongCoBan = luongCoBan;
-    }
 
     @Override
     public String getSelectStatement() {
@@ -102,7 +86,7 @@ public class DSNhanVienMD extends Model{
 
     @Override
     public String toSQLString() {
-        String returnString = "('"+MaNV+"','"+TenNV+"',"+TenCV+",'"+GioiTinh+"','"+NgaySinh+"','"+DiaChi+"','"+TenKho+"','"+SoGioLamViec+"','"+LuongCoBan+"')";
+        String returnString = "('"+MaNV+"','"+TenNV+"',"+TenCV+",'"+GioiTinh+"','"+NgaySinh+"','"+DiaChi+"','"+TenKho+"')";
         return returnString;
     }
 }

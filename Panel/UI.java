@@ -22,6 +22,7 @@ import java.awt.*;
 import Panel.DonNhap.DonNhapUI;
 import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienCTR;
+import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Panel.TraCuuHang.TraCuuHangUI;
 
@@ -157,8 +158,8 @@ public class UI extends TitleFrame implements MouseListener{
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
         // themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
-        NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
-        themQuyen(new JLabel("Nhân viên"), "res/img/username.png", cnNhanVien.getUI());
+        // NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
+        themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
         themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
     }
@@ -200,7 +201,7 @@ public class UI extends TitleFrame implements MouseListener{
             if(e.getSource()==btnChucNang.get(i)){
                 btnChucNang.get(i).setOpaque(false);
                 btnChucNang.get(i).setBackground(null);
-                btnChucNang.get(i).setForeground(Color.BLACK);
+                btnChucNang.get(i).setForeground(Color.white);
             }
         }
     }
@@ -215,7 +216,7 @@ public class UI extends TitleFrame implements MouseListener{
         label.setBackground(Color.red);
         label.setOpaque(false);
         label.setBorder(null);
-        label.setForeground(Color.black);
+        label.setForeground(Color.white);
         label.setPreferredSize(new Dimension(190,40));
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         label.setFont(new Font("Monospace",Font.PLAIN,15));
