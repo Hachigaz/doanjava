@@ -45,6 +45,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 
 import Panel.SubPanel.TablePanel;
+import misc.ThongBaoDialog;
 
 public class NhanVienUI2 extends JPanel implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
@@ -331,6 +332,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 }
             };
             panelDanhSach.SetTable(currentTable, null);
+            new ThongBaoDialog("Thêm thành công",null);
             form.dispose();
         }
     };

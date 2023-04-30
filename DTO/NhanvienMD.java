@@ -12,8 +12,6 @@ public class NhanvienMD extends Model{
     private String NgaySinh;
     private String DiaChi;
     private String Kho_lam_viec;
-    private Integer SoGioLamViec;
-    private Float LuongCoBan;
 
     public NhanvienMD(String maNV, String tenNV, String maCV, String gioiTinh, String ngaySinh, String diaChi, String kho_lam_viec) {
         MaNV = maNV;
