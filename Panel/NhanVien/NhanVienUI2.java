@@ -66,7 +66,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     private Form form;
     public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Chức vụ:               ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       ","Số giờ làm:           ","Lương cơ bản:    "};
     public NhanVienUI2(Dimension d){
-        form = new Form((JFrame)SwingUtilities.getWindowAncestor(this));
+        form = new Form((JFrame)SwingUtilities.getWindowAncestor(this),addButtonAction);
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
         // panelRight and components
@@ -318,7 +318,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         }
     };
     private TableModel currentTable;
-    ActionListener addAction = new ActionListener() {
+    ActionListener addButtonAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             String[] data = form.getData();
@@ -332,6 +332,12 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             };
             panelDanhSach.SetTable(currentTable, null);
             form.dispose();
+        }
+    };
+    ActionListener addAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            form.visible();
         }
     };
     // ActionListener displayForm = new ActionListener() {

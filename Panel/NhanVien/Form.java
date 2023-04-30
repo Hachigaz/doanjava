@@ -37,7 +37,7 @@ public class Form extends JDialog{
     private JRadioButton radio1,radio2;
     private JButton addButton;
     private JDateChooser dateChooser;
-    public Form(JFrame parent){
+    public Form(JFrame parent,ActionListener add){
         super(parent,"Form nhân viên",true);
         this.setPreferredSize(new Dimension(1300,700));
         labelTitleInfo = new JLabel("Thông tin nhân viên");
@@ -161,12 +161,7 @@ public class Form extends JDialog{
         addButton.setBorder(null);
         addButton.setFocusable(false);
         addButton.setBackground(Color.GREEN);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        addButton.addActionListener(add);
 
         panelBottom = new JPanel();
         panelBottom.setBackground(Color.gray);
@@ -218,7 +213,6 @@ public class Form extends JDialog{
         this.setLocationRelativeTo(null);
     }
     public String[] getData() {
-        setVisible(true);
         String MaNV = textMaNV.getText();
         String TenNV = textTenNV.getText();
         String MaCV;
@@ -255,5 +249,8 @@ public class Form extends JDialog{
             maKho = "K04";
         }
         return new String[] {MaNV, TenNV, MaCV, GioiTinh, date, diaChi, maKho};
+    }
+    public void visible(){
+        setVisible(true);
     }
 }
