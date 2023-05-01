@@ -230,23 +230,32 @@ public class ThongTinKhoUI extends JPanel{
                     JTextField tenKVField = (JTextField)(inputFields.get(0).getInputComponent());
                     String tenKV = tenKVField.getText();
                     Float soLuong = 0.0f;
-                    try{
                         JTextField soLuongField = (JTextField)(inputFields.get(1).getInputComponent());
-                        soLuong = Float.parseFloat(soLuongField.getText());
-                        if(soLuong > 0){
-                            thongTinKhoBLL.themKVMoi(new KhuvucMD(maKhoDN, maKVMoi, tenKV, soLuong));
-                            new ThongBaoDialog("Thêm khu vực thành công", null);
-                            setupPanel();
-                            Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
-                            formThemDialog.dispose();
+                        if(tenKVField.getText().equals(""))
+                        {
+                            new ThongBaoDialog("Tên khu vực không được để trống",null);
+                            return;
                         }
-                        else{
+                        if(soLuongField.getText().equals("")){
+                            new ThongBaoDialog("Số lượng không được để trống", null);
+                            return;
+                        }
+                        try{
+                            soLuong = Float.parseFloat(soLuongField.getText());
+                        }
+                        catch(NumberFormatException exception){
+                            new ThongBaoDialog("Số lượng nhập vào không phải là số",null);
+                            return;
+                        }
+                        if(soLuong <= 0){
                             new ThongBaoDialog("Số lượng nhập vào phải lớn hơn 0", null);
+                            return;
                         }
-                    }
-                    catch(NumberFormatException exception){
-                        new ThongBaoDialog("Số lượng nhập vào không phải là số",null);
-                    }
+                        thongTinKhoBLL.themKVMoi(new KhuvucMD(maKhoDN, maKVMoi, tenKV, soLuong));
+                        new ThongBaoDialog("Thêm khu vực thành công", null);
+                        setupPanel();
+                        Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
+                        formThemDialog.dispose();
                 }
             };
             ActionListener themKVCancelListener = new ActionListener() {
