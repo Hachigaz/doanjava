@@ -21,7 +21,6 @@ import java.awt.*;
 
 import Panel.DonNhap.DonNhapUI;
 import Panel.Donxuat.DonXuatCTR;
-import Panel.NhanVien.NhanVienCTR;
 import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Panel.TraCuuHang.TraCuuHangUI;

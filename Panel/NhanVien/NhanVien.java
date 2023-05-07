@@ -278,12 +278,6 @@ public class NhanVien extends JPanel implements MouseListener{
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.addMouseListener(this);
     }
-        private JLabel createLabelInfo(String text){
-        JLabel label = new JLabel(text);
-        label.setPreferredSize(new Dimension(300, 25)); // đặt kích thước ưu tiên cho nhãn
-        label.setFont(new Font("Monospace",Font.BOLD,13));
-        return label;
-    }
     
     public void updateTable(){
         DataAccessLayer<DSNhanVienMD> nhanvienmd = new DataAccessLayer<DSNhanVienMD>(master,DSNhanVienMD.class);

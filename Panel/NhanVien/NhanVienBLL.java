@@ -1,6 +1,7 @@
 package Panel.NhanVien;
 
 import java.sql.SQLData;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import DAL.DataAccessLayer;
@@ -23,7 +24,28 @@ public class NhanVienBLL {
     public void themNVmoi(NhanvienMD nhanvienMoi){
         NhanVienDAL.addOne(nhanvienMoi);
     }
+    public void themDSNVmoi(DSNhanVienMD dsNhanVienMD){
+        DSNhanVienDAL.addOne(dsNhanVienMD);
+    }
+    public void xoaNV(String... keys){
+        NhanVienDAL.remove(keys);
+    }
     public ArrayList<NhanvienMD> getDSNhanVien(String... statements){
         return NhanVienDAL.getTable(statements);
+    }
+    public ArrayList<DSNhanVienMD> getDsNhanVienMD(String... statements){
+        return DSNhanVienDAL.getTable(statements);
+    }
+    public int layMa(){
+        int count = 0;
+        for(int i=1;i<NhanVienDAL.getTable().size();i++){
+            NhanvienMD NVtemp = NhanVienDAL.getTable().get(i);
+            String maStr = NVtemp.getMaNV().substring(NVtemp.getMaNV().length()-3);
+            int maNum = Integer.parseInt(maStr);
+            if(maNum > count){
+                count = maNum;
+            }
+        }
+        return count+1;
     }
 }
