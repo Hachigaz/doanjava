@@ -1,9 +1,9 @@
 package Mat_Hang;
 
-import Panel.ThongTinSP;
+import Panel.ThongTinSP.ThongTinSPUI;
 
 public class DanhSachMatHang {
-    ThongTinSP[] danhSachMH;
+    ThongTinSPUI[] danhSachMH;
     public DanhSachMatHang(){
         danhSachMH = null;
     }
