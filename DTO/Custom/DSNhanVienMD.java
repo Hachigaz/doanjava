@@ -2,9 +2,9 @@ package DTO.Custom;
 import DTO.*;
 
 public class DSNhanVienMD extends Model{
-    
-    public static final String selectStatement = "nv.MaNV as 'Mã nhân viên',nv.TenNV as 'Tên nhân viên',cv.TenCV as 'Chức vụ',nv.GioiTinh as 'Giới tính',DATE_FORMAT(NgaySinh, '%d/%m/%Y') as 'Ngày sinh',nv.DiaChi as 'Địa chỉ',kho.TenKho as 'Kho làm việc'";
-    public static final String fromStatement = "nhanvien as nv join chucvu as cv on cv.MaCV = nv.MaCV join kho on kho.MaKho = nv.Kho_lam_viec";//where nv.MaNV not in ('ADMIN')
+    //DATE_FORMAT(NgaySinh, '%d/%m/%Y')
+    public static final String selectStatement = "nhanvien.MaNV as 'Mã nhân viên',nhanvien.TenNV as 'Tên nhân viên',chucvu.TenCV as 'Chức vụ',nhanvien.GioiTinh as 'Giới tính',DATE_FORMAT(NgaySinh, '%d/%m/%Y') as 'Ngày sinh',nhanvien.DiaChi as 'Địa chỉ',kho.TenKho as 'Kho làm việc'";
+    public static final String fromStatement = "nhanvien join chucvu on nhanvien.MaCV = chucvu.MaCV join kho on kho.MaKho = nhanvien.Kho_lam_viec";//where nv.MaNV not in ('ADMIN')
     public static final String groupByStatement = "";
    
     private String MaNV;

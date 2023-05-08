@@ -66,7 +66,7 @@ public class FormThem extends TitleFrame {
         layout.putConstraint(SpringLayout.SOUTH, submitPanel, -40, SpringLayout.SOUTH, content);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, submitPanel, 0, SpringLayout.HORIZONTAL_CENTER, content);
         
-        this.setContentPanel(content);
+        this.setContentPane(content);
 
         this.setVisible(true);
     }
