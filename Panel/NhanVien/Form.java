@@ -2,6 +2,7 @@ package Panel.NhanVien;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,6 +11,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,23 +22,31 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-public class Form extends JDialog{
-    public static int count=20;
-    private JPanel panelContainer,panelLeft,panelRight,panelBottom,panelEnterData;
-    private JLabel labelTitleInfo;
+public class Form extends JDialog implements MouseListener{
+    NhanVienBLL nhanVienBLL = new NhanVienBLL();
+    private JPanel panelContainer,panelLeft,panelRight,panelBottom,panelEnterData,panelEnterUserPass;
+    private JLabel labelTitleInfo,labelTitleUserPass;
     private JLabel labelTenNV,labelChucVu,labelGioiTinh,labelNgaySinh,labelDiaChi,labelTenKho;
+    private JLabel labelUsername,labelPassword,labelReTypePass,labelCheckBox;
+    private JTextField textUsername;
+    private JPasswordField password,retypepass;
     JTextField textTenNV,textDiaChi;
     JComboBox comboBox,comboBox2;
+    JCheckBox checkBox;
     private ButtonGroup group;
     JRadioButton radio1,radio2;
     JButton addButton;
@@ -43,11 +56,16 @@ public class Form extends JDialog{
     private Date ngayDaChon;
     public Form(JFrame parent,ActionListener add){
         super(parent,"Form nhân viên",true);
-        count++;
         this.setPreferredSize(new Dimension(1300,700));
         labelTitleInfo = new JLabel("Thông tin nhân viên");
+        labelTitleInfo.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         labelTitleInfo.setFont(new Font("Poppins",Font.BOLD,20));
-        labelTitleInfo.setBorder(BorderFactory.createEmptyBorder(20,320,0,0));
+        labelTitleInfo.setHorizontalAlignment(JLabel.CENTER);
+
+        labelTitleUserPass = new JLabel("Thiết lập tài khoản");
+        labelTitleUserPass.setFont(new Font("Poppins",Font.BOLD,20));
+        labelTitleUserPass.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
+        labelTitleUserPass.setHorizontalAlignment(JLabel.CENTER);
 
         panelEnterData = new JPanel();//chứa các thành phần nhập
         panelEnterData.setLayout(new GridBagLayout());
@@ -63,7 +81,11 @@ public class Form extends JDialog{
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        textTenNV = new JTextField(20);
+        textTenNV = new JTextField();
+        textTenNV.setPreferredSize(new Dimension(300,35));
+        textTenNV.setBorder(null);
+        textTenNV.setFont(new Font("Poppins",Font.PLAIN,16));
+        textTenNV.setBorder(new EmptyBorder(5,5,5,5));
         panelEnterData.add(textTenNV,gbc);
 
         gbc.gridx = 0;
@@ -76,7 +98,7 @@ public class Form extends JDialog{
         gbc.gridy = 1;
         String[] chucvu = {"Quản trị","Nhân viên kho","Quản lý kho"}; 
         comboBox = new JComboBox<>(chucvu);
-        comboBox.setPreferredSize(new Dimension(150, 30));
+        comboBox.setPreferredSize(new Dimension(300,35));
         panelEnterData.add(comboBox,gbc);
 
 
@@ -112,7 +134,7 @@ public class Form extends JDialog{
         gbc.gridx = 1;
         gbc.gridy = 3;
         dateChooser = new JDateChooser();
-        dateChooser.setPreferredSize(new Dimension(150, 30));
+        dateChooser.setPreferredSize(new Dimension(300,35));
         dateChooser.setFont(new Font("Poppins",Font.PLAIN,15));
         panelEnterData.add(dateChooser,gbc);
 
@@ -126,7 +148,11 @@ public class Form extends JDialog{
 
         gbc.gridx = 1;
         gbc.gridy = 4;
-        textDiaChi = new JTextField(20);
+        textDiaChi = new JTextField();
+        textDiaChi.setPreferredSize(new Dimension(300,35));
+        textDiaChi.setBorder(null);
+        textDiaChi.setFont(new Font("Poppins",Font.PLAIN,16));
+        textDiaChi.setBorder(new EmptyBorder(5,5,5,5));
         panelEnterData.add(textDiaChi,gbc);
 
 
@@ -139,11 +165,85 @@ public class Form extends JDialog{
 
         gbc.gridx = 1;
         gbc.gridy = 5;
-        String[] str = {"Kho ADV","Kho THD","Kho NVC","Kho LHP"};
-        comboBox2 = new JComboBox<>(str);
-        comboBox2.setPreferredSize(new Dimension(150, 30));
+        comboBox2 = new JComboBox<>(nhanVienBLL.layTenKho());
+        comboBox2.setPreferredSize(new Dimension(300,35));
+        comboBox2.setBorder(null);
         panelEnterData.add(comboBox2,gbc);
 
+        panelEnterUserPass = new JPanel();
+        panelEnterUserPass.setLayout(new GridBagLayout());
+        panelEnterUserPass.setPreferredSize(new Dimension(500,600));
+        panelEnterUserPass.setBorder(BorderFactory.createEmptyBorder(0, 0,100, 0));
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.insets = new Insets(10, 10, 10, 10);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 0;
+        labelUsername = new JLabel("Tên đăng nhập");
+        labelUsername.setFont(new Font("Poppins",Font.BOLD,15));
+        panelEnterUserPass.add(labelUsername,gbc2);
+
+        gbc2.gridx = 1;
+        gbc2.gridy = 0;
+        textUsername = new JTextField();
+        textUsername.setPreferredSize(new Dimension(300,35));
+        textUsername.setBorder(null);
+        textUsername.setFont(new Font("Poppins",Font.PLAIN,16));
+        textUsername.setBorder(new EmptyBorder(5,5,5,5));
+        panelEnterUserPass.add(textUsername,gbc2);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 1;
+        labelPassword = new JLabel("Mật khẩu");
+        labelPassword.setFont(new Font("Poppins",Font.BOLD,15));
+        panelEnterUserPass.add(labelPassword,gbc2);
+
+        gbc2.gridx = 1;
+        gbc2.gridy = 1;
+        password = new JPasswordField();
+        password.setPreferredSize(new Dimension(300,35));
+        password.setBorder(null);
+        password.setFont(new Font("Poppins",Font.PLAIN,16));
+        password.setBorder(new EmptyBorder(5,5,5,5));
+        panelEnterUserPass.add(password,gbc2);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 2;
+        labelReTypePass = new JLabel("Nhập lại mật khẩu");
+        labelReTypePass.setFont(new Font("Poppins",Font.BOLD,15));
+        panelEnterUserPass.add(labelReTypePass,gbc2);
+
+        gbc2.gridx = 1;
+        gbc2.gridy = 2;
+        retypepass = new JPasswordField();
+        retypepass.setPreferredSize(new Dimension(300,35));
+        retypepass.setBorder(null);
+        retypepass.setFont(new Font("Poppins",Font.PLAIN,16));
+        retypepass.setBorder(new EmptyBorder(5,5,5,5));
+        panelEnterUserPass.add(retypepass,gbc2);
+
+        gbc2.gridx = 0;
+        gbc2.gridy = 3;
+        labelCheckBox = new JLabel("Hiện mật khẩu");
+        labelCheckBox.setFont(new Font("Poppins",Font.PLAIN,12));
+        panelEnterUserPass.add(labelCheckBox,gbc2);
+
+        gbc2.gridx = 1;
+        gbc2.gridy = 3;
+        checkBox = new JCheckBox();
+        checkBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+                    password.setEchoChar((char) 0);
+                    retypepass.setEchoChar((char) 0);
+                }else{
+                    password.setEchoChar('\u2022');
+                    retypepass.setEchoChar('\u2022');
+                }
+            }
+        });
+        panelEnterUserPass.add(checkBox,gbc2);
 
         panelContainer = new JPanel();
         panelContainer.setLayout(new BorderLayout());
@@ -154,18 +254,23 @@ public class Form extends JDialog{
         panelLeft.setLayout(new BorderLayout());
 
         panelRight = new JPanel();
-        panelRight.setBackground(Color.red);
+        panelRight.setLayout(new BorderLayout());
         panelRight.setPreferredSize(new Dimension(500,600));
+
+        Border border = BorderFactory.createMatteBorder(0, 1, 0, 0, Color.BLACK);
+        Border emptyBorder = new EmptyBorder(0, 5, 0, 0);
+        panelRight.setBorder(BorderFactory.createCompoundBorder(border, emptyBorder));
 
         addButton = new JButton("Thêm");
         addButton.setPreferredSize(new Dimension(300, 40));
         addButton.setBorder(null);
         addButton.setFocusable(false);
         addButton.setBackground(Color.GREEN);
+        addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(add);
+        addButton.addMouseListener(this);
 
         panelBottom = new JPanel();
-        panelBottom.setBackground(Color.gray);
         panelBottom.setPreferredSize(new Dimension(800,100));
         panelBottom.setLayout(new FlowLayout());
         panelBottom.add(addButton);
@@ -173,37 +278,8 @@ public class Form extends JDialog{
         panelLeft.add(labelTitleInfo,BorderLayout.NORTH);
         panelLeft.add(panelEnterData);
 
-
-        // labelName = new JLabel("Họ tên");
-        // textFieldName = new JTextField(20);
-        // textFieldName.setBorder(null);
-        // labelEmail = new JLabel("Email");
-        // textFieldEmail = new JTextField(20);
-        // textFieldEmail.setBorder(null);
-        // panelCenterInfo = new JPanel();
-        // panelCenterInfo.setLayout(new GridBagLayout());
-        // GridBagConstraints gbc = new GridBagConstraints();
-        // gbc.insets = new Insets(10, 10, 10, 10);
-
-        // gbc.gridx = 0;
-        // gbc.gridy = 0;
-        // panelCenterInfo.add(labelName,gbc);
-        
-        // gbc.gridx = 1;
-        // gbc.gridy = 0;
-        // panelCenterInfo.add(textFieldName,gbc);
-
-        // gbc.gridx = 0;
-        // gbc.gridy = 1;
-        // panelCenterInfo.add(labelEmail,gbc);
-        
-        // gbc.gridx = 1;
-        // gbc.gridy = 1;
-        // panelCenterInfo.add(textFieldEmail,gbc);
-
-        // addButton = new JButton("Thêm");
-        // panelBottom = new JPanel();
-        // panelBottom.add(addButton);
+        panelRight.add(labelTitleUserPass,BorderLayout.NORTH);
+        panelRight.add(panelEnterUserPass);
 
         panelContainer.add(panelLeft,BorderLayout.WEST);
         panelContainer.add(panelRight,BorderLayout.EAST);
@@ -217,12 +293,17 @@ public class Form extends JDialog{
         String MaNV ="";
         String TenNV = textTenNV.getText();
         String MaCV="";
+        String[] TenKho = new String[100];
+        TenKho = nhanVienBLL.layTenKho();
         if(comboBox.getSelectedItem()=="Quản trị"){
+            MaNV = "QTV";
             MaCV = "CV00";
         }else if(comboBox.getSelectedItem()=="Quản lý kho"){
             MaCV = "CV01";
+            MaNV = "QLK";
         }else{
             MaCV = "CV02";
+            MaNV = "NV";
         }
         String GioiTinh="";
         selection = group.getSelection();
@@ -243,18 +324,12 @@ public class Form extends JDialog{
         }
         String diaChi = textDiaChi.getText();
         String maKho="";
-        if(comboBox2.getSelectedItem()=="Kho ADV"){
-            maKho = "K01";
-            MaNV = "NV1";
-        }else if(comboBox2.getSelectedItem()=="Kho THD"){
-            maKho = "K02";
-            MaNV = "NV2";
-        }else if(comboBox2.getSelectedItem()=="Kho NVC"){
-            maKho = "K03";
-            MaNV = "NV3";
-        }else{
-            maKho = "K04";
-            MaNV = "NV3";
+        for(int i=0;i<nhanVienBLL.laySoLuongKho();i++){
+            if(comboBox2.getSelectedItem().equals(nhanVienBLL.layTenKho()[i])){
+                maKho = nhanVienBLL.layMaKho()[i];
+                MaNV = MaNV + (i+1);
+            }
+            
         }
         return new String[] {MaNV, TenNV, MaCV, GioiTinh, date, diaChi, maKho};
     }
@@ -293,5 +368,28 @@ public class Form extends JDialog{
         }
         return check;
     }
-    
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if(e.getSource() == addButton){
+            addButton.setBackground(Color.gray);
+        }
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if(e.getSource() == addButton){
+            addButton.setBackground(Color.green);
+        }
+    }
 }

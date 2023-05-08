@@ -45,6 +45,7 @@ import DTO.Custom.DSNhanVienMD;
 
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
@@ -246,6 +247,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             displayInfo();
         }
     };
+    private TableModel currentTableDS;
     ActionListener editButtonAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -257,14 +259,26 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 String[] data = form.getData();
                 nhanVienBLL.xoaNV("MaNV = "+arr[0]);
                 nhanVienBLL.themNVmoi(new NhanvienMD(arr[0],data[1],data[2],data[3],data[4],data[5],data[6]));
+                if(data[2] == "CV00"){
+                    chucvu = "Quản trị";
+                }else if(data[2] == "CV01"){
+                    chucvu = "Quản lý kho";
+                }else if(data[2] == "CV02"){
+                    chucvu = "Nhân viên kho";
+                }
+                if(data[6] == "K01"){
+                    tenkho = "Kho ADV";
+                }else if(data[6] == "K02"){
+                    tenkho = "Kho THD";
+                }
                 String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-                currentTable = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDSNhanVien(),"MaNV","TenNV","MaCV","GioiTinh","NgaySinh","DiaChi","Kho_lam_viec"),columnNames){
+                currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
-            panelDanhSach.SetTable(currentTable, null);
+            panelDanhSach.SetTable(currentTableDS, null);
             tableTemp = panelDanhSach.getTableDS();
             tableTemp.addMouseListener(actionInfo);
             JOptionPane.showMessageDialog(form, "Sửa thành công");
@@ -278,9 +292,9 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         Window window = SwingUtilities.getWindowAncestor(this);
         form = new Form((JFrame) window, addButtonAction);
         form.setVisible(true);
+        form.addButton.addMouseListener(this);
     }
     private TableModel currentTable;
-    private TableModel currentTableDS;
     String chucvu, tenkho;
     ActionListener addButtonAction = new ActionListener() {
         @Override
@@ -299,12 +313,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 }else if(data[2] == "CV02"){
                     chucvu = "Nhân viên kho";
                 }
-                if(data[6] == "K01"){
-                    tenkho = "Kho ADV";
-                }else if(data[6] == "K02"){
-                    tenkho = "Kho THD";
-                }
-                nhanVienBLL.themDSNVmoi(new DSNhanVienMD(data[0]+df.format(nhanVienBLL.layMa()), data[1], chucvu,data[3], data[4], data[5], tenkho));
                 currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -331,13 +339,13 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             if (dialogResult == JOptionPane.YES_OPTION) {
                 nhanVienBLL.xoaNV("MaNV = "+arr[0]);
                 String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-                currentTable = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDSNhanVien(),"MaNV","TenNV","MaCV","GioiTinh","NgaySinh","DiaChi","Kho_lam_viec"),columnNames){
+                currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
-                panelDanhSach.SetTable(currentTable, null);
+                panelDanhSach.SetTable(currentTableDS, null);
                 tableTemp = panelDanhSach.getTableDS();
                 tableTemp.addMouseListener(actionInfo);
                 JOptionPane.showMessageDialog(form, "Xóa thành công");
@@ -360,7 +368,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             arr[6] = tableTemp.getValueAt(rowIndex, 6).toString(); 
             editForm();
         }
-        
     };
     
     public void editForm(){
@@ -375,10 +382,10 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             form.radio2.setSelected(true);
         }
         Calendar calendar = Calendar.getInstance();
-        String[] dateParts = arr[4].split("-");
-        int year = Integer.parseInt(dateParts[0]);
+        String[] dateParts = arr[4].split("/");
+        int day = Integer.parseInt(dateParts[0]);
         int month = Integer.parseInt(dateParts[1]) - 1; // Giá trị tháng trong Calendar bắt đầu từ 0
-        int day = Integer.parseInt(dateParts[2]);
+        int year = Integer.parseInt(dateParts[2]);
         calendar.set(year, month, day);
         Date date = calendar.getTime();
         form.dateChooser.setDate(date);
