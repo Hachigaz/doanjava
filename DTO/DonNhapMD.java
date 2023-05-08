@@ -1,5 +1,7 @@
 package DTO;
 
+import com.mysql.cj.xdevapi.PreparableStatement;
+
 public class DonNhapMD extends Model{
     public static final String selectStatement = "*";
     public static final String fromStatement = "donnhap";
@@ -59,5 +61,8 @@ public class DonNhapMD extends Model{
     public String toSQLString() {
         return "('" + MaDonNhap + "','" + MaKho + "','" + MaCty + "','" + MaNV
                 + "','" + NgayNhap + "')";
+    }
+    public PreparableStatement PreparableStatement(String string) {
+        return null;
     }
 }

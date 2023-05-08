@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 
-import Panel.DonNhap.DonNhapUI;
+import GUI.DonNhapUI;
 import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienCTR;
 import Panel.NhanVien.NhanVienUI2;
@@ -149,12 +149,14 @@ public class UI extends TitleFrame implements MouseListener{
         String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
         
         DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
+
+        DataSet dsdonnhap = master.getDataQuery("SELECT * FROM donnhap");
         //do lon panel chuc nang
         Dimension panelRightSize = new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16);
 
         themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
-        themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
+        themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(dsdonnhap));
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
         // themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
