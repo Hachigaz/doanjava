@@ -26,7 +26,7 @@ public class Program {
             public void windowClosed(WindowEvent e){
                 Taikhoan_nhanvienMD tkDangNhap = dn.getTenTKDangNhap();
                 if(tkDangNhap!=null){
-                    new UI(master,tkDangNhap);
+                    new UI(master,tkDangNhap); 
                 }
             }
         });

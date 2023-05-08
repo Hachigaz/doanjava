@@ -38,12 +38,20 @@ public class UI extends TitleFrame implements MouseListener{
     public static Taikhoan_nhanvienMD tenTKDangNhap;
     public static KhoMD khoNVDangNhap;
     
+    private DataAccessLayer<KhoMD> khoDAL;
+    private DataAccessLayer<NhanvienMD> nvDAL;
+    private DataAccessLayer<ChitietnhomquyenMD> ctNhomQuyenDAL;
+
     public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
         UI.master= master;
         UI.tenTKDangNhap=tkDangNhap;
+
+        khoDAL=  new DataAccessLayer<>(master, KhoMD.class);
+        nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
+        ctNhomQuyenDAL = new DataAccessLayer<>(master, ChitietnhomquyenMD.class);
+
         //lấy kho đăng nhập
-        DataAccessLayer<KhoMD> khoDAL = new DataAccessLayer<>(master, KhoMD.class);
-        DataAccessLayer<NhanvienMD> nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
+
         UI.khoNVDangNhap =  khoDAL.getFirst("MaKho = "+nvDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec());
         
         this.setSize(1400,750);
@@ -113,8 +121,7 @@ public class UI extends TitleFrame implements MouseListener{
         labelIcon2.setIcon(newIcon2);
         labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
-        DataAccessLayer<NhanvienMD> nhanVienDAL = new DataAccessLayer<>(master, NhanvienMD.class);
-        NhanvienMD nvDangNhap = nhanVienDAL.getTable("MaNV="+tkDangNhap.getMaNV()).get(0);
+        NhanvienMD nvDangNhap = nvDAL.getTable("MaNV="+tkDangNhap.getMaNV()).get(0);
         
         labelUserName = new JLabel("Xin chào "+nvDangNhap.getTenNV());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
@@ -140,18 +147,20 @@ public class UI extends TitleFrame implements MouseListener{
         panelUI.add(panelTop,BorderLayout.NORTH);
 
         // set content panel cho titleframe
-        this.setContentPanel(panelUI);
+        this.setContentPane(panelUI);
         this.setVisible(true);
         
         
-        String[] str = {"Danh sách sản phẩm","Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
-        String[] img = {"danhMuc.png","nhaCungCap.png","kho.png","kho.png","users.png"};
+        String[] str = {"Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
+        String[] img = {"nhaCungCap.png","kho.png","kho.png","users.png"};
         
         DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
         //do lon panel chuc nang
         Dimension panelRightSize = new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16);
-
-        themQuyen(new JLabel(str[0]), "res/img/"+img[0], new ThongTinSP(ds));
+        //them quyen
+        for(ChitietnhomquyenMD quyenTK : ctNhomQuyenDAL.getTable("MaNhomQuyen = "+tkDangNhap.getMaNhomQuyen())){
+            quyenTK.getMaQuyen();
+        }
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
         themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);

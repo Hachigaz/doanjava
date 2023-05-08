@@ -35,4 +35,12 @@ public class util {
         }
         return retObj;
     }
+    public static String[] themStringVaoArray (String string,String... stringArr){
+        String[] newStringArr = new String[stringArr.length+1];
+        for(int i = 0 ; i < stringArr.length;i++){
+            newStringArr[i] = stringArr[i];
+        }
+        newStringArr[stringArr.length]=string;
+        return newStringArr;
+    }
 }

@@ -101,8 +101,8 @@ public class DonXuatUI extends JPanel{
         label.addMouseListener(panelCollapseListener);
         locArrLabel.add(label);
 
-        LocPanel panel = new LocPanel(locLabelName,columnIndex);
-
+        LocPanel panel = new LocPanel();
+        panel.setupPanel(locLabelName, columnIndex);
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,250));
         panelLoc.add(scrollPane);

@@ -215,7 +215,8 @@ public class TraCuuHangUI extends JPanel{
         labelPanel.setPreferredSize(new Dimension(panelLoc.getPreferredSize().width,30));
         labelPanel.addMouseListener(panelCollapseListener);
         arrLocLabel.add(labelPanel);
-        LocPanel panel = new LocPanel(locLabelName,columnIndex);
+        LocPanel panel = new LocPanel();
+        panel.setupPanel(locLabelName,columnIndex);
         JScrollPane scrollPane = new JScrollPane(panel);
 
         JPanel panelWrapper = new JPanel();

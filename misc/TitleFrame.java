@@ -53,9 +53,11 @@ public class TitleFrame extends JFrame{
         
         this.add(titleBar,BorderLayout.NORTH);
     }
-    public void setContentPanel(JPanel panel){
+    public void setContentPane(JPanel panel){
         this.contentPanel = panel;
         this.add(contentPanel,BorderLayout.CENTER);
+        titleBar.setPreferredSize(new Dimension(this.getSize().width, 30));
+        contentPanel.setPreferredSize(new Dimension(this.getSize().width, this.getSize().height-30));
     }
     private MouseListener listener = new MouseListener() {
         @Override
