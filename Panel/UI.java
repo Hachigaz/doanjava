@@ -20,10 +20,12 @@ import java.util.HashMap;
 import java.awt.*;
 
 import GUI.DonNhapUI;
+
 import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Panel.TraCuuHang.TraCuuHangUI;
+import Panel.CongTy2.CongTy2UI;
 
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
@@ -164,13 +166,16 @@ public class UI extends TitleFrame implements MouseListener{
         for(ChitietnhomquyenMD quyenTK : ctNhomQuyenDAL.getTable("MaNhomQuyen = "+tkDangNhap.getMaNhomQuyen())){
             quyenTK.getMaQuyen();
         }
+        
         themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
         //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
         // NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
         themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
+        themQuyen(new JLabel("Công Ty"), "res/img/username.png", new CongTy2UI(panelRightSize));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+        //themQuyen(new JLabel("Công Ty"),"res/img/danhSach.png", new CongTyUI(panelRightSize));
         themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
     }
     @Override
