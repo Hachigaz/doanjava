@@ -58,15 +58,14 @@ public class DataAccessLayer<T> {
             sql+="\nSET ";
             for(int i = 0 ; i < statements.length;i++){
                 String[] statement = statements[i].split("=");
-                if(statement.length == 2){
-                    sql += " ,";
-                    sql +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
+                sql +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
+                if((i+1<statements.length)){
+                    sql+=", ";
                 }
             }
             String whereStatement = processWhereStatement(key);
             sql+= whereStatement;
 
-            System.out.println(sql);
             rowsUpdated = user.updateQuery(sql);
         }
         catch(Exception e){

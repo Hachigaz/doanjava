@@ -210,7 +210,7 @@ public class ThongTinSPUI extends TitleFrame{
                         return;
                     }
                     Mat_hangMD mhMoi = new Mat_hangMD(mh.getMaMH(), thongTinSPBLL.getMaCtyChon(),loaiSPCB.getSelectedKey(),tenSPMoi,soLuongMT);
-                    thongTinSPBLL.updateMatHang(mhMoi,"MaMH ="+mhMoi.getMaMH());
+                    thongTinSPBLL.updateMatHang("MaMH ="+mhMoi.getMaMH(),"MaCty="+mhMoi.getMaCty(),"MaLoai="+mhMoi.getMaLoai(),"TenMH="+mhMoi.getTenMH());
                     new ThongBaoDialog("Sửa thành công", null);
                     Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
                     formThemDialog.dispose();
