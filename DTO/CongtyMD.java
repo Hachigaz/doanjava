@@ -40,8 +40,8 @@ public class CongtyMD extends Model{
     public String getSDT() {
         return SDT;
     }
-    public void setSDT(String DDT) {
-        this.SDT = DDT;
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
     }
     
     public String getSelectStatement(){

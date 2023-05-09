@@ -55,8 +55,12 @@ public class ThongTinSPBLL {
     }
     public String taoMaMatHangMoi(){
         DecimalFormat df = new DecimalFormat("000");
-        
-        String maMHMoi = "MH_"+maCtyChon.split("Cty_")[1]+"_"+df.format(this.getDanhSachMatHangCty().size()+1);
+        ArrayList<Mat_hangMD> dsmh = this.getDanhSachMatHangCty();
+        int soluong = 0;
+        if(dsmh != null){
+            soluong = dsmh.size();
+        }
+        String maMHMoi = "MH_"+maCtyChon.split("Cty_")[1]+"_"+df.format(+1);
         return maMHMoi;
     }
     public void themMatHangMoi(Mat_hangMD mhMoi){
