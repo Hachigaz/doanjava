@@ -56,6 +56,6 @@ public class ChitietdonnhapMD extends Model{
     }
     @Override
     public String toSQLString() {
-        return "('" + MaDonNhap + "','" + MaMH + "','" + MaKV + "'," + SLNhap  + ",'" + SLConLai + ")";
+        return "('" + MaDonNhap + "','" + MaMH + "','" + MaKV + "'," + SLNhap  + "," + SLConLai + ")";
     }
 }

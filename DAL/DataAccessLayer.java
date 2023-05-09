@@ -51,39 +51,22 @@ public class DataAccessLayer<T> {
         return rowsUpdated;
     }
     //xài update thì nhớ truyền khoá chính zo ko nó bị lỗi update(kho,"MaKho = K01")
-    public int update(T tUpdated,String... statements){
+    public int update(String key,String... statements){
         int rowsUpdated = 0;
         try{
             String sql = "UPDATE "+util.getClassVariable(classType,"fromStatement");
             sql+="\nSET ";
-            Field[] fields = classType.getDeclaredFields();
-            int count = 0;
-            for(Field field : fields){
-                if(Modifier.isPrivate(field.getModifiers())){
-                    field.setAccessible(true);
-                    Object value = field.get(tUpdated);
-                    field.setAccessible(false);
-                    String sValue = "";
-                    if(value.getClass()==String.class){
-                        sValue += "'"+value.toString()+"'";
-                    }
-                    else{
-                        sValue +=value.toString();
-                    }
-                    sql+=field.getName()+"="+sValue;
-                    if(count+1<fields.length){
-                        sql+=",";
-                    }
-                    else{
-                        sql+="\n";
-                    }
+            for(int i = 0 ; i < statements.length;i++){
+                String[] statement = statements[i].split("=");
+                if(statement.length == 2){
+                    sql += " ,";
+                    sql +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
                 }
-                count++;
             }
             String whereStatement = processWhereStatement(statements);
             sql+= whereStatement;
 
-            //System.out.println(sql);
+            System.out.println(sql);
             rowsUpdated = user.updateQuery(sql);
         }
         catch(Exception e){

@@ -21,7 +21,7 @@ public class ChitietdonxuatMD extends Model {
 
     @Override
     public String toSQLString() {
-        return "(" + MaDonXuat + "," + MaDonNhap + "," + MaMH + ","+ MaKV + "," + SoLuong + ")";
+        return "('" + MaDonXuat + "','" + MaDonNhap + "','" + MaMH + "','"+ MaKV + "'," + SoLuong + ")";
     }
     
     public String getMaDonXuat() {
