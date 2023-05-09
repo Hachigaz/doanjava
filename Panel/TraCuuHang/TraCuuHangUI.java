@@ -295,6 +295,7 @@ public class TraCuuHangUI extends JPanel{
     public void timTheoGiaTri(){
         String searchText = searchBar.getText();
         if (searchText.length() == 0) {
+            panelDanhSach.xoaDieuKienLoc(1,searchedText);
             searchedText="";
             panelDanhSach.themDieuKienLoc(1, searchText);
             this.panelDanhSach.locCacDieuKien();

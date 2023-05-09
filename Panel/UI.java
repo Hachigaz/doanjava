@@ -6,13 +6,18 @@ import misc.TitleFrame;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import DAL.DataAccessLayer;
 import DTO.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
     public JPanel panelRight;
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelTitleBar;
+    JPopupMenu popupMenu;
+    JLabel labelSetting;
     //tao thay Label[] thành Arraylist<Label>
     private ArrayList<JLabel> btnChucNang = new ArrayList<JLabel>();
     //mảng chứa panel chức năng
@@ -44,7 +51,6 @@ public class UI extends TitleFrame implements MouseListener{
     private DataAccessLayer<KhoMD> khoDAL;
     private DataAccessLayer<NhanvienMD> nvDAL;
     private DataAccessLayer<ChitietnhomquyenMD> ctNhomQuyenDAL;
-
     public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
         UI.master= master;
         UI.tenTKDangNhap=tkDangNhap;
@@ -112,8 +118,9 @@ public class UI extends TitleFrame implements MouseListener{
         panelTop.setPreferredSize(new Dimension(0,120));
  
         panelUser = new JPanel();
-        panelUser.setPreferredSize(new Dimension(250,170));
+        panelUser.setPreferredSize(new Dimension(200,170));
         panelUser.setOpaque(false);
+        panelUser.setLayout(new FlowLayout());
         panelUser.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 
         ImageIcon icon2 = new ImageIcon("res/img/user.png");
@@ -134,9 +141,56 @@ public class UI extends TitleFrame implements MouseListener{
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
+        labelSetting = new JLabel();
+        ImageIcon iconST = new ImageIcon("res/img/TaiKhoan.png");
+        Image imgST = iconST.getImage();
+        Image newImgST = imgST.getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIconST = new ImageIcon(newImgST);
+        labelSetting.setIcon(newIconST);
+        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,130));
+        labelSetting.setBackground(new Color(4,155,254));
+        labelSetting.setFocusable(false);
+        labelSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        labelSetting.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                popupMenu.show(labelSetting, 0, labelSetting.getHeight());
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        JMenuItem logoutItem = new JMenuItem("Đăng xuất");
+        logoutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        JMenuItem changePasswordItem = new JMenuItem("Đổi mật khẩu");
+        changePasswordItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        popupMenu = new JPopupMenu();
+        popupMenu.add(logoutItem);
+        popupMenu.add(changePasswordItem);
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
+        panelUser.add(labelSetting);
 
         panelTop.add(labelIcon1,BorderLayout.WEST);
         panelTop.add(panelUser,BorderLayout.EAST);
@@ -161,13 +215,33 @@ public class UI extends TitleFrame implements MouseListener{
         DataSet dsdonnhap = master.getDataQuery("SELECT * FROM donnhap");
         //do lon panel chuc nang
         Dimension panelRightSize = new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16);
+        DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         //them quyen
         for(ChitietnhomquyenMD quyenTK : ctNhomQuyenDAL.getTable("MaNhomQuyen = "+tkDangNhap.getMaNhomQuyen())){
-            quyenTK.getMaQuyen();
+            switch(quyenTK.getMaQuyen()){
+                case "Q1":
+                    themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
+                    break;
+                case "Q2":
+                    themQuyen(new JLabel("Công Ty"), "res/img/username.png", new CongTy2UI(panelRightSize));
+                    break;
+                case "Q3":
+                    themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
+                    break;
+                case "Q4":
+                    themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+                    break;
+                case "Q5":
+                    themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
+                    break;
+                case "Q6":
+                    themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
+                    break;
+            }
         }
         // themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
         themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
-        DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
+        //DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
         //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
         // NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);

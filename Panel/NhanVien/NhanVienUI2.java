@@ -163,7 +163,8 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         addButton.addMouseListener(this);
 
 
-        comboChucVu = new JComboBox<>(nhanVienBLL.layTenChucVu());
+        String[] dschucvu = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
+        comboChucVu = new JComboBox<>(dschucvu);
         comboChucVu.addActionListener(changeChucVu);
 
         panelSearch.add(searchField);
@@ -200,13 +201,12 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
 
         panelRight.add(panelDefault);
     }
-    private String[] optionName;
-    private String[] optionKey;
+    private String[] optionName = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
     public String getSelectedChucVuKey(){
         String selected = comboChucVu.getSelectedItem().toString();
-        for(int i = 0; i < optionKey.length;i++){
+        for(int i = 0; i < optionName.length;i++){
             if(selected.equals(optionName[i])){
-                return optionKey[i];
+                return optionName[i];
             }
         }
         return null;
@@ -216,6 +216,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     public void timKiem(){
         String searchText = searchField.getText();
         if (searchText.length() == 0) {
+            panelDanhSach.xoaDieuKienLoc(1, searchedText);
             searchedText="";
             panelDanhSach.themDieuKienLoc(1, searchText);
             this.panelDanhSach.locCacDieuKien();
@@ -258,16 +259,30 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             String[] comlumnname = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-            ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD("nhanvien.chucvu = "+getSelectedChucVuKey());
-            TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),comlumnname){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+            if(getSelectedChucVuKey()=="Tất cả"){
+                ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD();
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu), comlumnname){
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+                tableTemp = panelDanhSach.getTableDS();
+                tableTemp.addMouseListener(actionInfo); 
+            }else{
+                ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD("TenCV = "+getSelectedChucVuKey());
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),comlumnname){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            panelDanhSach.SetTable(tableDanhSach, null);
+            tableTemp = panelDanhSach.getTableDS();
+            tableTemp.addMouseListener(actionInfo);
             }
-        };
-        panelDanhSach.SetTable(tableDanhSach, null);
         }   
-        
     };
     private TableModel currentTableDS;
     public void createForm(){
@@ -294,7 +309,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 nhanVienBLL.themNVmoi(new NhanvienMD(manhanvien,data[1],data[2],data[3],data[4],data[5],data[6]));
                 nhanVienBLL.themTKmoi(new Taikhoan_nhanvienMD(manhanvien, dataTK[1], dataTK[2], dataTK[3]));
                 String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-
                 currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -323,12 +337,8 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 if(dataTK[4] == "False"){
                     JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
                 }else{
-                    nhanVienBLL.suaNV("MaNV = "+arr[0],"TenNV = "+data[1]+", MaCV = "+data[2]+", GioiTinh = "+data[3]+", NgaySinh = "+data[4]+", DiaChi = "+data[5]+", Kho_lam_viec = "+data[6]);
-                    nhanVienBLL.suaTK("MaNV = "+arr[0],"TenTaiKhoan = "+dataTK[1]+", MatKhau = "+dataTK[2]+", MaNhomQuyen = "+dataTK[3]);
-                    // nhanVienBLL.xoaTK("MaNV = "+arr[0]);
-                    // nhanVienBLL.xoaNV("MaNV = "+arr[0]);
-                    // nhanVienBLL.themNVmoi(new NhanvienMD(arr[0],data[1],data[2],data[3],data[4],data[5],data[6]));
-                    // nhanVienBLL.themTKmoi(new Taikhoan_nhanvienMD(arr[0], dataTK[1], dataTK[2], dataTK[3]));
+                    nhanVienBLL.suaNV("MaNV = "+arr[0],"TenNV = "+data[1]," MaCV = "+data[2]," GioiTinh = "+data[3]," NgaySinh = "+data[4]," DiaChi = "+data[5]," Kho_lam_viec = "+data[6]);
+                    nhanVienBLL.suaTK("MaNV = "+arr[0],"TenTaiKhoan = "+dataTK[1]," MatKhau = "+dataTK[2]," MaNhomQuyen = "+dataTK[3]);
                     String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
                     currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
                     @Override

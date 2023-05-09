@@ -16,6 +16,8 @@ public class FormDonBLL {
     private DataAccessLayer<Khuvuc_loaihangMD> khuVucLoaiDAL = new DataAccessLayer<>(UI.master, Khuvuc_loaihangMD.class);
     private DataAccessLayer<DonNhapMD> donNhapDAL = new DataAccessLayer<>(UI.master,DonNhapMD.class);
     private DataAccessLayer<ChitietdonnhapMD> ctdnDAL = new DataAccessLayer<>(UI.master,ChitietdonnhapMD.class);
+    private DataAccessLayer<DonXuatMD> donXuatDAL = new DataAccessLayer<>(UI.master, DonXuatMD.class);
+    private DataAccessLayer<ChitietdonxuatMD> ctdxDAL = new DataAccessLayer<>(UI.master, ChitietdonxuatMD.class);
 
     public ArrayList<CongtyMD> getDanhSachCongTy(String... statements){
         return congTyDAL.getTable(statements);
@@ -55,21 +57,75 @@ public class FormDonBLL {
     }
     public String taoMaDonNhapMoi(){
         DecimalFormat df = new DecimalFormat("0000");
-        
-        String maDNMoi = "DN"+df.format(donNhapDAL.getTable().size()+1);
+        ArrayList<DonNhapMD> dsDN = donNhapDAL.getTable();
+        int soLuong = 0;
+        if(dsDN!=null){
+            soLuong = dsDN.size();
+        }
+        String maDNMoi = "DN"+df.format(soLuong+1);
         return maDNMoi;
+    }   
+    
+    
+    public void themDonXuatMoi(DonXuatMD dx, ArrayList<ChitietdonxuatMD> ctdx){
+        donXuatDAL.addOne(dx);
+        ctdxDAL.add(ctdx);
     }
+    public String taoMaDonXuatMoi(){
+        DecimalFormat df = new DecimalFormat("0000");
+        ArrayList<DonXuatMD> dsDN = donXuatDAL.getTable();
+        int soLuong = 0;
+        if(dsDN!=null){
+            soLuong = dsDN.size();
+        }
+        String maDNMoi = "DX"+df.format(soLuong+1);
+        return maDNMoi;
+    }    
     public float getSoLuongCL_KV(String maKV){
         ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable("MaKV="+maKV);
         ArrayList<Mat_hangMD> dsMH = matHangDAL.getTable();
         float tongSucChua = 0;
-        for(ChitietdonnhapMD ctdn : dsCTDN){
-            for(Mat_hangMD mh:dsMH){
-                if(mh.getMaMH().equals(ctdn.getMaMH())){
-                    
+        if(dsCTDN!=null){
+            for(ChitietdonnhapMD ctdn : dsCTDN){
+                for(Mat_hangMD mh:dsMH){
+                    if(mh.getMaMH().equals(ctdn.getMaMH())&&maKV.equals(ctdn.getMaKV())){
+                        tongSucChua+=ctdn.getSLConLai()/mh.getSoLuongMoiThung();
+                    }
                 }
             }
         }
         return tongSucChua;
+    }
+
+    public Mat_hangMD getFirstMH(String maMH){
+        return matHangDAL.getFirst("MaMH="+maMH);
+    }
+    public KhuvucMD getFirstKV(String maKV){
+        return kvDAL.getFirst("MaKV="+maKV);
+    }
+
+    public ArrayList<Object[]> getDanhSachMHChon(String maCty,String... statements){
+        ArrayList<Object[]> dsMHReturn = new ArrayList<Object[]>();
+        ArrayList<DonNhapMD> dsDonNhap = donNhapDAL.getTable("MaKho="+UI.khoNVDangNhap.getMaKho(),"MaCty = "+maCty);
+        ArrayList<Mat_hangMD> dsMH = matHangDAL.getTable("MaCty="+maCty);
+        ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable(statements);
+        if(dsCTDN==null){
+            return null;
+        }
+        if(dsDonNhap==null){
+            return null;
+        }
+        for(ChitietdonnhapMD ctdn : dsCTDN){
+            for(DonNhapMD dn: dsDonNhap){
+                if(ctdn.getMaDonNhap().equals(dn.getMaDonNhap())){
+                    for(Mat_hangMD mh : dsMH){
+                        if(mh.getMaMH().equals(ctdn.getMaMH())){
+                            dsMHReturn.add(new Object[]{mh.getMaMH(),mh.getTenMH(),ctdn.getMaKV(),ctdn.getSLConLai(),dn.getNgayNhap(),dn.getMaDonNhap()});
+                        }  
+                    }
+                }
+            }
+        }
+        return dsMHReturn;
     }
 }
