@@ -117,25 +117,25 @@ public class ChangePass extends JDialog{
         }
         return true;
     }
-    public String[] getUserPass(){
-        char[] passCharCu = passwordCu.getPassword();
-        String passCu = new String(passCharCu);
-        char[] passChar = password.getPassword();
-        String pass = new String(passChar);
-        char[] reTypeChar = retypePass.getPassword();
-        String retype = new String(reTypeChar); 
-        String check = "False";
-        if(pass.equals(retype)){
-            check = "True";
-        }
-        String maNhomQuyen = "";
-        if(UI.manv.substring(0, 2).equals("NV")){
-            maNhomQuyen = "NQ_NV";
-        }else if(UI.manv.substring(0, 3).equals("QLK")){
-            maNhomQuyen = "NQ_QLK";
-        }else if(UI.manv.substring(0, 3).equals("QTV")){
-            maNhomQuyen = "NQ_ADMIN";
-        }
-        return new String[] {passCu,pass,maNhomQuyen,retype,check};
-    }
+    // public String[] getUserPass(){
+    //     char[] passCharCu = passwordCu.getPassword();
+    //     String passCu = new String(passCharCu);
+    //     char[] passChar = password.getPassword();
+    //     String pass = new String(passChar);
+    //     char[] reTypeChar = retypePass.getPassword();
+    //     String retype = new String(reTypeChar); 
+    //     String check = "False";
+    //     if(pass.equals(retype)){
+    //         check = "True";
+    //     }
+    //     String maNhomQuyen = "";
+    //     if(UI.manv.substring(0, 2).equals("NV")){
+    //         maNhomQuyen = "NQ_NV";
+    //     }else if(UI.manv.substring(0, 3).equals("QLK")){
+    //         maNhomQuyen = "NQ_QLK";
+    //     }else if(UI.manv.substring(0, 3).equals("QTV")){
+    //         maNhomQuyen = "NQ_ADMIN";
+    //     }
+    //     return new String[] {passCu,pass,maNhomQuyen,retype,check};
+    // }
 }

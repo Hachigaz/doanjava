@@ -49,12 +49,20 @@ public class UI extends TitleFrame implements MouseListener{
     public static NhanvienMD nvDangNhap;
     public static KhoMD khoNVDangNhap;
     
+    public static String manv;
+    public static String maKho;
+
     private DataAccessLayer<KhoMD> khoDAL;
     private DataAccessLayer<NhanvienMD> nvDAL;
     private DataAccessLayer<ChitietnhomquyenMD> ctNhomQuyenDAL;
+
+
+
     public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
         UI.master= master;
         UI.tenTKDangNhap=tkDangNhap;
+
+        manv = tkDangNhap.getMaNV();
 
         khoDAL=  new DataAccessLayer<>(master, KhoMD.class);
         nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
@@ -64,6 +72,9 @@ public class UI extends TitleFrame implements MouseListener{
 
         UI.khoNVDangNhap =  khoDAL.getFirst("MaKho = "+nvDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec());
         UI.nvDangNhap = nvDAL.getFirst("MaNV = "+tkDangNhap.getMaNV());
+
+        maKho = nvDangNhap.getKho_lam_viec();
+
         this.setSize(1400,750);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
@@ -243,6 +254,7 @@ public class UI extends TitleFrame implements MouseListener{
             }
         }
     }
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         
