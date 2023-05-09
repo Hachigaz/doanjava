@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class FormThem extends TitleFrame {
     private JPanel inputPanel;
     private ArrayList<FormInput> inputs;
 
-    public FormThem(String dialogTitle,ArrayList<FormInput> inputFields,ActionListener submitAction,ActionListener cancelAction){
+    public FormThem(String dialogTitle,ArrayList<FormInput> inputFields,ActionListener submitAction){
         inputs = inputFields;
         inputPanel = new JPanel();
 
@@ -44,7 +45,12 @@ public class FormThem extends TitleFrame {
         submitBtn.addActionListener(submitAction);
 
         cancelBtn = new JButton("Huỷ");
-        cancelBtn.addActionListener(cancelAction);
+        cancelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {                    
+                dispose();
+            }
+        });
 
     
         submitPanel.add(submitBtn);

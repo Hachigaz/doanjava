@@ -18,7 +18,7 @@ public class FormInput extends JPanel{
         this.setLayout(layout);
         layout.putConstraint(SpringLayout.WEST, inputLabel, 20, SpringLayout.WEST, this);
         layout.putConstraint(inputName, inputField, null, inputName, inputField);
-        layout.putConstraint(SpringLayout.WEST, inputType, 180, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.EAST, inputType, -30, SpringLayout.EAST, this);
         this.add(inputLabel);
         this.add(inputType);
         this.setPreferredSize(new Dimension(180+inputType.getPreferredSize().width, inputType.getPreferredSize().height));

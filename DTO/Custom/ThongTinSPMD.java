@@ -3,7 +3,7 @@ package DTO.Custom;
 import DTO.Model;
 
 public class ThongTinSPMD extends Model{
-    public static final String selectStatement = "mat_hang.MaCty, mat_hang.MaMH, mat_hang.TenMH, loai_hang.MaLoai, loai_hang.TenLoai";
+    public static final String selectStatement = "mat_hang.MaCty, mat_hang.MaMH, mat_hang.TenMH, loai_hang.MaLoai, loai_hang.TenLoai,mat_hang.SoLuongMoiThung";
     public static final String fromStatement = "mat_hang join loai_hang on mat_hang.MaLoai = loai_hang.MaLoai";
     public static final String groupByStatement = "";
     private String MaCty;
@@ -11,12 +11,14 @@ public class ThongTinSPMD extends Model{
     private String TenMH;
     private String MaLoai;
     private String TenLoai;
-    public ThongTinSPMD(String maCty, String maMH, String tenMH, String maLoai, String tenLoai) {
+    private Integer SLMoiThung;
+    public ThongTinSPMD(String maCty, String maMH, String tenMH, String maLoai, String tenLoai, Integer sLMoiThung) {
         MaCty = maCty;
         MaMH = maMH;
         TenMH = tenMH;
         MaLoai = maLoai;
         TenLoai = tenLoai;
+        SLMoiThung = sLMoiThung;
     }
     @Override
     public String getSelectStatement() {
@@ -68,5 +70,11 @@ public class ThongTinSPMD extends Model{
     }
     public void setTenLoai(String tenLoai) {
         TenLoai = tenLoai;
+    }
+    public Integer getSLMoiThung() {
+        return SLMoiThung;
+    }
+    public void setSLMoiThung(Integer sLMoiThung) {
+        SLMoiThung = sLMoiThung;
     }
 }

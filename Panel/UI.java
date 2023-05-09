@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 
-import Panel.DonNhap.DonNhapUI;
+import GUI.DonNhapUI;
 import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
@@ -36,6 +36,7 @@ public class UI extends TitleFrame implements MouseListener{
 
     public static SQLUser master;
     public static Taikhoan_nhanvienMD tenTKDangNhap;
+    public static NhanvienMD nvDangNhap;
     public static KhoMD khoNVDangNhap;
     
     private DataAccessLayer<KhoMD> khoDAL;
@@ -53,7 +54,7 @@ public class UI extends TitleFrame implements MouseListener{
         //lấy kho đăng nhập
 
         UI.khoNVDangNhap =  khoDAL.getFirst("MaKho = "+nvDAL.getFirst("MaNV="+tkDangNhap.getMaNV()).getKho_lam_viec());
-        
+        UI.nvDangNhap = nvDAL.getFirst("MaNV = "+tkDangNhap.getMaNV());
         this.setSize(1400,750);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
@@ -155,6 +156,8 @@ public class UI extends TitleFrame implements MouseListener{
         String[] img = {"nhaCungCap.png","kho.png","kho.png","users.png"};
         
         DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
+
+        DataSet dsdonnhap = master.getDataQuery("SELECT * FROM donnhap");
         //do lon panel chuc nang
         Dimension panelRightSize = new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16);
         //them quyen
@@ -162,10 +165,10 @@ public class UI extends TitleFrame implements MouseListener{
             quyenTK.getMaQuyen();
         }
         themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
-        themQuyen(new JLabel(str[3]), "res/img/"+img[3], new DonNhapUI(ds));
+        themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
-        // themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
+        //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
         // NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
         themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));

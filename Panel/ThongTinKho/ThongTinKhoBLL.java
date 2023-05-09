@@ -13,8 +13,8 @@ import SQL.SQLUser;
 public class ThongTinKhoBLL {
     private DataAccessLayer<KhoMD> khoDAL;
     private DataAccessLayer<NhanvienMD> nvDAL;
-    private DataAccessLayer<KhuvucMD> kvDAL;
     private DataAccessLayer<DSChiTietKhuVucLoaiMD>  chiTietKVLoaiDAL;
+    private DataAccessLayer<KhuvucMD> kvDAL;
     private DataAccessLayer<Loai_hangMD> loaiHangDAL;
     private DataAccessLayer<Khuvuc_loaihangMD> khuVucLoaiDAL;
     
@@ -23,8 +23,8 @@ public class ThongTinKhoBLL {
 
         khoDAL = new DataAccessLayer<>(master, KhoMD.class);
         nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
-        kvDAL = new DataAccessLayer<>(master, KhuvucMD.class);
         chiTietKVLoaiDAL = new DataAccessLayer<>(master, DSChiTietKhuVucLoaiMD.class);
+        kvDAL = new DataAccessLayer<>(master, KhuvucMD.class);
         loaiHangDAL = new DataAccessLayer<>(master, Loai_hangMD.class);
         khuVucLoaiDAL = new DataAccessLayer<>(master, Khuvuc_loaihangMD.class);
     }

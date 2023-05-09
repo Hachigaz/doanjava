@@ -1,41 +1,37 @@
-package Panel.DonNhap;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import BLL.DonNhapBLL;
+import Panel.SubPanel.TablePanel;
+import Panel.ThongTinKho.Form.FormDon;
 import misc.DataSet;
-
 public class DonNhapUI extends JPanel implements MouseListener{
-    private JTable donnhap;
-    private JLabel lChuaDN;
-    private JButton btadd,btlook,btn;
+
+    private final String sqlDonNhap = "select MaDonNhap as 'Mã đơn nhập', MaKho as 'Mã kho', MaCty as 'Mã công ty',MaNV as 'Mã nhân viên','NgayNhap' as 'Ngày nhập' from donnhap";
+    private DonNhapBLL donnhapBLL;
+    private JButton btadd,btlook;
     private JPanel pNorth;
-    public DonNhapUI(DataSet ds)
+    public DonNhapUI(DataSet dsdonnhap)
+
     {
         setLayout(new BorderLayout());
-        donnhap = new JTable(ds.getData(),ds.getColumnName());
+        TableModel model = new DefaultTableModel(dsdonnhap.getData(), dsdonnhap.getColumnName());
         pNorth = new JPanel();
+        TablePanel tablePanel = new TablePanel();
+        tablePanel.SetTable(model, null);
 
         // tạo đơn nhập mới
         btadd = new JButton("Thêm đơn nhập");
@@ -57,15 +53,14 @@ public class DonNhapUI extends JPanel implements MouseListener{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //FormDonNhap form = new FormDonNhap(ds);
-               // form.setVisible(true);
+                new FormDon();
             }
         });
         pNorth.add(btadd);
         pNorth.add(btlook);
-        add(donnhap,BorderLayout.CENTER);
+        add(tablePanel,BorderLayout.CENTER);
         add(pNorth,BorderLayout.NORTH);
-        setPreferredSize(new Dimension(500,getPreferredSize().height));
+        setPreferredSize(new Dimension(500,500));
 
         this.revalidate();
     }
@@ -95,3 +90,4 @@ public class DonNhapUI extends JPanel implements MouseListener{
         throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
     }
 }
+

@@ -258,13 +258,6 @@ public class ThongTinKhoUI extends JPanel{
                         formThemDialog.dispose();
                 }
             };
-            ActionListener themKVCancelListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Window formThemDialog = SwingUtilities.getWindowAncestor((JComponent)e.getSource());
-                    formThemDialog.dispose();
-                }
-            };
             WindowAdapter themKVFormAdapter = new WindowAdapter() {
                 public void windowClosed(WindowEvent e){
                     mainWindow.setEnabled(true);
@@ -272,7 +265,7 @@ public class ThongTinKhoUI extends JPanel{
                     mainWindow.setAlwaysOnTop(false);
                 }
             };
-            FormThem formThemKV =  new FormThem("Thêm khu vực mới",inputFields,themKVSubmitListener,themKVCancelListener);
+            FormThem formThemKV =  new FormThem("Thêm khu vực mới",inputFields,themKVSubmitListener);
             formThemKV.addWindowListener(themKVFormAdapter);
         }
     
