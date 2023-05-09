@@ -118,7 +118,7 @@ public class TraCuuHangUI extends JPanel{
             }
         };
         UpdateTable(tableDanhSach);
-
+        
     }
     //lọc theo loại sp và khu vực
     private ArrayList<JPanel> arrLocLabel = new ArrayList<JPanel>();

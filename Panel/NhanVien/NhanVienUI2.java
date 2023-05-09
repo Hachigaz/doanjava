@@ -162,12 +162,14 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         addButton.addActionListener(addAction);
         addButton.addMouseListener(this);
 
-        
-        comboChucVu = new JComboBox<>();
+
+        comboChucVu = new JComboBox<>(nhanVienBLL.layTenChucVu());
+        comboChucVu.addActionListener(changeChucVu);
 
         panelSearch.add(searchField);
         panelSearch.add(searchButton);
         panelSearch.add(addButton);
+        panelSearch.add(comboChucVu);
 
         panelDanhSach.setPreferredSize(new Dimension(830, 520));
         panelDanhSach.setOpaque(true);
@@ -198,7 +200,17 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
 
         panelRight.add(panelDefault);
     }
-    
+    private String[] optionName;
+    private String[] optionKey;
+    public String getSelectedChucVuKey(){
+        String selected = comboChucVu.getSelectedItem().toString();
+        for(int i = 0; i < optionKey.length;i++){
+            if(selected.equals(optionName[i])){
+                return optionKey[i];
+            }
+        }
+        return null;
+    }
 
     String searchedText="";
     public void timKiem(){
@@ -241,6 +253,21 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         public void actionPerformed(ActionEvent e){
             displayInfo();
         }
+    };
+    ActionListener changeChucVu = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String[] comlumnname = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
+            ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD("nhanvien.chucvu = "+getSelectedChucVuKey());
+            TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),comlumnname){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        panelDanhSach.SetTable(tableDanhSach, null);
+        }   
+        
     };
     private TableModel currentTableDS;
     public void createForm(){
