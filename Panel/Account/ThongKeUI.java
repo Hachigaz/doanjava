@@ -19,11 +19,11 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import Panel.NhanVien.NhanVienBLL;
 
-public class TaiKhoanUI extends JPanel implements MouseListener{
+public class ThongKeUI extends JPanel implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
     private JPanel panelButton,panelChart,panelNhanVien,panelKho;
     private JButton btnNhanVien,btnKho;
-    public TaiKhoanUI(Dimension d){
+    public ThongKeUI(Dimension d){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
 
