@@ -97,6 +97,42 @@ public class NhanVienBLL {
         }
         return taikhoan;
     }
+    public String layMaNV(String tenNV){
+        String maNV = "";
+        for(int i=0;i<TaiKhoanDAL.getTable().size();i++){
+            NhanvienMD dsNV = NhanVienDAL.getTable().get(i);
+            if(dsNV.getTenNV().equals(tenNV)){
+                maNV = dsNV.getMaNV();
+            }
+        }
+        return maNV;
+    }
+    public int[] layPhanTramChucVu(){
+        String[] dsMaCV = new String[3];
+        ChucvuMD dsChucvu;
+        int[] dsTyle = new int[3];
+        int quantri = 0;
+        int quanlykho = 0;
+        int nhanvienkho = 0;
+        for(int i=0;i<ChucVuDAL.getTable().size();i++){
+            dsChucvu = ChucVuDAL.getTable().get(i);
+            dsMaCV[i] = dsChucvu.getMaCV();
+        }
+        for(int i=0;i<NhanVienDAL.getTable().size();i++){
+            NhanvienMD dsNV = NhanVienDAL.getTable().get(i);
+            if(dsNV.getMaCV().equals(dsMaCV[0])){
+                quantri++;
+            }else if(dsNV.getMaCV().equals(dsMaCV[1])){
+                quanlykho++;
+            }else if(dsNV.getMaCV().equals(dsMaCV[2])){
+                nhanvienkho++;
+            }
+        }
+        dsTyle[0] = quantri;
+        dsTyle[1] = quanlykho;
+        dsTyle[2] = nhanvienkho;
+        return dsTyle;
+    }
     public String[] layMaKho(){
         String[] DsMaKho = new String[KhoDAL.getTable().size()];
         for(int i=0;i<KhoDAL.getTable().size();i++){
@@ -108,5 +144,8 @@ public class NhanVienBLL {
     }
     public int laySoLuongKho(){
         return KhoDAL.getTable().size();
+    }
+    public int laySoLuongNhanVien(){
+        return NhanVienDAL.getTable().size();
     }
 }

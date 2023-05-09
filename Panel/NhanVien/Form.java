@@ -258,10 +258,6 @@ public class Form extends JDialog implements MouseListener{
         panelRight.setLayout(new BorderLayout());
         panelRight.setPreferredSize(new Dimension(500,600));
 
-        Border border = BorderFactory.createMatteBorder(0, 1, 0, 0, Color.BLACK);
-        Border emptyBorder = new EmptyBorder(0, 5, 0, 0);
-        panelRight.setBorder(BorderFactory.createCompoundBorder(border, emptyBorder));
-
         addButton = new JButton("Thêm");
         addButton.setPreferredSize(new Dimension(300, 40));
         addButton.setBorder(null);
