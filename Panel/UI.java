@@ -26,7 +26,7 @@ import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Panel.TraCuuHang.TraCuuHangUI;
 import Panel.CongTy2.CongTy2UI;
-
+import Panel.DonNhap.DonNhap2Ui;
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
     public JPanel panelRight;
@@ -174,6 +174,7 @@ public class UI extends TitleFrame implements MouseListener{
         themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
         themQuyen(new JLabel("Công Ty"), "res/img/username.png", new CongTy2UI(panelRightSize));
         themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+        themQuyen(new JLabel("Đơn nhập 2"),"res/img/danhSach.png", new DonNhap2Ui(panelRightSize));
         //themQuyen(new JLabel("Công Ty"),"res/img/danhSach.png", new CongTyUI(panelRightSize));
         themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
     }
