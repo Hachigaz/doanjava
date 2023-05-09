@@ -8,6 +8,7 @@ import DAL.DataAccessLayer;
 import DTO.ChucvuMD;
 import DTO.KhoMD;
 import DTO.NhanvienMD;
+import DTO.Taikhoan_nhanvienMD;
 import DTO.Custom.DSNhanVienMD;
 import SQL.SQLUser;
 import Panel.UI;
@@ -16,20 +17,34 @@ public class NhanVienBLL {
     private DataAccessLayer<DSNhanVienMD> DSNhanVienDAL;
     private DataAccessLayer<NhanvienMD> NhanVienDAL;
     private DataAccessLayer<KhoMD> KhoDAL;
+    private DataAccessLayer<Taikhoan_nhanvienMD> TaiKhoanDAL;
     public NhanVienBLL(){
         SQLUser master = UI.master;
         DSNhanVienDAL = new DataAccessLayer<>(master,DSNhanVienMD.class);
         NhanVienDAL = new DataAccessLayer<>(master, NhanvienMD.class);
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
+        TaiKhoanDAL = new DataAccessLayer<>(master, Taikhoan_nhanvienMD.class);
     }
     public ArrayList<DSNhanVienMD> getDanhSachNhanVien(String... statements){
         return DSNhanVienDAL.getTable(statements);
+    }
+    public void themTKmoi(Taikhoan_nhanvienMD taikhoan){
+        TaiKhoanDAL.addOne(taikhoan);
+    }
+    public void xoaTK(String... keys){
+        TaiKhoanDAL.remove(keys);
+    }
+    public void suaTK(Taikhoan_nhanvienMD taikhoan,String... statements){
+        TaiKhoanDAL.update(taikhoan, statements);
     }
     public void themNVmoi(NhanvienMD nhanvienMoi){
         NhanVienDAL.addOne(nhanvienMoi);
     }
     public void xoaNV(String... keys){
         NhanVienDAL.remove(keys);
+    }
+    public void suaNV(NhanvienMD nhanvienMoi,String... statements){
+        NhanVienDAL.update(nhanvienMoi, statements);
     }
     public ArrayList<NhanvienMD> getDSNhanVien(String... statements){
         return NhanVienDAL.getTable(statements);
@@ -57,6 +72,20 @@ public class NhanVienBLL {
             DsTenKho[i] = tenKho;
         }
         return DsTenKho;
+    }
+    public String[] layTaiKhoan(String manvien){
+        String[] taikhoan = new String[4];
+        for(int i=0;i<TaiKhoanDAL.getTable().size();i++){
+            Taikhoan_nhanvienMD dsTK = TaiKhoanDAL.getTable().get(i);
+            String maNV = dsTK.getMaNV();
+            if(maNV.equals(manvien)){
+                taikhoan[0] = maNV;
+                taikhoan[1] = dsTK.getTenTaiKhoan();
+                taikhoan[2] = dsTK.getMatKhau();
+                taikhoan[3] = dsTK.getMatKhau();
+            }
+        }
+        return taikhoan;
     }
     public String[] layMaKho(){
         String[] DsMaKho = new String[KhoDAL.getTable().size()];

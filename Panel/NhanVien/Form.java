@@ -42,8 +42,8 @@ public class Form extends JDialog implements MouseListener{
     private JLabel labelTitleInfo,labelTitleUserPass;
     private JLabel labelTenNV,labelChucVu,labelGioiTinh,labelNgaySinh,labelDiaChi,labelTenKho;
     private JLabel labelUsername,labelPassword,labelReTypePass,labelCheckBox;
-    private JTextField textUsername;
-    private JPasswordField password,retypepass;
+    JTextField textUsername;
+    JPasswordField password,retypepass;
     JTextField textTenNV,textDiaChi;
     JComboBox comboBox,comboBox2;
     JCheckBox checkBox;
@@ -231,6 +231,7 @@ public class Form extends JDialog implements MouseListener{
         gbc2.gridx = 1;
         gbc2.gridy = 3;
         checkBox = new JCheckBox();
+        checkBox.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 300));
         checkBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -290,7 +291,7 @@ public class Form extends JDialog implements MouseListener{
         this.setLocationRelativeTo(null);
     }
     public String[] getData() {
-        String MaNV ="";
+        MaNV ="";
         String TenNV = textTenNV.getText();
         String MaCV="";
         String[] TenKho = new String[100];
@@ -329,20 +330,32 @@ public class Form extends JDialog implements MouseListener{
                 maKho = nhanVienBLL.layMaKho()[i];
                 MaNV = MaNV + (i+1);
             }
-            
         }
         return new String[] {MaNV, TenNV, MaCV, GioiTinh, date, diaChi, maKho};
+    }
+    public String[] getUserPass(){
+        String Username = textUsername.getText();
+        char[] passwordChars = password.getPassword();
+        String Password = new String(passwordChars);
+        char[] retypeChars = retypepass.getPassword();
+        String Retype = new String(retypeChars);
+        String check = "False";
+        if(Password.equals(Retype)){
+            check = "True";
+        }
+        String maNhomQuyen = "";
+        if(MaNV.substring(0, 2).equals("NV")){
+            maNhomQuyen = "NQ_NV";
+        }else if(MaNV.substring(0, 3).equals("QLK")){
+            maNhomQuyen = "NQ_QLK";
+        }else if(MaNV.substring(0, 3).equals("QTV")){
+            maNhomQuyen = "NQ_ADMIN";
+        }
+        return new String[] {MaNV,Username,Password,maNhomQuyen,check};
     }
     public void visible(){
         setVisible(true);
     }
-    // public boolean check(){
-    //     if(MaNV == null || TenNV.isEmpty() || MaCV.isEmpty() || GioiTinh.isEmpty() || ngayDaChon == null || diaChi.isEmpty() || maKho.isEmpty()){
-    //         return false;
-    //     }else{
-    //         return true;
-    //     }
-    // }
     public boolean check() {
         String TenNV = textTenNV.getText();
         String diaChi = textDiaChi.getText();
@@ -356,17 +369,33 @@ public class Form extends JDialog implements MouseListener{
             int ngay = calendar.get(Calendar.DATE);
             date = nam+"-"+thang+"-"+ngay;
         }
-        boolean check = true;
+        String checkTenTK = textUsername.getText();
+        char[] matkhau = password.getPassword();
+        String checkmatkhau = new String(matkhau);
+        char[] retypematkhau = retypepass.getPassword();
+        String checkretype = new String(retypematkhau);
+        if(radio1.isSelected()==false && radio2.isSelected()==false){
+            return false;
+        }
         if (TenNV.trim().equals("")) {
-            check = false;
+            return false;
         }
         if (diaChi.trim().equals("")) {
-            check = false;
+            return false;
         }
         if (date == null) {
-            check = false;
+            return false;
         }
-        return check;
+        if(checkTenTK.trim().equals("")){
+            return false;
+        }
+        if(checkmatkhau.trim().equals("")){
+            return false;
+        }
+        if(checkretype.trim().equals("")){
+            return false;
+        }
+        return true;
     }
     @Override
     public void mouseClicked(MouseEvent e) {
