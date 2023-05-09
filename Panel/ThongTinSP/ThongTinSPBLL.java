@@ -43,8 +43,8 @@ public class ThongTinSPBLL {
         matHangDAL.remove(maMH);
         return true;
     }
-    public void updateMatHang(Mat_hangMD mh,String... statements){
-        matHangDAL.update(mh, statements);
+    public void updateMatHang(String maMH,String... statements){
+        matHangDAL.update(maMH, statements);
     }
     public ArrayList<ThongTinSPMD> getDanhSachTTSP(String... statements){
         String[] newStatements = util.themStringVaoArray("MaCty="+maCtyChon, statements);

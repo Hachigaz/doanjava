@@ -164,7 +164,6 @@ public class UI extends TitleFrame implements MouseListener{
         for(ChitietnhomquyenMD quyenTK : ctNhomQuyenDAL.getTable("MaNhomQuyen = "+tkDangNhap.getMaNhomQuyen())){
             quyenTK.getMaQuyen();
         }
-        themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
         themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
         DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
         themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());

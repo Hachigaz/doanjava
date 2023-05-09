@@ -64,7 +64,11 @@ public class FormDonBLL {
         ArrayList<Mat_hangMD> dsMH = matHangDAL.getTable();
         float tongSucChua = 0;
         for(ChitietdonnhapMD ctdn : dsCTDN){
-
+            for(Mat_hangMD mh:dsMH){
+                if(mh.getMaMH().equals(ctdn.getMaMH())){
+                    
+                }
+            }
         }
         return tongSucChua;
     }
