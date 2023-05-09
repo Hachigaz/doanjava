@@ -19,9 +19,9 @@ import DTO.Loai_hangMD;
 import DTO.Mat_hangMD;
 import DTO.Model;
 import DTO.Custom.ThongTinSPMD;
+import Panel.Form.FormInput;
+import Panel.Form.FormThem;
 import Panel.SubPanel.*;
-import Panel.ThongTinKho.Form.FormInput;
-import Panel.ThongTinKho.Form.FormThem;
 import misc.ThongBaoDialog;
 import misc.TitleFrame;
 //của tao làm

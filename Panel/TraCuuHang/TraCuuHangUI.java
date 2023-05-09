@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -296,6 +295,7 @@ public class TraCuuHangUI extends JPanel{
     public void timTheoGiaTri(){
         String searchText = searchBar.getText();
         if (searchText.length() == 0) {
+            panelDanhSach.xoaDieuKienLoc(1,searchedText);
             searchedText="";
             panelDanhSach.themDieuKienLoc(1, searchText);
             this.panelDanhSach.locCacDieuKien();
