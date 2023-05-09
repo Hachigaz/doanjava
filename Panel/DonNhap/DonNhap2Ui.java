@@ -306,7 +306,7 @@ public class DonNhap2Ui extends JPanel{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormDon();
+                new FormDon("FormXuat");
             }
         });
         btlook.addActionListener(new ActionListener() {
