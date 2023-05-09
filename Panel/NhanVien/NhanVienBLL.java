@@ -34,8 +34,8 @@ public class NhanVienBLL {
     public void xoaTK(String... keys){
         TaiKhoanDAL.remove(keys);
     }
-    public void suaTK(Taikhoan_nhanvienMD taikhoan,String... statements){
-        TaiKhoanDAL.update(taikhoan, statements);
+    public void suaTK(String key,String... statements){
+        TaiKhoanDAL.update(key, statements);
     }
     public void themNVmoi(NhanvienMD nhanvienMoi){
         NhanVienDAL.addOne(nhanvienMoi);
@@ -43,8 +43,8 @@ public class NhanVienBLL {
     public void xoaNV(String... keys){
         NhanVienDAL.remove(keys);
     }
-    public void suaNV(NhanvienMD nhanvienMoi,String... statements){
-        NhanVienDAL.update(nhanvienMoi, statements);
+    public void suaNV(String key,String... statements){
+        NhanVienDAL.update(key, statements);
     }
     public ArrayList<NhanvienMD> getDSNhanVien(String... statements){
         return NhanVienDAL.getTable(statements);

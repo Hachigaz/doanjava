@@ -292,8 +292,8 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
                 if(dataTK[4] == "False"){
                     JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
                 }else{
-                    nhanVienBLL.suaNV(new NhanvienMD(arr[0],data[1],data[2],data[3],data[4],data[5],data[6]), arr[0]);
-                    nhanVienBLL.suaTK(new Taikhoan_nhanvienMD(arr[0], dataTK[1], dataTK[2], dataTK[3]), arr[0]);
+                    nhanVienBLL.suaNV("MaNV = "+arr[0],"TenNV = "+data[1]+", MaCV = "+data[2]+", GioiTinh = "+data[3]+", NgaySinh = "+data[4]+", DiaChi = "+data[5]+", Kho_lam_viec = "+data[6]);
+                    nhanVienBLL.suaTK("MaNV = "+arr[0],"TenTaiKhoan = "+dataTK[1]+", MatKhau = "+dataTK[2]+", MaNhomQuyen = "+dataTK[3]);
                     // nhanVienBLL.xoaTK("MaNV = "+arr[0]);
                     // nhanVienBLL.xoaNV("MaNV = "+arr[0]);
                     // nhanVienBLL.themNVmoi(new NhanvienMD(arr[0],data[1],data[2],data[3],data[4],data[5],data[6]));
