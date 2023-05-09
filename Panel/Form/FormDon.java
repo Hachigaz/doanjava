@@ -317,7 +317,7 @@ public class FormDon extends TitleFrame {
                     for(Object[] mh :dsMHChon){
                         tableChonSP.addRow(new Object[]{mh[0],mh[1],mh[2],mh[3]});
                     }
-                    panelChonSP.SetTable(model, null);
+                    panelChonSP.SetTable(tableChonSP0x, null);
                     themSPPanel=panelChonSP;
                     rightPanel.add(themSPPanel);
                     rightPanel.revalidate();
