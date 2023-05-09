@@ -10,7 +10,9 @@
             "c:\\Users\\84778\\Desktop\\lib\\jcalendar-1.4.jar",
             "c:\\Users\\Admin\\Downloads\\jcalendar-1.4.jar",
             "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\jcalendar-1.4.jar",
-            "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\jcalendar-1.4.jar"
+            "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\jcalendar-1.4.jar",
+            "c:\\Users\\84778\\Downloads\\jfreechart-1.0.19.jar",
+            "c:\\Users\\84778\\Downloads\\jcommon-1.0.23.jar"
         ],
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"

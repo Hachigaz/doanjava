@@ -54,7 +54,6 @@ import misc.ThongBaoDialog;
 public class NhanVienUI2 extends JPanel implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
 
-    
     private JPanel panelRight;
     private TablePanel panelDanhSach = new TablePanel();
     private JPanel panelTable;
@@ -82,7 +81,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         // panelRight and components
         panelRight = new JPanel();
         panelRight.setPreferredSize(new Dimension(370,500));
-        panelRight.setBackground(Color.red);
         panelRight.setLayout(new FlowLayout());
 
         labelTitle = new JLabel("Thông tin chi tiết");
@@ -92,15 +90,23 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
 
         deleteButton = new JButton("Xóa");
         deleteButton.setPreferredSize(new Dimension(100,40));
-        deleteButton.setBackground(Color.CYAN);
-        deleteButton.setForeground(Color.white);
+        deleteButton.setBackground(new Color(0,255,119));
+        deleteButton.setForeground(Color.BLACK);
+        deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        deleteButton.setFocusable(false);
+        deleteButton.setBorder(null);
         deleteButton.addActionListener(deleteAction);
+        deleteButton.addMouseListener(this);
 
         editButton = new JButton("Sửa");
         editButton.setPreferredSize(new Dimension(100,40));
-        editButton.setBackground(Color.CYAN);
-        editButton.setForeground(Color.white);
+        editButton.setBackground(new Color(0,255,119));
+        editButton.setForeground(Color.BLACK);
+        editButton.setFocusable(false);
+        editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editButton.setBorder(null);
         editButton.addActionListener(editAction);
+        editButton.addMouseListener(this);
 
         panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
@@ -161,7 +167,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(addAction);
         addButton.addMouseListener(this);
-
 
         String[] dschucvu = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
         comboChucVu = new JComboBox<>(dschucvu);
@@ -490,6 +495,12 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         }else if(e.getSource() == addButton){
             addButton.setBackground(new Color(223,18,133));
             addButton.setForeground(Color.white);
+        }else if(e.getSource() == deleteButton){
+            deleteButton.setBackground(new Color(223,18,133));
+            deleteButton.setForeground(Color.white);
+        }else if(e.getSource() == editButton){
+            editButton.setBackground(new Color(223,18,133));
+            editButton.setForeground(Color.white);
         }
     }
 
@@ -501,6 +512,12 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         }else if(e.getSource() == addButton){
             addButton.setBackground(new Color(0,255,119));
             addButton.setForeground(Color.BLACK);
+        }else if(e.getSource() == deleteButton){
+            deleteButton.setBackground(new Color(0,255,119));
+            deleteButton.setForeground(Color.BLACK);
+        }else if(e.getSource() == editButton){
+            editButton.setBackground(new Color(0,255,119));
+            editButton.setForeground(Color.BLACK);
         }
     }
 
