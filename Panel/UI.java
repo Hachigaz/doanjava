@@ -30,6 +30,7 @@ import Panel.Donxuat.DonXuatCTR;
 import Panel.NhanVien.NhanVienUI2;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Panel.TraCuuHang.TraCuuHangUI;
+import Program.Program;
 import Panel.Account.ThongKeUI;
 import Panel.CongTy2.CongTy2UI;
 
@@ -186,7 +187,8 @@ public class UI extends TitleFrame implements MouseListener{
         logoutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                Program.program.dangNhap();
+                dispose();
             }
         });
         JMenuItem changePasswordItem = new JMenuItem("Đổi mật khẩu");
