@@ -1,4 +1,4 @@
-package Panel.ThongTinKho.Form;
+package Panel.Form;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

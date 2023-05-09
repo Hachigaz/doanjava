@@ -23,9 +23,9 @@ import javax.swing.table.TableModel;
 import DTO.*;
 import DTO.Custom.DSChiTietKhuVucLoaiMD;
 import Panel.UI;
+import Panel.Form.FormInput;
+import Panel.Form.FormThem;
 import Panel.SubPanel.TablePanel;
-import Panel.ThongTinKho.Form.FormInput;
-import Panel.ThongTinKho.Form.FormThem;
 import misc.ThongBaoDialog;
 
 public class ThongTinKhoUI extends JPanel{

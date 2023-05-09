@@ -157,7 +157,6 @@ public class UI extends TitleFrame implements MouseListener{
         String[] str = {"Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
         String[] img = {"nhaCungCap.png","kho.png","kho.png","users.png"};
         
-        DataSet ds = master.getDataQuery("SELECT * FROM khuvuc");
 
         DataSet dsdonnhap = master.getDataQuery("SELECT * FROM donnhap");
         //do lon panel chuc nang
@@ -180,6 +179,7 @@ public class UI extends TitleFrame implements MouseListener{
     }
     @Override
     public void mouseClicked(MouseEvent e) {
+        
     }
     @Override
     public void mousePressed(MouseEvent e) {

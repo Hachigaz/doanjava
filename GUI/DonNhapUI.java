@@ -15,8 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import BLL.DonNhapBLL;
+import Panel.Form.FormDon;
 import Panel.SubPanel.TablePanel;
-import Panel.ThongTinKho.Form.FormDon;
 import misc.DataSet;
 public class DonNhapUI extends JPanel implements MouseListener{
 
