@@ -59,4 +59,13 @@ public class FormDonBLL {
         String maDNMoi = "DN"+df.format(donNhapDAL.getTable().size()+1);
         return maDNMoi;
     }
+    public float getSoLuongCL_KV(String maKV){
+        ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable("MaKV="+maKV);
+        ArrayList<Mat_hangMD> dsMH = matHangDAL.getTable();
+        float tongSucChua = 0;
+        for(ChitietdonnhapMD ctdn : dsCTDN){
+
+        }
+        return tongSucChua;
+    }
 }

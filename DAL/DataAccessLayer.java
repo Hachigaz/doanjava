@@ -63,7 +63,7 @@ public class DataAccessLayer<T> {
                     sql +=  " "+statement[0].trim()+"='"+statement[1].trim()+"'";
                 }
             }
-            String whereStatement = processWhereStatement(statements);
+            String whereStatement = processWhereStatement(key);
             sql+= whereStatement;
 
             System.out.println(sql);
