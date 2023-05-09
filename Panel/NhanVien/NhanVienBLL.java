@@ -18,12 +18,14 @@ public class NhanVienBLL {
     private DataAccessLayer<NhanvienMD> NhanVienDAL;
     private DataAccessLayer<KhoMD> KhoDAL;
     private DataAccessLayer<Taikhoan_nhanvienMD> TaiKhoanDAL;
+    private DataAccessLayer<ChucvuMD> ChucVuDAL;
     public NhanVienBLL(){
         SQLUser master = UI.master;
         DSNhanVienDAL = new DataAccessLayer<>(master,DSNhanVienMD.class);
         NhanVienDAL = new DataAccessLayer<>(master, NhanvienMD.class);
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
         TaiKhoanDAL = new DataAccessLayer<>(master, Taikhoan_nhanvienMD.class);
+        ChucVuDAL = new DataAccessLayer<>(master, ChucvuMD.class);
     }
     public ArrayList<DSNhanVienMD> getDanhSachNhanVien(String... statements){
         return DSNhanVienDAL.getTable(statements);
@@ -51,6 +53,14 @@ public class NhanVienBLL {
     }
     public ArrayList<DSNhanVienMD> getDsNhanVienMD(String... statements){
         return DSNhanVienDAL.getTable(statements);
+    }
+    public String[] layTenChucVu(){
+        String[] dsTenChucVu = new String[ChucVuDAL.getTable().size()];
+        for(int i=0;i<ChucVuDAL.getTable().size();i++){
+            ChucvuMD dschucvu = ChucVuDAL.getTable().get(i);
+            dsTenChucVu[i] = dschucvu.getTenCV();
+        }
+        return dsTenChucVu;
     }
     public int layMa(){
         int count = 0;

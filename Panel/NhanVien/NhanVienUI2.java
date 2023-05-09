@@ -65,6 +65,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     private JLabel labelTitle;
     private JLabel labelDefault;
     private JTable tableTemp;
+    private JComboBox comboChucVu;
     private JTextField searchField;
     public static JButton searchButton,addButton,infoButton;
     private JButton editButton,deleteButton;
@@ -160,6 +161,9 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         addButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addButton.addActionListener(addAction);
         addButton.addMouseListener(this);
+
+        
+        comboChucVu = new JComboBox<>();
 
         panelSearch.add(searchField);
         panelSearch.add(searchButton);
