@@ -13,7 +13,10 @@
             "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\jcalendar-1.4.jar",
             "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\jcommon-1.0.23.jar",
             "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\jfreechart-demo-1.5.2-jar-with-dependencies.jar",
-            "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\poi-4.1.0/**/*.jar"
+            "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\poi-4.1.0/**/*.jar",
+            "d:\\POI\\jfreechart-1.0.19.jar",
+            "d:\\POI\\poi-4.1.0/**/*.jar",
+            "d:\\POI\\jcommon-1.0.23.jar"
         ],
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"
