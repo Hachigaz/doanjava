@@ -94,6 +94,7 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
         deleteButton.setForeground(Color.BLACK);
         deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         deleteButton.setBackground(new Color(0,255,119));
+        deleteButton.setBorder(null);
         deleteButton.addActionListener(deleteAction);
 
         editButton = new JButton("Sửa");
@@ -101,6 +102,7 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
         editButton.setForeground(Color.BLACK);
         editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         editButton.setBackground(new Color(0,255,119));
+        editButton.setBorder(null);
         editButton.addActionListener(editAction);
 
         panelButton = new JPanel();
