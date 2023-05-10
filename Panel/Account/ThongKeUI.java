@@ -35,14 +35,15 @@ public class ThongKeUI extends JPanel implements MouseListener{
     ThongKeBLL thongKeBLL = new ThongKeBLL();
     private JPanel panelButton,panelChart,panelNhanVien,panelKho;
     private JButton btnNhanVien,btnKho;
-    private TablePanel panelDanhSach = new TablePanel();
+    private TablePanel panelDanhSachNhanVien = new TablePanel();
+    private TablePanel panelDanhSachKho = new TablePanel();
     private TableModel tableDanhSach;
     public ThongKeUI(Dimension d){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
 
-        panelDanhSach.setPreferredSize(new Dimension(830, 270));
-        panelDanhSach.setOpaque(true);
+        panelDanhSachNhanVien.setPreferredSize(new Dimension(830, 270));
+        panelDanhSachNhanVien.setOpaque(true);
 
 
         btnNhanVien = new JButton("Nhân viên");
@@ -53,6 +54,9 @@ public class ThongKeUI extends JPanel implements MouseListener{
         btnNhanVien.setForeground(Color.BLACK);
         btnNhanVien.setFocusable(false);
         btnNhanVien.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        panelDanhSachKho.setPreferredSize(new Dimension(830, 270));
+        panelDanhSachKho.setOpaque(true);
 
         btnKho = new JButton("Kho");
         btnKho.addMouseListener(this);
@@ -105,7 +109,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
 
         panelNhanVien.add(chartPanel);
 
-        panelNhanVien.add(panelDanhSach);
+        panelNhanVien.add(panelDanhSachNhanVien);
 
         String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
         ArrayList<DSNhanVienMD> DanhSachNhanVien = nhanVienBLL.getDanhSachNhanVien();
@@ -115,7 +119,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
                 return false;
             }
         };
-        panelDanhSach.SetTable(tableDanhSach, null);
+        panelDanhSachNhanVien.SetTable(tableDanhSach, null);
 
         panelKho = new JPanel();
         panelKho.setBackground(Color.white);
@@ -123,12 +127,13 @@ public class ThongKeUI extends JPanel implements MouseListener{
         panelKho.setVisible(false);
 
         String maKhoHT = UI.maKho;
-        String[] dsKhuVuc = thongKeBLL.layDSKV(maKhoHT);
-        float[] dsSucChua = thongKeBLL.laySucChua(maKhoHT);
+        // String[] dsKhuVuc = thongKeBLL.layDSKV(maKhoHT);
+        // float[] dsSucChua = thongKeBLL.laySucChua(maKhoHT);
+        Object[][] dsTenKhuVuc = thongKeBLL.dsMHTrongKho(maKhoHT);
 
         DefaultCategoryDataset datasetBarChart = new DefaultCategoryDataset();
-        for(int i=0;i<dsKhuVuc.length;i++){
-            datasetBarChart.addValue(dsSucChua[i], "Số thùng", dsKhuVuc[i]);
+        for(int i=0;i<dsTenKhuVuc[0].length;i++){
+            datasetBarChart.addValue((float)dsTenKhuVuc[1][i], "Số thùng", dsTenKhuVuc[0][i].toString());
         }
 
         JFreeChart barChart = ChartFactory.createBarChart(
@@ -139,9 +144,12 @@ public class ThongKeUI extends JPanel implements MouseListener{
         );
 
         ChartPanel barChartPanel = new ChartPanel(barChart);
-        barChartPanel.setPreferredSize(new java.awt.Dimension(1000,530));
+        barChartPanel.setPreferredSize(new java.awt.Dimension(700,250));
 
         panelKho.add(barChartPanel);
+
+        panelKho.add(panelDanhSachKho);
+
 
         panelChart = new JPanel();
         panelChart.setBackground(Color.WHITE);
