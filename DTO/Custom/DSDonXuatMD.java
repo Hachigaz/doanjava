@@ -4,17 +4,17 @@ import DTO.*;
 
 public class DSDonXuatMD extends Model{
     
-    public static final String selectStatement = "donxuat.MaDonXuat as 'Mã Đơn Xuat', donxuat.MaKho as 'Mã kho', donxuat.MaCty as 'Mã công ty', cong_ty.TenCty as 'Tên công ty',donxuat.MaNV as 'Mã Nhân viên', DATE(donxuat.NgayNhap) as 'Ngày nhập'";
+    public static final String selectStatement = "donxuat.MaDonXuat as 'Mã Đơn Xuat', donxuat.MaKho as 'Mã kho', donxuat.MaCty as 'Mã công ty', cong_ty.TenCty as 'Tên công ty',donxuat.MaNV as 'Mã Nhân viên', DATE(donxuat.NgayXuat) as 'Ngày Xuat'";
     public static final String fromStatement = "donxuat join cong_ty on donxuat.MaCty = cong_ty.MaCty ";
     public static final String groupByStatement = "";
 
-    public DSDonXuatMD(String Madx, String Makho, String maCty, String tenCty, String Manv, String ngayNhap) {
+    public DSDonXuatMD(String Madx, String Makho, String maCty, String tenCty, String Manv, String ngayXuat) {
         MaDX = Madx;
         MaKho = Makho;
         MaCty = maCty;
         TenCty = tenCty;
         MaNV = Manv;
-        NgayNhap = ngayNhap;
+        NgayXuat = ngayXuat;
     }
 
     private String MaDX;
@@ -54,7 +54,7 @@ public class DSDonXuatMD extends Model{
         MaNV = maNV;
     }
 
-    private String NgayNhap;
+    private String NgayXuat;
 
     public static String getSelectstatement() {
         return selectStatement;
@@ -74,12 +74,12 @@ public class DSDonXuatMD extends Model{
         TenCty = tenCty;
     }
 
-    public String getNgayNhap() {
-        return NgayNhap;
+    public String getNgayXuat() {
+        return NgayXuat;
     }
 
-    public void setNgayNhap(String ngayNhap) {
-        NgayNhap = ngayNhap;
+    public void setNgayXuat(String ngayXuat) {
+        NgayXuat = ngayXuat;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class DSDonXuatMD extends Model{
 
     @Override
     public String toSQLString() {
-        String returnString = "('"+MaDX+"','"+MaKho+"',"+MaCty+",'"+TenCty+"','"+MaNV+"','"+NgayNhap+"')";
+        String returnString = "('"+MaDX+"','"+MaKho+"',"+MaCty+",'"+TenCty+"','"+MaNV+"','"+NgayXuat+"')";
         return returnString;
     }
 }

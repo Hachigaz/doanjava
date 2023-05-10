@@ -38,6 +38,7 @@ public class DonNhap2BLL {
     public ArrayList<DSDonNhapMD> getDanhSachDN(String... statements){
         return DSDonNhapDAL.getTable(statements);
     }
+    
     public ArrayList<DonNhapMD> getDanhSachDonNhap(String... statements){
         return DonNhapDAL.getTable(statements);
     }
@@ -50,4 +51,5 @@ public class DonNhap2BLL {
     public ArrayList<CongtyMD> getDanhSachCongTy(String... statements){
         return congTyDAL.getTable(statements);
     }
+    
 }
