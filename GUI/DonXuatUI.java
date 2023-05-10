@@ -50,7 +50,7 @@ public class DonXuatUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton SPButton,btlook;
+    public static JButton SPButton,btlook,btexport;
     
 
 
@@ -89,17 +89,20 @@ public class DonXuatUI extends JPanel{
 
 
 
-        JButton btexport = new JButton("Export");
+        btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
         btexport.setForeground(new Color(0, 0, 0));
         btexport.setEnabled(false);
-
         btexport.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e){
-                
-                //exportTableToExcel();
+            public void actionPerformed(ActionEvent e){                
+                int selectedRow = panelDanhSach.getSelectedRow();
+                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                DonXuatMD donChon = DonXuatBLL.getFirstDonXuat(maDonChon);
+                ArrayList<ChitietdonxuatMD> dsCT = DonXuatBLL.getDanhSachCTDX("MaDonXuat="+maDonChon);
+                System.out.println(dsCT);
+                exportTableToExcel(donChon,dsCT);
             }
         });
 
@@ -273,6 +276,7 @@ public class DonXuatUI extends JPanel{
             }
 
             btlook.setEnabled(true);
+            btexport.setEnabled(true);
         }
         @Override
         public void mouseReleased(MouseEvent e) {
@@ -410,7 +414,7 @@ public class DonXuatUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
-    private void exportTableToExcel() {
+    private void exportTableToExcel(DonXuatMD dx,ArrayList<ChitietdonxuatMD> dsCT) {
         try {
             Workbook workbook = new XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn xuất");

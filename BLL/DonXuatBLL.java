@@ -3,6 +3,7 @@ package BLL;
 import java.util.ArrayList;
 
 import DAL.DataAccessLayer;
+import DTO.ChitietdonxuatMD;
 import DTO.CongtyMD;
 import DTO.DonNhapMD;
 import DTO.DonXuatMD;
@@ -22,6 +23,7 @@ public class DonXuatBLL {
     DataAccessLayer<DonNhapMD> DonNhapDAL;
     DataAccessLayer<DonXuatMD> DonXuatDAL;
     DataAccessLayer<DSDonXuatMD> DSDonXuatDAL;
+    DataAccessLayer<ChitietdonxuatMD> ctdxDAL;
     
 
     public DonXuatBLL(){
@@ -34,6 +36,7 @@ public class DonXuatBLL {
        DonNhapDAL = new DataAccessLayer<DonNhapMD>(master, DonNhapMD.class);
        DonXuatDAL = new DataAccessLayer<DonXuatMD>(master, DonXuatMD.class);
        DSDonXuatDAL = new DataAccessLayer<DSDonXuatMD>(master, DSDonXuatMD.class);
+       ctdxDAL=new DataAccessLayer<>(master, ChitietdonxuatMD.class);
     }
     public ArrayList<DSTraCuuHangMD> getDanhSachTCH(String... statements){
         return TraCuuHangDAL.getTable(statements);
@@ -52,5 +55,11 @@ public class DonXuatBLL {
     }
     public  ArrayList<CongtyMD> getDanhSachCongTy(String... statements){
         return congTyDAL.getTable(statements);
+    }
+    public ArrayList<ChitietdonxuatMD> getDanhSachCTDX (String... statements){
+        return ctdxDAL.getTable(statements);
+    }
+    public DonXuatMD getFirstDonXuat(String maDon){
+        return DonXuatDAL.getFirst("MaDonXuat="+maDon);
     }
 }
