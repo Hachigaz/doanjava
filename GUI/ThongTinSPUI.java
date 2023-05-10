@@ -95,14 +95,19 @@ public class ThongTinSPUI extends TitleFrame{
                 matHangTable.locCacDieuKien();
             }
         });
-
+        
         updateTable();
     }
     public void updateTable(){
         ArrayList<ThongTinSPMD> dsMatHang = thongTinSPBLL.getDanhSachTTSP();
-        String[] columnNames = {"Mã mặt hàng","Tên mặt hàng","Loại sản phẩm","Số lượng mỗi thùng"};
-        currentTableModel = new DefaultTableModel(Model.to2DArray(dsMatHang,"MaMH","TenMH","TenLoai","SLMoiThung"), columnNames);
-        matHangTable.SetTable(currentTableModel,null);
+        if (dsMatHang == null) {
+            JOptionPane.showMessageDialog(null, "Lỗi: Công ty chưa có sản phẩm", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+        } else {
+            String[] columnNames = {"Mã mặt hàng","Tên mặt hàng","Loại sản phẩm","Số lượng mỗi thùng"};
+            currentTableModel = new DefaultTableModel(Model.to2DArray(dsMatHang,"MaMH","TenMH","TenLoai","SLMoiThung"), columnNames);
+            matHangTable.SetTable(currentTableModel,null);
+        }
     }
     //form inputs
     private ArrayList<FormInput> inputs;
