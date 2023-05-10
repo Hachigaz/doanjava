@@ -40,7 +40,7 @@ import com.toedter.calendar.JDateChooser;
 
 import BLL.CongTy2BLL;
 import BLL.ThongTinSPBLL;
-import Panel.ThongTinSP.*;
+import GUI.ThongTinSPUI;
 import Panel.Form.*;
 import DAL.DataAccessLayer;
 import DTO.Model;
@@ -52,7 +52,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-import Panel.Form.Form;
+import GUI.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 
@@ -65,16 +65,13 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
     private JPanel panelSearch;
     private JPanel panelInfo,panelButton;
     private JPanel panelDefault;
-    private JPanel panelSalary;
     private JLabel labelTitle;
     private JLabel labelDefault;
     private JTable tableTemp;
     private JTextField searchField;
     public static JButton searchButton,addButton,infoButton,SPButton;
     private JButton editButton,deleteButton;
-    private TableRowSorter<TableModel> rowSorter;
     private TableModel tableDanhSach;
-    private Object[] atributeNV;
     private ArrayList<JButton> btns = new ArrayList<JButton>();
     private Form form;
     public String[] labelForm = {"Mã công ty:       ","Tên công ty:     ","Địa chỉ:               ","SDT:                "};

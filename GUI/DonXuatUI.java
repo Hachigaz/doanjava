@@ -108,6 +108,7 @@ public class DonXuatUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateTable();
+                btlook.setEnabled(false);
             }
             
         });
@@ -437,6 +438,7 @@ public class DonXuatUI extends JPanel{
         }
     }
     public void updateTable(){
+        
         String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
         ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX),columnNames){
@@ -446,6 +448,8 @@ public class DonXuatUI extends JPanel{
             }
         };
         panelDanhSach.SetTable(tableDanhSach, null);
+        tableTemp = panelDanhSach.getTableDS();
+        tableTemp.addMouseListener(actionInfo);
     }
 
 

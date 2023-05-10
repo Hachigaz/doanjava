@@ -1,4 +1,4 @@
-package Panel.Form;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,7 +52,7 @@ public class Form extends JDialog implements MouseListener{
     JCheckBox checkBox;
     private ButtonGroup group;
     JRadioButton radio1,radio2;
-    JButton addButton;
+    public JButton addButton;
     JDateChooser dateChooser;
     ButtonModel selection;
     private String MaNV,TenNV,MaCV,GioiTinh,date,diaChi,maKho;

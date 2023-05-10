@@ -107,6 +107,7 @@ public class DonNhap2Ui extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateTable();
+                btlook.setEnabled(false);
             }
             
         });
@@ -542,6 +543,7 @@ public class DonNhap2Ui extends JPanel{
         }
     }
     public void updateTable(){
+
         String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
         ArrayList<DSDonNhapMD> dsDN = DonNhap2BLL.getDanhSachDN();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
@@ -551,6 +553,8 @@ public class DonNhap2Ui extends JPanel{
             }
         };
         panelDanhSach.SetTable(tableDanhSach, null);
+        tableTemp = panelDanhSach.getTableDS();
+        tableTemp.addMouseListener(actionInfo);
     }
 
 
