@@ -1,25 +1,19 @@
 package Panel;
 
 import SQL.*;
-import misc.DataSet;
 import misc.TitleFrame;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import BLL.DonXuatBLL;
 import DAL.DataAccessLayer;
 import DTO.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -27,8 +21,7 @@ import java.util.HashMap;
 import java.awt.*;
 
 import GUI.CongTy2UI;
-import GUI.DonNhap2Ui;
-
+import GUI.DonNhapUI;
 import GUI.DonXuatUI;
 import GUI.NhanVienUI2;
 import GUI.ThongKeUI;
@@ -207,14 +200,9 @@ public class UI extends TitleFrame implements MouseListener{
         this.setVisible(true);
         
         
-        String[] str = {"Nhà cung cấp","Xuất kho","Đơn nhập","Nhân viên"};
-        String[] img = {"nhaCungCap.png","kho.png","kho.png","users.png"};
-        
 
-        DataSet dsdonnhap = master.getDataQuery("SELECT * FROM donnhap");
         //do lon panel chuc nang
         Dimension panelRightSize = new Dimension(panelRight.getSize().width-14,panelRight.getSize().height-16);
-        DonXuatBLL cnDonXuat = new DonXuatBLL();
         //them quyen
         for(ChitietnhomquyenMD quyenTK : ctNhomQuyenDAL.getTable("MaNhomQuyen = "+tkDangNhap.getMaNhomQuyen())){
             switch(quyenTK.getMaQuyen()){
@@ -231,7 +219,7 @@ public class UI extends TitleFrame implements MouseListener{
                     themQuyen(new JLabel("Hàng trong kho"),"res/img/product.png", new TraCuuHangUI(panelRightSize));
                     break;
                 case "Q5":
-                    themQuyen(new JLabel("Đơn nhập "),"res/img/danhSach.png", new DonNhap2Ui(panelRightSize));
+                    themQuyen(new JLabel("Đơn nhập "),"res/img/danhSach.png", new DonNhapUI(panelRightSize));
                     break;
                 case "Q6":
                     themQuyen(new JLabel("Đơn Xuất"),"res/img/donXuat.png", new DonXuatUI(panelRightSize));
