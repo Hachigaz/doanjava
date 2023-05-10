@@ -1,4 +1,4 @@
-package GUI;
+package Panel.Form;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
