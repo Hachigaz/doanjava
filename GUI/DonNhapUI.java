@@ -104,7 +104,8 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                //exportTableToExcel();
+                System.out.println(dsCT);
+                exportTableToExcel(donChon,dsCT);
             }
         });
 
@@ -426,7 +427,7 @@ public class DonNhapUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
-    private void exportTableToExcel() {
+    private void exportTableToExcel(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT) {
         try {
             Workbook workbook = new XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");

@@ -54,6 +54,9 @@ public class DonNhapBLL {
     public ArrayList<CongtyMD> getDanhSachCongTy(String... statements){
         return congTyDAL.getTable(statements);
     }
+    public ArrayList<ChitietdonnhapMD> getDanhSachCTDN (String... statements){
+        return ctdnDAL.getTable(statements);
+    }
     public DonNhapMD getFirstDonNhap(String maDonNhap){
         return DonNhapDAL.getFirst("MaDonNhap="+maDonNhap);
     }
