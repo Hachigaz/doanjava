@@ -32,7 +32,7 @@ public class TitleDialog extends JDialog{
     
         panelTitleBar = new JPanel();
         panelTitleBar.setPreferredSize(new Dimension(0,30));
-        panelTitleBar.setBackground(new Color(255, 255, 153));
+        panelTitleBar.setBackground(new Color(0,155,254));
         panelTitleBar.setLayout(new FlowLayout(FlowLayout.RIGHT,0,0));
     
         panelTitleBar.add(labelClose);

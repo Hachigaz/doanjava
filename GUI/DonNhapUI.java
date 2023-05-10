@@ -481,10 +481,19 @@ public class DonNhapUI extends JPanel{
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
             }
             System.out.println(dn.getMaDonNhap()+" export thành công.");
-            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/"+dn.getMaDonNhap()+".xlsx";
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            workbook.write(fileOutputStream);
-            fileOutputStream.close();
+            JFileChooser xuatFileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(".xlsx", "xlsx");
+            xuatFileChooser.setFileFilter(filter);
+            int returnValue = xuatFileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // The user selected a file
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath();
+                importExceltoTable(selectedFilePath);
+                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+                workbook.write(fileOutputStream);
+                fileOutputStream.close();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
