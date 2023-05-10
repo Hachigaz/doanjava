@@ -16,7 +16,10 @@
             "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\poi-4.1.0/**/*.jar",
             "d:\\POI\\jfreechart-1.0.19.jar",
             "d:\\POI\\poi-4.1.0/**/*.jar",
-            "d:\\POI\\jcommon-1.0.23.jar"
+            "d:\\POI\\jcommon-1.0.23.jar",
+            "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\jcommon-1.0.23.jar",
+            "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\jfreechart-1.0.19.jar",
+            "c:\\Users\\ACER\\Documents\\GitHub\\mysql-connector-j-8.0.32\\poi-4.1.0/**/*.jar"
         ],
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"

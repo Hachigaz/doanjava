@@ -15,7 +15,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
@@ -39,6 +42,10 @@ import Panel.Form.FormCTDN;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
 public class DonNhapUI extends JPanel{
     //BLL
     private DonNhapBLL donNhapBLL = new DonNhapBLL();
@@ -46,8 +53,8 @@ public class DonNhapUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton SPButton,btlook, btexport;
-
+    public static JButton btloc,btlook, btexport;
+    private JCalendar date1,date2;
 
     private JTextField searchBar;
 
@@ -93,6 +100,46 @@ public class DonNhapUI extends JPanel{
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
 
+        btloc = new JButton("Lọc");
+        btloc.setPreferredSize(new Dimension(100, 40));
+        btloc.setBackground(new Color(255, 197, 70));
+        btloc.setForeground(new Color(0, 0, 0));
+        btloc.setBorder(null);
+        btloc.setOpaque(true);
+        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        date1 = new JCalendar();
+        date2 = new JCalendar();
+        btloc.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               loc();
+            }
+
+            private void loc() {
+                Date startDate = date1.getDate();
+                Date endDate = date2.getDate();
+                
+                // Convert the dates to string format
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString + " AND NgayNhap >= " + endDateString);
+                // Update the table with the filtered data
+                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+            }
+            
+        }
+        );
         btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
@@ -142,12 +189,16 @@ public class DonNhapUI extends JPanel{
                 }
             }
         });
+        panelLoc.add(btloc);
+        panelLoc.add(date1);
+        panelLoc.add(date2);
         SetupPanelChucNang();
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
         panelChucNang.add(btimport);
         panelChucNang.add(btreload);
         setupPanel();
+        
     }
     public void setupPanel(){
         String[] locPanelTitle = {"Lọc theo kho","Lọc theo công ty","Lọc theo sản phẩm của công ty"};
@@ -416,6 +467,8 @@ public class DonNhapUI extends JPanel{
         }
     }
     public void UpdateTable(TableModel table){
+        
+    
         this.panelDanhSach.SetTable(table,null);
     }
     
