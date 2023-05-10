@@ -2,11 +2,13 @@ package Panel.Account;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -33,14 +35,27 @@ public class ThongKeUI extends JPanel implements MouseListener{
 
         btnNhanVien = new JButton("Nhân viên");
         btnNhanVien.addMouseListener(this);
+        btnNhanVien.setBorder(null);
+        btnNhanVien.setPreferredSize(new Dimension(100,40));
+        btnNhanVien.setBackground(new Color(0,255,119));
+        btnNhanVien.setForeground(Color.BLACK);
+        btnNhanVien.setFocusable(false);
+        btnNhanVien.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         btnKho = new JButton("Kho");
         btnKho.addMouseListener(this);
+        btnKho.setBorder(null);
+        btnKho.setPreferredSize(new Dimension(100,40));
+        btnKho.setBackground(new Color(0,255,119));
+        btnKho.setForeground(Color.BLACK);
+        btnKho.setFocusable(false);
+        btnKho.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         panelButton = new JPanel();
-        panelButton.setLayout(new FlowLayout());
+        panelButton.setLayout(new FlowLayout(FlowLayout.LEFT));
         panelButton.add(btnNhanVien);
         panelButton.add(btnKho);
-        panelButton.setBackground(Color.BLUE);
+        panelButton.setBackground(Color.gray);
 
         panelNhanVien = new JPanel();
         panelNhanVien.setBackground(Color.WHITE);
@@ -130,11 +145,23 @@ public class ThongKeUI extends JPanel implements MouseListener{
     }
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        if(e.getSource() == btnNhanVien){
+            btnNhanVien.setBackground(new Color(223,18,133));
+            btnNhanVien.setForeground(Color.white);
+        }else if(e.getSource() == btnKho){
+            btnKho.setBackground(new Color(223,18,133));
+            btnKho.setForeground(Color.white);
+        }
     }
     @Override
     public void mouseExited(MouseEvent e) {
-
+        if(e.getSource() == btnNhanVien){
+            btnNhanVien.setBackground(new Color(0,255,119));
+            btnNhanVien.setForeground(Color.BLACK);
+        }else if(e.getSource() == btnKho){
+            btnKho.setBackground(new Color(0,255,119));
+            btnKho.setForeground(Color.BLACK);
+        }
     }
 
 

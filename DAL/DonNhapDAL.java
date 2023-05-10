@@ -18,17 +18,7 @@ public class DonNhapDAL {
     // }
 
     public static void addDonnhap(DonNhapMD donnhap) {
-        try{
-            PreparableStatement pstmt = donnhap.PreparableStatement("INSERT INTO donnhap (MaDonNhap,MaKho,MaCty,MaNV,NgayNhap) VALUES (?,?,?,?,?)");
-            pstmt.setString(1, donnhap.getMaDonNhap());
-            pstmt.setString(2, donnhap.getMaKho());
-            pstmt.setString(4, donnhap.getMaNV());
-            pstmt.setString(3, donnhap.getMaCty());
-            pstmt.setString(5, donnhap.getNgayNhap());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     

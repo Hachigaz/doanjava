@@ -1,9 +1,11 @@
 package Panel.Account;
 
 import DAL.DataAccessLayer;
+import DTO.ChitietdonnhapMD;
 import DTO.ChucvuMD;
 import DTO.KhoMD;
 import DTO.KhuvucMD;
+import DTO.Mat_hangMD;
 import DTO.NhanvienMD;
 import DTO.Taikhoan_nhanvienMD;
 import DTO.Custom.DSNhanVienMD;
@@ -13,10 +15,14 @@ import SQL.SQLUser;
 public class ThongKeBLL {
     private DataAccessLayer<KhoMD> KhoDAL;
     private DataAccessLayer<KhuvucMD> KhuVucDAL;
+    private DataAccessLayer<ChitietdonnhapMD> DonNhapDAL;
+    private DataAccessLayer<Mat_hangMD> MatHangDAL;
     public ThongKeBLL(){
         SQLUser master = UI.master;
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
         KhuVucDAL = new DataAccessLayer<>(master, KhuvucMD.class);
+        DonNhapDAL = new DataAccessLayer<>(master, ChitietdonnhapMD.class);
+        MatHangDAL = new DataAccessLayer<>(master, Mat_hangMD.class);
     }
     public String[] layDSKV(String maKho) {
         int count = 0;
@@ -70,4 +76,13 @@ public class ThongKeBLL {
         
         return dsSucChuaKV;
     }
+    // public int[] dsMHTrongKho(String maKho){
+    //     KhuVucDAL.getTable("MaKho ="+maKho);
+
+
+
+    //     int[] dsSPTrongKho = new int[count];
+
+        
+    // }
 }
