@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
+import BLL.NhanVienBLL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -36,21 +37,23 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import DTO.NhanvienMD;
+
 public class Form extends JDialog implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
     private JPanel panelContainer,panelLeft,panelRight,panelBottom,panelEnterData,panelEnterUserPass;
     private JLabel labelTitleInfo,labelTitleUserPass;
     private JLabel labelTenNV,labelChucVu,labelGioiTinh,labelNgaySinh,labelDiaChi,labelTenKho;
     private JLabel labelUsername,labelPassword,labelReTypePass,labelCheckBox;
-    JTextField textUsername;
-    JPasswordField password,retypepass;
-    JTextField textTenNV,textDiaChi;
-    JComboBox comboBox,comboBox2;
-    JCheckBox checkBox;
+    public static JTextField textUsername;
+    public static JPasswordField password,retypepass;
+    public static JTextField textTenNV,textDiaChi;
+    public static JComboBox comboBox,comboBox2;
+    public static JCheckBox checkBox;
     private ButtonGroup group;
-    JRadioButton radio1,radio2;
-    JButton addButton;
-    JDateChooser dateChooser;
+    public static JRadioButton radio1,radio2;
+    public static JButton addButton;
+    public static JDateChooser dateChooser;
     ButtonModel selection;
     private String MaNV,TenNV,MaCV,GioiTinh,date,diaChi,maKho;
     private Date ngayDaChon;

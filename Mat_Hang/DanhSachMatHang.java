@@ -1,6 +1,6 @@
 package Mat_Hang;
 
-import Panel.ThongTinSP.ThongTinSPUI;
+import GUI.ThongTinSPUI;
 
 public class DanhSachMatHang {
     ThongTinSPUI[] danhSachMH;

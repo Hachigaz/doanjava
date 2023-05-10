@@ -1,4 +1,4 @@
-package Panel.Account;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,10 +23,11 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+import BLL.NhanVienBLL;
+import BLL.ThongKeBLL;
 import DTO.Model;
 import DTO.Custom.DSNhanVienMD;
 import Panel.UI;
-import Panel.NhanVien.NhanVienBLL;
 import Panel.SubPanel.TablePanel;
 import Program.Program;
 

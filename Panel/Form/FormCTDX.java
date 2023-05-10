@@ -78,7 +78,7 @@ public class FormCTDX extends TitleFrame{
     }
     public void updateTable(){
         ArrayList<ChitietdonxuatMD> dsMatHang = FormCTDXBLL.getDanhSachTTSP();
-        String[] columnNames = {"Mã DN","Mã DX","Mã KV","Ma MH","Số lượng "};
+        String[] columnNames = {"Mã DX","Mã DN","Mã MH","Ma KV","Số lượng "};
         currentTableModel = new DefaultTableModel(Model.to2DArray(dsMatHang,"MaDonNhap","MaDonXuat","MaKV","MaMH","SoLuong"), columnNames);
         matHangTable.SetTable(currentTableModel,null);
     }
@@ -96,6 +96,6 @@ public class FormCTDX extends TitleFrame{
         }
     };
     public static void main(String[] args) {
-        new FormCTDN("DX0001");
+        new FormCTDN("DX004");
     }
 }

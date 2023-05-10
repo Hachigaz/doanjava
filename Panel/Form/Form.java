@@ -1,4 +1,4 @@
-package Panel.CongTy2;
+package Panel.Form;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,6 +37,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import BLL.CongTy2BLL;
+
 public class Form extends JDialog implements MouseListener{
     CongTy2BLL CongTy2BLL = new CongTy2BLL();
     private JPanel panelContainer,panelLeft,panelRight,panelBottom,panelEnterData,panelEnterUserPass;
@@ -50,7 +52,7 @@ public class Form extends JDialog implements MouseListener{
     JCheckBox checkBox;
     private ButtonGroup group;
     JRadioButton radio1,radio2;
-    JButton addButton;
+    public JButton addButton;
     JDateChooser dateChooser;
     ButtonModel selection;
     private String MaNV,TenNV,MaCV,GioiTinh,date,diaChi,maKho;

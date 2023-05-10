@@ -1,4 +1,4 @@
-package Panel.NhanVien;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,43 +38,44 @@ import javax.xml.crypto.Data;
 
 import com.toedter.calendar.JDateChooser;
 
+import BLL.CongTy2BLL;
+import BLL.ThongTinSPBLL;
+import GUI.ThongTinSPUI;
+import Panel.Form.*;
 import DAL.DataAccessLayer;
 import DTO.Model;
 import DTO.NhanvienMD;
-import DTO.Taikhoan_nhanvienMD;
 import DTO.Custom.DSNhanVienMD;
+import DTO.CongtyMD;
 
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import Panel.Form.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 
-public class NhanVienUI2 extends JPanel implements MouseListener{
-    NhanVienBLL nhanVienBLL = new NhanVienBLL();
-
+public class CongTy2UI extends JPanel implements MouseListener{
+CongTy2BLL CongTy2BLL = new CongTy2BLL();
+    private ThongTinSPUI spui ;
     private JPanel panelRight;
     private TablePanel panelDanhSach = new TablePanel();
     private JPanel panelTable;
     private JPanel panelSearch;
     private JPanel panelInfo,panelButton;
     private JPanel panelDefault;
-    private JPanel panelSalary;
     private JLabel labelTitle;
     private JLabel labelDefault;
     private JTable tableTemp;
-    private JComboBox comboChucVu;
     private JTextField searchField;
-    public static JButton searchButton,addButton,infoButton;
+    public static JButton searchButton,addButton,infoButton,SPButton;
     private JButton editButton,deleteButton;
-    private TableRowSorter<TableModel> rowSorter;
     private TableModel tableDanhSach;
-    private Object[] atributeNV;
     private ArrayList<JButton> btns = new ArrayList<JButton>();
     private Form form;
-    public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Chức vụ:               ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       "};
-    public NhanVienUI2(Dimension d){
+    public String[] labelForm = {"Mã công ty:       ","Tên công ty:     ","Địa chỉ:               ","SDT:                "};
+    public CongTy2UI(Dimension d){
         // form = new Form((JFrame)SwingUtilities.getWindowAncestor(this),addButtonAction);
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
@@ -90,23 +91,19 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
 
         deleteButton = new JButton("Xóa");
         deleteButton.setPreferredSize(new Dimension(100,40));
-        deleteButton.setBackground(new Color(0,255,119));
         deleteButton.setForeground(Color.BLACK);
         deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        deleteButton.setFocusable(false);
+        deleteButton.setBackground(new Color(0,255,119));
         deleteButton.setBorder(null);
         deleteButton.addActionListener(deleteAction);
-        deleteButton.addMouseListener(this);
 
         editButton = new JButton("Sửa");
         editButton.setPreferredSize(new Dimension(100,40));
-        editButton.setBackground(new Color(0,255,119));
         editButton.setForeground(Color.BLACK);
-        editButton.setFocusable(false);
         editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editButton.setBackground(new Color(0,255,119));
         editButton.setBorder(null);
         editButton.addActionListener(editAction);
-        editButton.addMouseListener(this);
 
         panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
@@ -159,7 +156,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         ImageIcon newIconAdd = new ImageIcon(newImgAdd);
 
         addButton = new JButton(newIconAdd);
-        addButton.setToolTipText("Thêm nhân viên");
+        addButton.setToolTipText("Thêm công ty");
         addButton.setBackground(new Color(0,255,119));
         addButton.setPreferredSize(new Dimension(45,45));
         addButton.setFocusable(false);
@@ -168,14 +165,20 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         addButton.addActionListener(addAction);
         addButton.addMouseListener(this);
 
-        String[] dschucvu = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
-        comboChucVu = new JComboBox<>(dschucvu);
-        comboChucVu.addActionListener(changeChucVu);
+        SPButton = new JButton( "XemSp");
+        SPButton.setEnabled(false);
+        SPButton.setBackground(new Color(0,255,119));
+        SPButton.setPreferredSize(new Dimension(45,45));
+        SPButton.setFocusable(false);
+        SPButton.setBorder(null);
+        SPButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        SPButton.addActionListener(CheckAction);
+        SPButton.addMouseListener(this);
 
         panelSearch.add(searchField);
         panelSearch.add(searchButton);
         panelSearch.add(addButton);
-        panelSearch.add(comboChucVu);
+        panelSearch.add(SPButton);
 
         panelDanhSach.setPreferredSize(new Dimension(830, 520));
         panelDanhSach.setOpaque(true);
@@ -186,9 +189,9 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         this.add(panelRight,BorderLayout.EAST);
         this.add(panelTable,BorderLayout.WEST);
 
-        String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-        ArrayList<DSNhanVienMD> DanhSachNhanVien = nhanVienBLL.getDanhSachNhanVien();
-        tableDanhSach = new DefaultTableModel(Model.to2DArray(DanhSachNhanVien),columnNames){
+        String[] columnNames = {"Mã Công ty","Tên","Địa chỉ","SDT"};
+        ArrayList<CongtyMD> DanhSachCT = CongTy2BLL.getDSCT(columnNames);
+        tableDanhSach = new DefaultTableModel(Model.to2DArray(DanhSachCT),columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -199,29 +202,30 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         tableTemp.addMouseListener(actionInfo);
 
         panelDefault = new JPanel();
-        labelDefault = new JLabel("Chọn nhân viên mà\n bạn muốn xem thông tin");
+        labelDefault = new JLabel("Chọn công ty mà\n bạn muốn xem thông tin");
         labelDefault.setFont(new Font("Poppins",Font.PLAIN,18));
         panelDefault.setBorder(BorderFactory.createEmptyBorder(100,0,0,0));
         panelDefault.add(labelDefault);
 
+        // panelSalary = new JPanel();
+        // panelSalary.setBackground(Color.red);
+        // panelSalary.setVisible(false);
+        // panelSalary.setPreferredSize(new Dimension(370, 600));
+
+        // panelRight.add(panelSalary);
         panelRight.add(panelDefault);
+
+        // panelTable.setOpaque(true);
+        // panelRight.setBackground(Color.BLUE);
+        // panelRight.setOpaque(true);
+        // panelSearch.setOpaque(true);
     }
-    private String[] optionName = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
-    public String getSelectedChucVuKey(){
-        String selected = comboChucVu.getSelectedItem().toString();
-        for(int i = 0; i < optionName.length;i++){
-            if(selected.equals(optionName[i])){
-                return optionName[i];
-            }
-        }
-        return null;
-    }
+    
 
     String searchedText="";
     public void timKiem(){
         String searchText = searchField.getText();
         if (searchText.length() == 0) {
-            panelDanhSach.xoaDieuKienLoc(1, searchedText);
             searchedText="";
             panelDanhSach.themDieuKienLoc(1, searchText);
             this.panelDanhSach.locCacDieuKien();
@@ -260,36 +264,37 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             displayInfo();
         }
     };
-    ActionListener changeChucVu = new ActionListener() {
+    private TableModel currentTableDS;
+    ActionListener editButtonAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String[] comlumnname = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-            if(getSelectedChucVuKey()=="Tất cả"){
-                ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD();
-                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu), comlumnname){
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
-                    }
-                };
-                panelDanhSach.SetTable(tableDanhSach, null);
-                tableTemp = panelDanhSach.getTableDS();
-                tableTemp.addMouseListener(actionInfo); 
+            int rowIndex = tableTemp.getSelectedRow();
+            arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
+            if(form.check()==false){
+                JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
             }else{
-                ArrayList<DSNhanVienMD> dsTraCuu = nhanVienBLL.getDsNhanVienMD("TenCV = "+getSelectedChucVuKey());
-                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),comlumnname){
+                String[] data = form.getData();
+                CongTy2BLL.xoaCT("MaCty = "+arr[0]);
+                CongTy2BLL.themCTmoi(new CongtyMD(data[0],data[1],data[2],data[3]));
+                
+               
+                String[] columnNames = {"Mã công ty","Tên","Địa chỉ","SDT"};
+                currentTableDS = new DefaultTableModel(Model.to2DArray(CongTy2BLL.getDSCT(), "MaCty","TenCty","DiaChi","SDT"), columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
-            panelDanhSach.SetTable(tableDanhSach, null);
+            panelDanhSach.SetTable(currentTableDS, null);
             tableTemp = panelDanhSach.getTableDS();
             tableTemp.addMouseListener(actionInfo);
-            }
-        }   
+            JOptionPane.showMessageDialog(form, "Sửa thành công");
+            panelDefault.setVisible(true);
+            panelInfo.setVisible(false);
+            form.dispose();
+        }
+        }
     };
-    private TableModel currentTableDS;
     public void createForm(){
         Window window = SwingUtilities.getWindowAncestor(this);
         form = new Form((JFrame) window, addButtonAction);
@@ -301,80 +306,51 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     ActionListener addButtonAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String[] data = form.getData();
-            String[] dataTK = form.getUserPass();
             if(form.check()==false){
                 JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
             }else{
-                if(dataTK[4] == "False"){
-                    JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
-                }else{
-                    DecimalFormat df = new DecimalFormat("000"); 
-                String manhanvien = data[0]+df.format(nhanVienBLL.layMa());
-                nhanVienBLL.themNVmoi(new NhanvienMD(manhanvien,data[1],data[2],data[3],data[4],data[5],data[6]));
-                nhanVienBLL.themTKmoi(new Taikhoan_nhanvienMD(manhanvien, dataTK[1], dataTK[2], dataTK[3]));
-                String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-                currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
+                
+                String[] data = form.getData();
+                if (data[0].matches("Cty_[a-zA-Z]{3}")) {
+                    CongTy2BLL.themCTmoi(new CongtyMD(data[0],data[1],data[2],data[3]));
+
+                    String[] columnNames = {"Mã công ty","Tên","Địa chỉ","SDT"};
+                
+                    currentTableDS = new DefaultTableModel(Model.to2DArray(CongTy2BLL.getDSCT(),"MaCty","TenCty","DiaChi","SDT"),columnNames){
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };    
                 panelDanhSach.SetTable(currentTableDS, null);
                 tableTemp = panelDanhSach.getTableDS();
                 tableTemp.addMouseListener(actionInfo);
                 JOptionPane.showMessageDialog(form, "Thêm thành công");
                 form.dispose();
-                }   
+        
+                } else {
+                    // Nếu MaCty không đúng định dạng, hiển thị thông báo lỗi
+                    JOptionPane.showMessageDialog(null, "MaCty không đúng định dạng");
+                    
+                }
+                ;
+                
             }        
         }
     };
-    ActionListener editButtonAction = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String[] data = form.getData();
-            String[] dataTK = form.getUserPass();
-            int rowIndex = tableTemp.getSelectedRow();
-            arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
-            if(form.check()==false){
-                JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
-            }else{
-                if(dataTK[4] == "False"){
-                    JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
-                }else{
-                    nhanVienBLL.suaNV("MaNV = "+arr[0],"TenNV = "+data[1]," MaCV = "+data[2]," GioiTinh = "+data[3]," NgaySinh = "+data[4]," DiaChi = "+data[5]," Kho_lam_viec = "+data[6]);
-                    nhanVienBLL.suaTK("MaNV = "+arr[0],"TenTaiKhoan = "+dataTK[1]," MatKhau = "+dataTK[2]," MaNhomQuyen = "+dataTK[3]);
-                    String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-                    currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
-                    }
-                };
-                panelDanhSach.SetTable(currentTableDS, null);
-                tableTemp = panelDanhSach.getTableDS();
-                tableTemp.addMouseListener(actionInfo);
-                JOptionPane.showMessageDialog(form, "Sửa thành công");
-                panelDefault.setVisible(true);
-                panelInfo.setVisible(false);
-                form.dispose();
-                }
-        }
-        }
-    };
-    String[] arr = new String[10];
+
+    String[] arr = new String[4];
     ActionListener deleteAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             int rowIndex = tableTemp.getSelectedRow();
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             arr[1] = tableTemp.getValueAt(rowIndex, 1).toString();
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa nhân viên "+arr[1]+" không?", "Xác nhận xóa dữ liệu", JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa công ty "+arr[1]+" không?", "Xác nhận xóa dữ liệu", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
-                nhanVienBLL.xoaTK("MaNV = "+arr[0]);
-                nhanVienBLL.xoaNV("MaNV = "+arr[0]);
-                String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-                currentTableDS = new DefaultTableModel(Model.to2DArray(nhanVienBLL.getDsNhanVienMD(),"MaNV","TenNV","TenCV","GioiTinh","NgaySinh","DiaChi","TenKho"),columnNames){
+                CongTy2BLL.xoaCT("MaCty = "+arr[0]);
+                String[] columnNames = {"Mã công ty","Tên","Địa chỉ","SDT"};
+                currentTableDS = new DefaultTableModel(Model.to2DArray(CongTy2BLL.getDSCT(),"MaCty","TenCty","DiaChi","SDT"),columnNames){
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -398,13 +374,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             arr[1] = tableTemp.getValueAt(rowIndex, 1).toString();
             arr[2] = tableTemp.getValueAt(rowIndex, 2).toString();
-            arr[3] = tableTemp.getValueAt(rowIndex, 3).toString();
-            arr[4] = tableTemp.getValueAt(rowIndex, 4).toString();
-            arr[5] = tableTemp.getValueAt(rowIndex, 5).toString();
-            arr[6] = tableTemp.getValueAt(rowIndex, 6).toString();
-            arr[7] = nhanVienBLL.layTaiKhoan(arr[0])[1];
-            arr[8] = nhanVienBLL.layTaiKhoan(arr[0])[2];
-            arr[9] = nhanVienBLL.layTaiKhoan(arr[0])[3];
+            arr[3] = tableTemp.getValueAt(rowIndex,3).toString();
             editForm();
         }
     };
@@ -413,26 +383,10 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         Window window = SwingUtilities.getWindowAncestor(this);
         form = new Form((JFrame) window, editButtonAction);
         form.addButton.setText("Sửa");
-        form.textTenNV.setText(arr[1]);
-        form.comboBox.setSelectedItem(arr[2]);
-        if(arr[3]=="Nam"){
-            form.radio1.setSelected(true);
-        }else{
-            form.radio2.setSelected(true);
-        }
-        Calendar calendar = Calendar.getInstance();
-        String[] dateParts = arr[4].split("/");
-        int day = Integer.parseInt(dateParts[0]);
-        int month = Integer.parseInt(dateParts[1]) - 1; // Giá trị tháng trong Calendar bắt đầu từ 0
-        int year = Integer.parseInt(dateParts[2]);
-        calendar.set(year, month, day);
-        Date date = calendar.getTime();
-        form.dateChooser.setDate(date);
-        form.textDiaChi.setText(arr[5]);
-        form.comboBox2.setSelectedItem(arr[6]);
-        form.textUsername.setText(nhanVienBLL.layTaiKhoan(arr[0])[1]);
-        form.password.setText(nhanVienBLL.layTaiKhoan(arr[0])[2]);
-        form.retypepass.setText(nhanVienBLL.layTaiKhoan(arr[0])[3]);
+        form.textTenCty.setText(arr[1]);
+        form.textMaCty.setText(arr[0]);
+        form.textSDT.setText(arr[3]);
+        form.textDiaChi.setText(arr[2]);
         form.setVisible(true);
     }   
     
@@ -443,9 +397,11 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         @Override
         public void mousePressed(MouseEvent e) {
             int rowIndex = tableTemp.getSelectedRow();
-            for(int i=0;i<7;i++){
+            for(int i=0;i<arr.length;i++){
                 arr[i] = tableTemp.getValueAt(rowIndex, i).toString();
             }
+            SPButton.setEnabled(true);
+            
             panelDefault.setVisible(false);
             panelInfo.setVisible(true);
             panelInfo.removeAll();     
@@ -474,12 +430,23 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             createForm();
         }
     };
+    ActionListener CheckAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //new ThongTinSPUI("Cty_ABC");
+            new ThongTinSPUI(arr[0]);
+        }
+    };
+    
+   
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
+   
     @Override
-    public void mousePressed(MouseEvent e){  
+    public void mousePressed(MouseEvent e){
+            
     }
 
     @Override
@@ -495,12 +462,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         }else if(e.getSource() == addButton){
             addButton.setBackground(new Color(223,18,133));
             addButton.setForeground(Color.white);
-        }else if(e.getSource() == deleteButton){
-            deleteButton.setBackground(new Color(223,18,133));
-            deleteButton.setForeground(Color.white);
-        }else if(e.getSource() == editButton){
-            editButton.setBackground(new Color(223,18,133));
-            editButton.setForeground(Color.white);
         }
     }
 
@@ -512,16 +473,12 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
         }else if(e.getSource() == addButton){
             addButton.setBackground(new Color(0,255,119));
             addButton.setForeground(Color.BLACK);
-        }else if(e.getSource() == deleteButton){
-            deleteButton.setBackground(new Color(0,255,119));
-            deleteButton.setForeground(Color.BLACK);
-        }else if(e.getSource() == editButton){
-            editButton.setBackground(new Color(0,255,119));
-            editButton.setForeground(Color.BLACK);
         }
     }
 
     public void UpdateTable(TableModel table){
         this.panelDanhSach.SetTable(table,null);
     }
+
+    
 }

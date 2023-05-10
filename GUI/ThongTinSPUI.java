@@ -1,4 +1,4 @@
-package Panel.ThongTinSP;
+package GUI;
 
 
 
@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import BLL.ThongTinSPBLL;
 import DTO.Loai_hangMD;
 import DTO.Mat_hangMD;
 import DTO.Model;

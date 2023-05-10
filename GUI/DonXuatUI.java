@@ -1,4 +1,4 @@
-package Panel.Donxuat;
+package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,7 +24,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import BLL.FormDonBLL;
+import BLL.*;
 import DTO.ChitietdonnhapMD;
 import DTO.ChitietdonxuatMD;
 import DTO.CongtyMD;
@@ -37,7 +37,6 @@ import DTO.Model;
 import DTO.Custom.DSDonNhapMD;
 import DTO.Custom.DSDonXuatMD;
 import DTO.Custom.DSTraCuuHangMD;
-import Panel.DonNhap.DonNhap2BLL;
 import Panel.Form.FormCTDN;
 import Panel.Form.FormCTDX;
 import Panel.Form.FormDon;
@@ -88,17 +87,26 @@ public class DonXuatUI extends JPanel{
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
 
+
+
         JButton btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
         btexport.setForeground(new Color(0, 0, 0));
+        btexport.setEnabled(false);
 
         btexport.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                exportTableToExcel();
+                
+                //exportTableToExcel();
             }
         });
+
+
+
+
+
         JButton btreload = new JButton("Refresh");
         btreload.setPreferredSize(new Dimension(100, 40));
         btreload.setBackground(new Color(255, 197, 70));
@@ -109,6 +117,7 @@ public class DonXuatUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateTable();
+                btlook.setEnabled(false);
             }
             
         });
@@ -438,6 +447,7 @@ public class DonXuatUI extends JPanel{
         }
     }
     public void updateTable(){
+        
         String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
         ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX),columnNames){
@@ -447,6 +457,8 @@ public class DonXuatUI extends JPanel{
             }
         };
         panelDanhSach.SetTable(tableDanhSach, null);
+        tableTemp = panelDanhSach.getTableDS();
+        tableTemp.addMouseListener(actionInfo);
     }
 
 
