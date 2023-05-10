@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import DTO.ChitietdonnhapMD;
 import DTO.CongtyMD;
 import DTO.DonNhapMD;
 import DTO.KhoMD;
@@ -113,7 +114,7 @@ public class DonNhap2Ui extends JPanel{
             tenLoc.get(1).add(congty.getTenCty());
         }
 
-
+        //ArrayList<ChitietdonnhapMD> ngaynhap = DonNhap2BLL.get
         //Lấy danh sách khu vực và thêm vào bảng lộc
         // ArrayList<CongtyMD> danhSachCT = DonNhap2BLL.getDanhSachCongTy(); 
 
@@ -306,9 +307,9 @@ public class DonNhap2Ui extends JPanel{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormDon("FormXuat");
+                new FormDon("FormNhap");
             }
-        });
+        });                                                                                         
         btlook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

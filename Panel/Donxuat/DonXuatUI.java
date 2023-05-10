@@ -16,8 +16,9 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import DTO.Custom.*;
+
 import DTO.CongtyMD;
+import DTO.DonXuatMD;
 import DTO.DonNhapMD;
 import DTO.KhoMD;
 import DTO.KhuvucMD;
@@ -26,7 +27,9 @@ import DTO.Model;
 import DTO.Custom.DSDonNhapMD;
 import DTO.Custom.DSDonXuatMD;
 import DTO.Custom.DSTraCuuHangMD;
+import Panel.DonNhap.DonNhap2BLL;
 import Panel.Form.FormCTDN;
+import Panel.Form.FormCTDX;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
@@ -80,7 +83,7 @@ public class DonXuatUI extends JPanel{
 
         //Object[][] dsDN = Model.to2DArray(DonNhap2BLL.getDanhSachDonNhap());
 
-        btlook = new JButton("Xem đơn xuat");
+        btlook = new JButton("Xem đơn nhập");
         btlook.setPreferredSize(new Dimension(100, 40));
         btlook.setBackground(new Color(255, 197, 70));
         btlook.setForeground(new Color(0, 0, 0));
@@ -294,7 +297,7 @@ public class DonXuatUI extends JPanel{
     };
     
     public void SetupPanelChucNang(){
-        JButton btadd = new JButton("Thêm đơn Xuat");
+        JButton btadd = new JButton("Thêm đơn Xuất");
         btadd.setBorder(null);
         btadd.setPreferredSize(new Dimension(100,40));
         btadd.setBackground(new Color(0, 255, 119));
@@ -309,11 +312,11 @@ public class DonXuatUI extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 new FormDon("FormXuat");
             }
-        });
+        });                                                                                         
         btlook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormCTDN(arr[0]);
+                new FormCTDX(arr[0]);
             }
         });
         panelChucNang.add(btadd);
