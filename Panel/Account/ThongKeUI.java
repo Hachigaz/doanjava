@@ -67,6 +67,8 @@ public class ThongKeUI extends JPanel implements MouseListener{
         int soNhanVienKho = nhanVienBLL.layPhanTramChucVu()[2];
         int soLuongNhanVien = nhanVienBLL.laySoLuongNhanVien();
 
+        System.out.println(thongKeBLL.dsMHTrongKho("K01"));
+
         double tyLeQuanTri = (double) soQuanTri / soLuongNhanVien;
         double tyLeQuanLyKho = (double) soQuanLyKho / soLuongNhanVien;
 

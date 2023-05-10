@@ -250,8 +250,8 @@ public class UI extends TitleFrame implements MouseListener{
                     themQuyen(new JLabel("Đơn nhập 2"),"res/img/danhSach.png", new DonNhap2Ui(panelRightSize));
                     break;
                 case "Q6":
-                themQuyen(new JLabel("Đơn nhập 2"),"res/img/danhSach.png", new DonXuatUI(panelRightSize));
-                break;
+                    //themQuyen(new JLabel("Đơn nhập 2"),"res/img/danhSach.png", new DonXuatUI(panelRightSize));
+                    break;
                 case "Q7":
                     themQuyen(new JLabel("Thống kê"), "res/img/chart.png",  new ThongKeUI(panelRightSize));
             }
