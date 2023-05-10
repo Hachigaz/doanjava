@@ -7,10 +7,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -20,8 +23,11 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+import DTO.Model;
+import DTO.Custom.DSNhanVienMD;
 import Panel.UI;
 import Panel.NhanVien.NhanVienBLL;
+import Panel.SubPanel.TablePanel;
 import Program.Program;
 
 public class ThongKeUI extends JPanel implements MouseListener{
@@ -29,9 +35,15 @@ public class ThongKeUI extends JPanel implements MouseListener{
     ThongKeBLL thongKeBLL = new ThongKeBLL();
     private JPanel panelButton,panelChart,panelNhanVien,panelKho;
     private JButton btnNhanVien,btnKho;
+    private TablePanel panelDanhSach = new TablePanel();
+    private TableModel tableDanhSach;
     public ThongKeUI(Dimension d){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
+
+        panelDanhSach.setPreferredSize(new Dimension(830, 270));
+        panelDanhSach.setOpaque(true);
+
 
         btnNhanVien = new JButton("Nhân viên");
         btnNhanVien.addMouseListener(this);
@@ -89,9 +101,21 @@ public class ThongKeUI extends JPanel implements MouseListener{
         plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0}: ({2})")); // Đặt tooltip tùy chỉnh
 
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(1000,530));
+        chartPanel.setPreferredSize(new java.awt.Dimension(700,250));
 
         panelNhanVien.add(chartPanel);
+
+        panelNhanVien.add(panelDanhSach);
+
+        String[] columnNames = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
+        ArrayList<DSNhanVienMD> DanhSachNhanVien = nhanVienBLL.getDanhSachNhanVien();
+        tableDanhSach = new DefaultTableModel(Model.to2DArray(DanhSachNhanVien),columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        panelDanhSach.SetTable(tableDanhSach, null);
 
         panelKho = new JPanel();
         panelKho.setBackground(Color.white);

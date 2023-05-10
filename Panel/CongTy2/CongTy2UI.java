@@ -82,7 +82,6 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
         // panelRight and components
         panelRight = new JPanel();
         panelRight.setPreferredSize(new Dimension(370,500));
-        panelRight.setBackground(Color.red);
         panelRight.setLayout(new FlowLayout());
 
         labelTitle = new JLabel("Thông tin chi tiết");
@@ -92,14 +91,16 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
 
         deleteButton = new JButton("Xóa");
         deleteButton.setPreferredSize(new Dimension(100,40));
-        deleteButton.setBackground(Color.CYAN);
-        deleteButton.setForeground(Color.white);
+        deleteButton.setForeground(Color.BLACK);
+        deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        deleteButton.setBackground(new Color(0,255,119));
         deleteButton.addActionListener(deleteAction);
 
         editButton = new JButton("Sửa");
         editButton.setPreferredSize(new Dimension(100,40));
-        editButton.setBackground(Color.CYAN);
-        editButton.setForeground(Color.white);
+        editButton.setForeground(Color.BLACK);
+        editButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        editButton.setBackground(new Color(0,255,119));
         editButton.addActionListener(editAction);
 
         panelButton = new JPanel();
