@@ -38,6 +38,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
     private TablePanel panelDanhSachNhanVien = new TablePanel();
     private TablePanel panelDanhSachKho = new TablePanel();
     private TableModel tableDanhSach;
+    private TableModel tableDanhSachKho;
     public ThongKeUI(Dimension d){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
@@ -149,6 +150,16 @@ public class ThongKeUI extends JPanel implements MouseListener{
         panelKho.add(barChartPanel);
 
         panelKho.add(panelDanhSachKho);
+
+        // String[] columnName = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
+        // ArrayList<DSNhanVienMD> DanhSachNhanVien = nhanVienBLL.getDanhSachNhanVien();
+        // tableDanhSach = new DefaultTableModel(Model.to2DArray(DanhSachNhanVien),columnName){
+        //     @Override
+        //     public boolean isCellEditable(int row, int column) {
+        //         return false;
+        //     }
+        // };
+        // panelDanhSachNhanVien.SetTable(tableDanhSach, null);
 
 
         panelChart = new JPanel();
