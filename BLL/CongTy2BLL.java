@@ -1,4 +1,4 @@
-package Panel.CongTy2;
+package BLL;
 
 import java.sql.SQLData;
 import java.text.DecimalFormat;

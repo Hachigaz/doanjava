@@ -1,4 +1,4 @@
-package Panel.TraCuuHang;
+package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import BLL.TraCuuHangBLL;
 import DTO.CongtyMD;
 import DTO.KhuvucMD;
 import DTO.Loai_hangMD;

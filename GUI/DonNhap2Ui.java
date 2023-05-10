@@ -31,16 +31,12 @@ import DTO.ChitietdonnhapMD;
 import DTO.CongtyMD;
 import DTO.DonNhapMD;
 import DTO.KhoMD;
-import DTO.KhuvucMD;
-import DTO.Loai_hangMD;
 import DTO.Model;
 import DTO.Custom.DSDonNhapMD;
-import DTO.Custom.DSTraCuuHangMD;
 import Panel.Form.FormCTDN;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
-import misc.util;
 public class DonNhap2Ui extends JPanel{
     //BLL
     private DonNhap2BLL DonNhap2BLL = new DonNhap2BLL();

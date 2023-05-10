@@ -41,6 +41,7 @@ import com.toedter.calendar.JDateChooser;
 import BLL.CongTy2BLL;
 import BLL.ThongTinSPBLL;
 import Panel.ThongTinSP.*;
+import Panel.Form.*;
 import DAL.DataAccessLayer;
 import DTO.Model;
 import DTO.NhanvienMD;

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import BLL.DonXuatBLL;
 import DAL.DataAccessLayer;
 import DTO.*;
 
@@ -25,17 +26,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.*;
 
+import GUI.CongTy2UI;
+import GUI.DonNhap2Ui;
 import GUI.DonNhapUI;
-
-import Panel.Donxuat.DonXuatBLL;
-import Panel.Donxuat.DonXuatUI;
-import Panel.NhanVien.NhanVienUI2;
+import GUI.DonXuatUI;
+import GUI.NhanVienUI2;
+import GUI.ThongKeUI;
+import GUI.TraCuuHangUI;
 import Panel.ThongTinKho.ThongTinKhoUI;
-import Panel.TraCuuHang.TraCuuHangUI;
 import Program.Program;
-import Panel.Account.ThongKeUI;
-import Panel.CongTy2.CongTy2UI;
-import Panel.DonNhap.DonNhap2Ui;
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
     public JPanel panelRight;
