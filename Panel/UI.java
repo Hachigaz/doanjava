@@ -133,39 +133,35 @@ public class UI extends TitleFrame implements MouseListener{
         panelTop.setPreferredSize(new Dimension(0,120));
  
         panelUser = new JPanel();
-        panelUser.setPreferredSize(new Dimension(200,170));
+        panelUser.setPreferredSize(new Dimension(400,170));
         panelUser.setOpaque(false);
-        panelUser.setLayout(new FlowLayout());
+        panelUser.setLayout(new BorderLayout());
         panelUser.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
-
-        ImageIcon icon2 = new ImageIcon("res/img/user.png");
-        Image img2 = icon2.getImage();
-        Image newImg2 = img2.getScaledInstance(50,50,java.awt.Image.SCALE_SMOOTH);
-        ImageIcon newIcon2 = new ImageIcon(newImg2);
-        labelIcon2 = new JLabel();
-        labelIcon2.setIcon(newIcon2);
-        labelIcon2.setVerticalAlignment(JLabel.CENTER);
 
         NhanvienMD nvDangNhap = nvDAL.getTable("MaNV="+tkDangNhap.getMaNV()).get(0);
         
         labelUserName = new JLabel("Xin chào "+nvDangNhap.getTenNV());
         labelUserName.setFont(new Font("Monospace",Font.PLAIN,18));
+        labelUserName.setHorizontalAlignment(JLabel.RIGHT);
         labelUserName.setForeground(Color.WHITE);
+        labelUserName.setBorder(BorderFactory.createEmptyBorder(0,0,0,20));
 
         labelTitle = new JLabel("PHẦN MỀM QUẢN LÝ KHO");
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
         labelSetting = new JLabel("Đăng xuất");
-        ImageIcon iconST = new ImageIcon("res/img/TaiKhoan.png");
+        ImageIcon iconST = new ImageIcon("res/img/logout.png");
         Image imgST = iconST.getImage();
         Image newImgST = imgST.getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIconST = new ImageIcon(newImgST);
         labelSetting.setIcon(newIconST);
-        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,80));
         labelSetting.setBackground(new Color(4,155,254));
         labelSetting.setFocusable(false);
         labelSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        labelSetting.setHorizontalAlignment(JLabel.RIGHT);
+        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,50));
+        labelSetting.setForeground(Color.white);
 
         labelSetting.addMouseListener(new MouseListener() {
             @Override
@@ -193,8 +189,7 @@ public class UI extends TitleFrame implements MouseListener{
             }
         });
 
-        panelUser.add(labelIcon2);
-        panelUser.add(labelUserName);
+        panelUser.add(labelUserName,BorderLayout.NORTH);
         panelUser.add(labelSetting);
 
         panelTop.add(labelIcon1,BorderLayout.WEST);
@@ -228,19 +223,19 @@ public class UI extends TitleFrame implements MouseListener{
                     themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
                     break;
                 case "Q2":
-                    themQuyen(new JLabel("Công Ty"), "res/img/username.png", new CongTy2UI(panelRightSize));
+                    themQuyen(new JLabel("Công Ty"), "res/img/company.png", new CongTy2UI(panelRightSize));
                     break;
                 case "Q3":
                     themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
                     break;
                 case "Q4":
-                    themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+                    themQuyen(new JLabel("Hàng trong kho"),"res/img/product.png", new TraCuuHangUI(panelRightSize));
                     break;
                 case "Q5":
                     themQuyen(new JLabel("Đơn nhập "),"res/img/danhSach.png", new DonNhap2Ui(panelRightSize));
                     break;
                 case "Q6":
-                    themQuyen(new JLabel("Đơn Xuất"),"res/img/danhSach.png", new DonXuatUI(panelRightSize));
+                    themQuyen(new JLabel("Đơn Xuất"),"res/img/donXuat.png", new DonXuatUI(panelRightSize));
                     break;
                 case "Q7":
                     themQuyen(new JLabel("Thống kê"), "res/img/chart.png",  new ThongKeUI(panelRightSize));
