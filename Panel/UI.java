@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -155,13 +156,13 @@ public class UI extends TitleFrame implements MouseListener{
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
-        labelSetting = new JLabel();
+        labelSetting = new JLabel("Đăng xuất");
         ImageIcon iconST = new ImageIcon("res/img/TaiKhoan.png");
         Image imgST = iconST.getImage();
         Image newImgST = imgST.getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIconST = new ImageIcon(newImgST);
         labelSetting.setIcon(newIconST);
-        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,130));
+        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,80));
         labelSetting.setBackground(new Color(4,155,254));
         labelSetting.setFocusable(false);
         labelSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -172,7 +173,14 @@ public class UI extends TitleFrame implements MouseListener{
             }
             @Override
             public void mousePressed(MouseEvent e) {
-                popupMenu.show(labelSetting, 0, labelSetting.getHeight());
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn là muốn đăng xuất không", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Program.program.dangNhap();
+                    dispose();
+                }else{
+
+                }
+                
             }
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -184,24 +192,6 @@ public class UI extends TitleFrame implements MouseListener{
             public void mouseExited(MouseEvent e) {
             }
         });
-        JMenuItem logoutItem = new JMenuItem("Đăng xuất");
-        logoutItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Program.program.dangNhap();
-                dispose();
-            }
-        });
-        JMenuItem changePasswordItem = new JMenuItem("Đổi mật khẩu");
-        changePasswordItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-        popupMenu = new JPopupMenu();
-        popupMenu.add(logoutItem);
-        popupMenu.add(changePasswordItem);
 
         panelUser.add(labelIcon2);
         panelUser.add(labelUserName);
