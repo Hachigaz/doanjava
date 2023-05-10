@@ -87,17 +87,26 @@ public class DonXuatUI extends JPanel{
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
 
+
+
         JButton btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
         btexport.setForeground(new Color(0, 0, 0));
+        btexport.setEnabled(false);
 
         btexport.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                exportTableToExcel();
+
+                //exportTableToExcel();
             }
         });
+
+
+
+
+
         JButton btreload = new JButton("Refresh");
         btreload.setPreferredSize(new Dimension(100, 40));
         btreload.setBackground(new Color(255, 197, 70));

@@ -40,13 +40,12 @@ import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 public class DonNhapUI extends JPanel{
     //BLL
-    private DonNhap2BLL DonNhap2BLL = new DonNhap2BLL();
+    private DonNhapBLL donNhapBLL = new DonNhapBLL();
     private JTable tableTemp;
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton SPButton,btlook;
-    
+    public static JButton SPButton,btlook, btexport;
 
 
     private JTextField searchBar;
@@ -82,7 +81,7 @@ public class DonNhapUI extends JPanel{
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
 
-        //Object[][] dsDN = Model.to2DArray(DonNhap2BLL.getDanhSachDonNhap());
+        //Object[][] dsDN = Model.to2DArray(donNhapBLL.getDanhSachDonNhap());
 
         btlook = new JButton("Xem đơn nhập");
         btlook.setPreferredSize(new Dimension(100, 40));
@@ -93,11 +92,25 @@ public class DonNhapUI extends JPanel{
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
 
-        JButton btexport = new JButton("Export");
+        btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
         btexport.setForeground(new Color(0, 0, 0));
+        btexport.setEnabled(false);
+        btexport.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){                
+                int selectedRow = panelDanhSach.getSelectedRow();
+                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
+                ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
+                //exportTableToExcel();
+            }
+        });
+
+
         
+
         JButton btreload = new JButton("Refresh");
         btreload.setPreferredSize(new Dimension(100, 40));
         btreload.setBackground(new Color(255, 197, 70));
@@ -113,12 +126,6 @@ public class DonNhapUI extends JPanel{
             
         });
 
-        btexport.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                exportTableToExcel();
-            }
-        });
 
         JButton btimport = new JButton("Import");
         btimport.setPreferredSize(new Dimension(100, 40));
@@ -154,7 +161,7 @@ public class DonNhapUI extends JPanel{
 
 
         //Lấy danh sách kho và thêm vào bảng lộc
-        ArrayList<KhoMD> danhSachKho = DonNhap2BLL.getDanhSachKho();
+        ArrayList<KhoMD> danhSachKho = donNhapBLL.getDanhSachKho();
 
         tenLoc.add(new ArrayList<String>());
         for(KhoMD kho : danhSachKho){          
@@ -162,15 +169,15 @@ public class DonNhapUI extends JPanel{
         }
 
         //Lấy danh sách khu vực và thêm vào bảng lộc
-         ArrayList<CongtyMD> danhSachCongtyMD = DonNhap2BLL.getDanhSachCongTy();
+         ArrayList<CongtyMD> danhSachCongtyMD = donNhapBLL.getDanhSachCongTy();
          tenLoc.add(new ArrayList<String>());
         for(CongtyMD congty : danhSachCongtyMD){          
             tenLoc.get(1).add(congty.getTenCty());
         }
 
-        //ArrayList<ChitietdonnhapMD> ngaynhap = DonNhap2BLL.get
+        //ArrayList<ChitietdonnhapMD> ngaynhap = donNhapBLL.get
         //Lấy danh sách khu vực và thêm vào bảng lộc
-        // ArrayList<CongtyMD> danhSachCT = DonNhap2BLL.getDanhSachCongTy(); 
+        // ArrayList<CongtyMD> danhSachCT = donNhapBLL.getDanhSachCongTy(); 
 
         // tenLoc.add(new ArrayList<String>());
         // for(CongtyMD cty : danhSachCT){
@@ -182,7 +189,7 @@ public class DonNhapUI extends JPanel{
 
         //setup bảng
         // String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        // ArrayList<DSDonNhapMD> dsDN = DonNhap2BLL.getDanhSachDN();
+        // ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
         // TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
         //     @Override
         //     public boolean isCellEditable(int row, int column) {
@@ -280,7 +287,7 @@ public class DonNhapUI extends JPanel{
             for(int i=0;i<arr.length;i++){
                 arr[i] = tableTemp.getValueAt(rowIndex, i).toString();
             }
-
+            btexport.setEnabled(true);
             btlook.setEnabled(true);
         }
         @Override
@@ -553,7 +560,7 @@ public class DonNhapUI extends JPanel{
     public void updateTable(){
 
         String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        ArrayList<DSDonNhapMD> dsDN = DonNhap2BLL.getDanhSachDN();
+        ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
