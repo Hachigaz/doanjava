@@ -49,6 +49,10 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+<<<<<<< Updated upstream
+=======
+import Panel.NhanVien.Form;
+>>>>>>> Stashed changes
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 import GUI.Form;
@@ -74,7 +78,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     private TableModel tableDanhSach;
     private Object[] atributeNV;
     private ArrayList<JButton> btns = new ArrayList<JButton>();
-    private Form form;
+    public Form form;
     public String[] labelForm = {"Mã nhân viên:       ","Tên nhân viên:     ","Chức vụ:               ","Giới tính:                ","Ngày sinh:            ","Địa chỉ:                  ","Kho làm việc:       "};
     public NhanVienUI2(Dimension d){
         // form = new Form((JFrame)SwingUtilities.getWindowAncestor(this),addButtonAction);
