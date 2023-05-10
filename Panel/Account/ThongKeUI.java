@@ -15,12 +15,16 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+import Panel.UI;
 import Panel.NhanVien.NhanVienBLL;
+import Program.Program;
 
 public class ThongKeUI extends JPanel implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
+    ThongKeBLL thongKeBLL = new ThongKeBLL();
     private JPanel panelButton,panelChart,panelNhanVien,panelKho;
     private JButton btnNhanVien,btnKho;
     public ThongKeUI(Dimension d){
@@ -73,14 +77,30 @@ public class ThongKeUI extends JPanel implements MouseListener{
         panelNhanVien.add(chartPanel);
 
         panelKho = new JPanel();
-        panelKho.setBackground(Color.green);
+        panelKho.setBackground(Color.white);
         panelKho.setPreferredSize(new Dimension(1200,555));
         panelKho.setVisible(false);
 
-        // JFreeChart barChart = ChartFactory.createBarChart(
-        //         "THỐNG KÊ HÀNG TRONG KHO",
-        //         "Kho"
-        // );
+        String maKhoHT = UI.maKho;
+        String[] dsKhuVuc = thongKeBLL.layDSKV(maKhoHT);
+        float[] dsSucChua = thongKeBLL.laySucChua(maKhoHT);
+
+        DefaultCategoryDataset datasetBarChart = new DefaultCategoryDataset();
+        for(int i=0;i<dsKhuVuc.length;i++){
+            datasetBarChart.addValue(dsSucChua[i], "Số thùng", dsKhuVuc[i]);
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "THỐNG KÊ HÀNG TRONG KHO THEO KHU VỰC",
+                maKhoHT,
+                "Số thùng",
+                datasetBarChart
+        );
+
+        ChartPanel barChartPanel = new ChartPanel(barChart);
+        barChartPanel.setPreferredSize(new java.awt.Dimension(1000,530));
+
+        panelKho.add(barChartPanel);
 
         panelChart = new JPanel();
         panelChart.setBackground(Color.WHITE);

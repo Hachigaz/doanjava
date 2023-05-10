@@ -140,6 +140,16 @@ values('NQ_ADMIN','Q1'),
 ('NQ_ADMIN','Q7')
 
 use quanlykho;
+insert into chitiet_nhomquyen
+values
+('NQ_QLK','Q1'),
+('NQ_QLK','Q2'),
+('NQ_QLK','Q4'),
+('NQ_QLK','Q5'),
+('NQ_QLK','Q6'),
+('NQ_QLK','Q7')
+
+use quanlykho;
 insert into donnhap
 values
 ('DN0003','K02','Cty_ABC','NV2001',2021/12/1),

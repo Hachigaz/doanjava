@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import DAL.DataAccessLayer;
 import DTO.ChucvuMD;
 import DTO.KhoMD;
+import DTO.KhuvucMD;
 import DTO.NhanvienMD;
 import DTO.Taikhoan_nhanvienMD;
 import DTO.Custom.DSNhanVienMD;
