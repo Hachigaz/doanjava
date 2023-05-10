@@ -38,8 +38,7 @@ import javax.xml.crypto.Data;
 
 import com.toedter.calendar.JDateChooser;
 
-import BLL.CongTy2BLL;
-import BLL.ThongTinSPBLL;
+import BLL.*;
 import GUI.ThongTinSPUI;
 import Panel.Form.*;
 import DAL.DataAccessLayer;
