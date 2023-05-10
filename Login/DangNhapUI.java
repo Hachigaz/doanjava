@@ -3,6 +3,7 @@ package Login;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,15 +25,18 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class DangNhapUI extends JFrame implements MouseListener{
     public JPanel panelTitleBar,centerPanel,panelLoginContainer,panelLogin,panelSubmit;
-    public JLabel labelHide,labelClose,labelUser,labelPass,labelTitle,labelForget;
+    public JLabel labelHide,labelClose,labelUser,labelPass,labelTitle,labelForget,labelHienMK;
     public static JTextField usernameInput;
     public JPasswordField passwordInput;
     public JButton submitButton;
+    public JCheckBox hienMK;
     public DangNhapUI() {
         this.setTitle("Gradient Frame");
         this.setSize(1000, 650);

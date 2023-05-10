@@ -10,10 +10,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import Panel.*;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,6 +30,7 @@ public class ChangePass extends JDialog{
     private JTextField textUser;
     public static JButton button;
     private JPasswordField password,retypePass,passwordCu;
+    private JCheckBox hienMK;
     public ChangePass(JFrame parent,ActionListener change){
         this.setPreferredSize(new Dimension(700,500));
 
@@ -54,7 +58,7 @@ public class ChangePass extends JDialog{
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        labelPass = new JLabel("Mật khẩu");
+        labelPass = new JLabel("Mật khẩu mới");
         panelInput.add(labelPass,gbc);
 
         gbc.gridx = 1;
@@ -75,6 +79,32 @@ public class ChangePass extends JDialog{
         retypePass.setPreferredSize(new Dimension(300,35));
         retypePass.setBorder(null);
         panelInput.add(retypePass,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        labelHienMK = new JLabel("Hiện mật khẩu");
+        panelInput.add(labelHienMK,gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        hienMK = new JCheckBox();
+        hienMK.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 300));
+        hienMK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+                    password.setEchoChar((char) 0);
+                    retypePass.setEchoChar((char) 0);
+                    passwordCu.setEchoChar((char) 0);
+                }else{
+                    password.setEchoChar('\u2022');
+                    retypePass.setEchoChar('\u2022');
+                    passwordCu.setEchoChar('\u2022');
+                }
+            }
+            
+        });
+        panelInput.add(hienMK,gbc);
 
         button = new JButton("Xác nhận");
         button.setPreferredSize(new Dimension(250, 40));

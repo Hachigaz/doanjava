@@ -169,7 +169,6 @@ public class UI extends TitleFrame implements MouseListener{
 
         JMenuItem logoutItem = new JMenuItem("Đăng xuất");
         logoutItem.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn là muốn đăng xuất không", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
@@ -209,7 +208,7 @@ public class UI extends TitleFrame implements MouseListener{
                 // }else{
 
                 // }
-                popupMenu.show(labelSetting, 250, labelSetting.getHeight()-20);
+                popupMenu.show(labelSetting, 250, labelSetting.getHeight());
             }
             @Override
             public void mouseReleased(MouseEvent e) {
