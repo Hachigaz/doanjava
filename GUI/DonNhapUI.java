@@ -104,21 +104,15 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                System.out.println(dsCT);
                 exportTableToExcel(donChon,dsCT);
             }
         });
-
-
-        
 
         JButton btreload = new JButton("Refresh");
         btreload.setPreferredSize(new Dimension(100, 40));
         btreload.setBackground(new Color(255, 197, 70));
         btreload.setForeground(new Color(0, 0, 0));
-
         btreload.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateTable();
@@ -433,7 +427,7 @@ public class DonNhapUI extends JPanel{
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");
             org.apache.poi.ss.usermodel.Row sheetname = sheet.createRow(0);
             Cell sheeCell=sheetname.createCell(0);
-            sheeCell.setCellValue("Danh sách đơn nhập");
+            sheeCell.setCellValue("Đơn nhập "+dn.getMaDonNhap());
             org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(1);
             Cell headerCell1=headerRow.createCell(0);
             headerCell1.setCellValue("Mã đơn nhập");
@@ -446,14 +440,38 @@ public class DonNhapUI extends JPanel{
             Cell headerCell5=headerRow.createCell(4);
             headerCell5.setCellValue("Ngày nhập");
 
-            for (int i=0;i<panelDanhSach.getTableDS().getModel().getRowCount();i++) {
+            org.apache.poi.ss.usermodel.Row dataheaderRow = sheet.createRow(2);
+            Cell dataheaderCell1=dataheaderRow.createCell(0);
+            dataheaderCell1.setCellValue(dn.getMaDonNhap());
+            Cell dataheaderCell2=dataheaderRow.createCell(1);
+            dataheaderCell2.setCellValue(dn.getMaKho());
+            Cell dataheaderCell3=dataheaderRow.createCell(2);
+            dataheaderCell3.setCellValue(dn.getMaCty());
+            Cell dataheaderCell4=dataheaderRow.createCell(3);
+            dataheaderCell4.setCellValue(dn.getMaNV());
+            Cell dataheaderCell5=dataheaderRow.createCell(4);
+            dataheaderCell5.setCellValue(dn.getNgayNhap());
+
+            org.apache.poi.ss.usermodel.Row CTDNRow = sheet.createRow(3);
+            Cell sheeCell2=CTDNRow.createCell(0);
+            sheeCell2.setCellValue("Chi tiết đơn nhập");
+
+            for (int i=3;i<dsCT.size()+3;i++) {
                 org.apache.poi.ss.usermodel.Row row = sheet.createRow(i+1);
-                for (int j=0;j<panelDanhSach.getTableDS().getModel().getColumnCount();j++){
-                    Cell cell = row.createCell(j);
-                    cell.setCellValue(String.valueOf(panelDanhSach.getTableDS().getValueAt(i, j)));
-                }
+                ChitietdonnhapMD ct= dsCT.get(i-3);
+                Cell madnCTDN=row.createCell(0);
+                madnCTDN.setCellValue(ct.getMaDonNhap());
+                Cell mamhCTDN=row.createCell(1);
+                mamhCTDN.setCellValue(ct.getMaMH());
+                Cell makvCTDN=row.createCell(2);
+                makvCTDN.setCellValue(ct.getMaKV());
+                Cell slnhapCTDN=row.createCell(3);
+                slnhapCTDN.setCellValue(ct.getSLNhap());
+                Cell slconlaiCTDN=row.createCell(4);
+                slconlaiCTDN.setCellValue(ct.getSLConLai());
             }
-            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/Donnhap.xlsx";
+            System.out.println(dn.getMaDonNhap()+" export thành công.");
+            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/"+dn.getMaDonNhap()+".xlsx";
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             workbook.write(fileOutputStream);
             fileOutputStream.close();
