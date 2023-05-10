@@ -549,7 +549,7 @@ public class DonNhapUI extends JPanel{
                 }
             });
             formdon.setVisible(false);
-            DonNhapMD dn=new DonNhapMD(column1Value, column2Value, column3Value, column4Value, column5Value);
+            DonNhapMD dn=new DonNhapMD(donNhapBLL.taoMaDonNhapMoi(), column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
 
 
@@ -563,7 +563,7 @@ public class DonNhapUI extends JPanel{
                 
                 Cell o1 = rowData.getCell(0);
             if(o1!=null) {
-                madon = o1.getStringCellValue();
+                madon = donNhapBLL.taoMaDonNhapMoi();
             }
 
             Cell o2 = rowData.getCell(1);
@@ -590,6 +590,7 @@ public class DonNhapUI extends JPanel{
             }
             formDonBLL.themDonNhapMoi(dn, ctDN);
             updateTable();
+            new ThongBaoDialog("Thêm đơn nhập thành công", null);
         } catch(Exception e) {
             e.printStackTrace();
         }
