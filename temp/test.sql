@@ -140,6 +140,16 @@ values('NQ_ADMIN','Q1'),
 ('NQ_ADMIN','Q7')
 
 use quanlykho;
+insert into chitiet_nhomquyen
+values
+('NQ_QLK','Q1'),
+('NQ_QLK','Q2'),
+('NQ_QLK','Q4'),
+('NQ_QLK','Q5'),
+('NQ_QLK','Q6'),
+('NQ_QLK','Q7')
+
+use quanlykho;
 insert into donnhap
 values
 ('DN0003','K02','Cty_ABC','NV2001',2021/12/1),
@@ -221,3 +231,15 @@ left outer join
 from donnhap join chitiet_donnhap on donnhap.MaDonNhap = chitiet_donnhap.MaDonNhap  join mat_hang on chitiet_donnhap.MaMH = mat_hang.MaMh join loai_hang on mat_hang.MaLoai = loai_hang.MaLoai
 ) as SLH on SLH.MaLoai = khuvuc_loaihang.MaLoai and SLH.MaKV=khuvuc.MaKV
 group by khuvuc.MaKV,khuvuc_loaihang.MaLoai
+
+use quanlykho;
+create trigger truHangTrongKho after insert on chitiet_donxuat
+for each row
+begin
+      update chitiet_donnhap
+      set SLConLai = SLConLai - new.SoLuong
+      where chitiet_donnhap.MaDonNhap = new.MaDonNhap AND chitiet_donnhap.MaMH = new.MaMH AND chitiet_donnhap.MaKV = new.MaKV;
+end;
+
+use quanlykho;
+drop trigger truHangTrongKho;

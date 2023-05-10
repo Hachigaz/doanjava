@@ -34,8 +34,8 @@ import BLL.DonNhapBLL;
 import BLL.FormDonBLL;
 import DTO.ChitietdonnhapMD;
 import DTO.DonNhapMD;
+import Panel.Form.FormDon;
 import Panel.SubPanel.TablePanel;
-import Panel.ThongTinKho.Form.FormDon;
 import misc.DataSet;
 public class DonNhapUI extends JPanel implements MouseListener{
 
@@ -98,7 +98,7 @@ public class DonNhapUI extends JPanel implements MouseListener{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormDon();
+                new FormDon("FormNhap");
             }
         });
         pNorth.add(btadd);
@@ -215,7 +215,7 @@ public class DonNhapUI extends JPanel implements MouseListener{
                 column5Value = cell5.getStringCellValue();
             }
 
-            FormDon formdon =new FormDon();
+            FormDon formdon =new FormDon("FormNhap");
             formdon.setVisible(false);
             DonNhapMD dn=new DonNhapMD(column1Value, column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();

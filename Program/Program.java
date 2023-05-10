@@ -1,3 +1,4 @@
+package Program;
 import java.awt.event.*;
 
 import DTO.Taikhoan_nhanvienMD;
@@ -12,10 +13,11 @@ public class Program {
     private final String username = "master";
     private final String password = "123";
 
-
+    public static Program program;
     private  SQLUser master;
 
     public Program(){
+        Program.program = this;
         master = new SQLUser(url, username, password);
         dangNhap();
     }
@@ -26,7 +28,7 @@ public class Program {
             public void windowClosed(WindowEvent e){
                 Taikhoan_nhanvienMD tkDangNhap = dn.getTenTKDangNhap();
                 if(tkDangNhap!=null){
-                    new UI(master,tkDangNhap); 
+                    new UI(master,tkDangNhap);
                 }
             }
         });

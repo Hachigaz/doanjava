@@ -1,4 +1,4 @@
-package Panel.ThongTinKho.Form;
+package Panel.Form;
 
 import java.awt.Dimension;
 import java.awt.Font;
