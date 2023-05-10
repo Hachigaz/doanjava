@@ -1,4 +1,4 @@
-package Panel.NhanVien;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,6 +38,7 @@ import javax.xml.crypto.Data;
 
 import com.toedter.calendar.JDateChooser;
 
+import BLL.NhanVienBLL;
 import DAL.DataAccessLayer;
 import DTO.Model;
 import DTO.NhanvienMD;
@@ -48,6 +49,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import Panel.Form.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 

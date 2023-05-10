@@ -1,4 +1,4 @@
-package Panel.CongTy2;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,19 +37,21 @@ import javax.swing.table.TableRowSorter;
 import javax.xml.crypto.Data;
 
 import com.toedter.calendar.JDateChooser;
-import Panel.ThongTinSP.ThongTinSPBLL;
+
+import BLL.CongTy2BLL;
+import BLL.ThongTinSPBLL;
 import Panel.ThongTinSP.*;
-import Panel.ThongTinSP.ThongTinSPUI;
 import DAL.DataAccessLayer;
 import DTO.Model;
 import DTO.NhanvienMD;
 import DTO.Custom.DSNhanVienMD;
 import DTO.CongtyMD;
-import Panel.CongTy2.Form;
+
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import Panel.Form.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 

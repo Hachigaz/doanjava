@@ -1,4 +1,4 @@
-package Panel.CongTy2;
+package Panel.Form;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,6 +36,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import BLL.CongTy2BLL;
 
 public class Form extends JDialog implements MouseListener{
     CongTy2BLL CongTy2BLL = new CongTy2BLL();
