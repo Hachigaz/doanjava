@@ -33,7 +33,7 @@ import Panel.TraCuuHang.TraCuuHangUI;
 import Program.Program;
 import Panel.Account.ThongKeUI;
 import Panel.CongTy2.CongTy2UI;
-
+import Panel.DonNhap.DonNhap2Ui;
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;
     public JPanel panelRight;
@@ -255,6 +255,18 @@ public class UI extends TitleFrame implements MouseListener{
                     themQuyen(new JLabel("Thống kê"), "res/img/chart.png",  new ThongKeUI(panelRightSize));
             }
         }
+        // themQuyen(new JLabel(str[1]), "res/img/"+img[1], new NhaCungCap(master,tkDangNhap));
+        themQuyen(new JLabel(str[2]), "res/img/"+img[2], new DonNhapUI(dsdonnhap));
+        //DonXuatCTR cnDonXuat = new DonXuatCTR(master, tkDangNhap,panelRightSize);
+        themQuyen(new JLabel("Đơn xuất"),"res/img/danhSach.png", cnDonXuat.getUI());
+        //themQuyen(new JLabel(str[4]), "res/img/"+img[4], new NhanVien(master,tkDangNhap,panelRightSize));
+        // NhanVienCTR cnNhanVien = new NhanVienCTR(master, tkDangNhap, panelRightSize);
+        themQuyen(new JLabel("Nhân viên"), "res/img/username.png", new NhanVienUI2(panelRightSize));
+        themQuyen(new JLabel("Công Ty"), "res/img/username.png", new CongTy2UI(panelRightSize));
+        themQuyen(new JLabel("Hàng trong kho"),"res/img/danhSach.png", new TraCuuHangUI(panelRightSize));
+        themQuyen(new JLabel("Đơn nhập 2"),"res/img/danhSach.png", new DonNhap2Ui(panelRightSize));
+        //themQuyen(new JLabel("Công Ty"),"res/img/danhSach.png", new CongTyUI(panelRightSize));
+        themQuyen(new JLabel("Thông tin kho"), "res/img/kho.png", new ThongTinKhoUI());
     }
     
     @Override

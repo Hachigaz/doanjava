@@ -123,4 +123,8 @@ public class TablePanel extends JPanel{
     public JTable getTableDS() {
         return (JTable) bangDanhSach.getViewport().getView();
     }
+    public void setEditable(boolean b) {
+    }
+    public void addMouseListener() {
+    }
 }
