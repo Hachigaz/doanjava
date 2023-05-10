@@ -38,7 +38,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
     private TablePanel panelDanhSachNhanVien = new TablePanel();
     private TablePanel panelDanhSachKho = new TablePanel();
     private TableModel tableDanhSach;
-    private TableModel tableDanhSachKho;
+    private DefaultTableModel tableDanhSachKho;
     public ThongKeUI(Dimension d){
         this.setLayout(new BorderLayout());
         this.setPreferredSize(d);
@@ -84,7 +84,6 @@ public class ThongKeUI extends JPanel implements MouseListener{
         int soNhanVienKho = nhanVienBLL.layPhanTramChucVu()[2];
         int soLuongNhanVien = nhanVienBLL.laySoLuongNhanVien();
 
-        System.out.println(thongKeBLL.dsMHTrongKho("K01"));
 
         double tyLeQuanTri = (double) soQuanTri / soLuongNhanVien;
         double tyLeQuanLyKho = (double) soQuanLyKho / soLuongNhanVien;
@@ -151,16 +150,23 @@ public class ThongKeUI extends JPanel implements MouseListener{
 
         panelKho.add(panelDanhSachKho);
 
-        // String[] columnName = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
-        // ArrayList<DSNhanVienMD> DanhSachNhanVien = nhanVienBLL.getDanhSachNhanVien();
-        // tableDanhSach = new DefaultTableModel(Model.to2DArray(DanhSachNhanVien),columnName){
-        //     @Override
-        //     public boolean isCellEditable(int row, int column) {
-        //         return false;
-        //     }
-        // };
-        // panelDanhSachNhanVien.SetTable(tableDanhSach, null);
+        String[] columnName = {"Mã nhân viên","Họ tên","Chức vụ","Giới tính","Ngày sinh","Địa chỉ","Kho làm việc"};
 
+        
+        ArrayList<Object[]> danhSachThung_Loai = thongKeBLL.getDanhSachMH_KV(maKhoHT);
+        tableDanhSachKho = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };;
+        tableDanhSachKho.addColumn("Khu vực");
+        tableDanhSachKho.addColumn("Loại hàng");
+        tableDanhSachKho.addColumn("Số lượng thùng");
+        for(Object[] data : danhSachThung_Loai){
+            tableDanhSachKho.addRow(data);
+        }
+        panelDanhSachKho.SetTable(tableDanhSachKho, null);
 
         panelChart = new JPanel();
         panelChart.setBackground(Color.WHITE);
@@ -169,6 +175,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
 
         this.add(panelButton,BorderLayout.NORTH);
         this.add(panelChart);
+        
     }
     @Override
     public void mouseClicked(MouseEvent e) {

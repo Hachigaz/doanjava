@@ -2,11 +2,15 @@ package Panel.Account;
 
 import java.util.ArrayList;
 
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBookView;
+
 import DAL.DataAccessLayer;
 import DTO.ChitietdonnhapMD;
 import DTO.ChucvuMD;
 import DTO.KhoMD;
 import DTO.KhuvucMD;
+import DTO.Khuvuc_loaihangMD;
+import DTO.Loai_hangMD;
 import DTO.Mat_hangMD;
 import DTO.NhanvienMD;
 import DTO.Taikhoan_nhanvienMD;
@@ -19,12 +23,16 @@ public class ThongKeBLL {
     private DataAccessLayer<KhuvucMD> KhuVucDAL;
     private DataAccessLayer<ChitietdonnhapMD> ctdnDAL;
     private DataAccessLayer<Mat_hangMD> MatHangDAL;
+    private DataAccessLayer<Loai_hangMD> LoaiHangDAL;
+    private DataAccessLayer<Khuvuc_loaihangMD> kvlDAL;
     public ThongKeBLL(){
         SQLUser master = UI.master;
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
         KhuVucDAL = new DataAccessLayer<>(master, KhuvucMD.class);
         ctdnDAL = new DataAccessLayer<>(master, ChitietdonnhapMD.class);
         MatHangDAL = new DataAccessLayer<>(master, Mat_hangMD.class);
+        LoaiHangDAL = new DataAccessLayer<>(master, Loai_hangMD.class);
+        kvlDAL = new DataAccessLayer<>(master, Khuvuc_loaihangMD.class);
     }
     public String[] layDSKV(String maKho) {
         int count = 0;
@@ -92,10 +100,13 @@ public class ThongKeBLL {
             slThungMoiKho[i] = 0.0f;
         }
         ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable();
+        if(dsCTDN==null){
+            return null;
+        }
         for(ChitietdonnhapMD ctdn : dsCTDN){
             for(int i = 0; i < dsKV.size();i++){
                 if(dsKV.get(i).getMaKV().equals(ctdn.getMaKV())){
-                    slThungMoiKho[i]+=ctdn.getSLConLai()/(float)MatHangDAL.getFirst("MaMH ="+ctdn.getMaMH()).getSoLuongMoiThung();
+                    slThungMoiKho[i]+=(float)Math.ceil(ctdn.getSLConLai()/(float)MatHangDAL.getFirst("MaMH ="+ctdn.getMaMH()).getSoLuongMoiThung());
                 }
             }
         }
@@ -103,5 +114,51 @@ public class ThongKeBLL {
             thongKeReturn[1][i]=slThungMoiKho[i];
         }
         return thongKeReturn;
+    }
+    public ArrayList<Object[]> getDanhSachMH_KV(String maKho){
+        ArrayList<Object[]> dsReturn = new ArrayList<Object[]>();
+
+        ArrayList<KhuvucMD> dsKV = KhuVucDAL.getTable("MaKho ="+maKho);
+        if(dsKV==null){
+            return null;
+        }       
+        ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable();
+        if(dsCTDN==null){
+            return null;
+        }        
+        ArrayList<Mat_hangMD> dsMH = MatHangDAL.getTable();
+        if(dsMH==null){
+            return null;
+        }
+        ArrayList<Loai_hangMD> dsLoai = LoaiHangDAL.getTable();
+        if(dsLoai==null){
+            return null;
+        }
+        ArrayList<Khuvuc_loaihangMD> dsKVL = kvlDAL.getTable();
+        if(dsKVL==null){
+            return null;
+        }
+        for(int i = 0; i < dsKV.size();i++){
+            for(Khuvuc_loaihangMD kvl : dsKVL){
+                if(kvl.getMaKV().equals(dsKV.get(i).getMaKV())){
+                    float soLuongThung = 0.0f;
+                    for(ChitietdonnhapMD ctdn : dsCTDN){
+                        if(ctdn.getMaKV().equals(dsKV.get(i).getMaKV())){
+                            for(Mat_hangMD mh : dsMH){
+                                if(mh.getMaMH().equals(ctdn.getMaMH())&&mh.getMaLoai().equals(kvl.getMaLoai())){
+                                    soLuongThung+=Math.ceil(ctdn.getSLConLai()/(float)mh.getSoLuongMoiThung());
+                                }
+                            }
+                        }
+                    }
+                    for(Loai_hangMD loai : dsLoai){
+                        if(loai.getMaLoai().equals(kvl.getMaLoai())&&soLuongThung!=0.0f){
+                            dsReturn.add(new Object[]{dsKV.get(i).getTenKV(),loai.getTenloai(),soLuongThung});
+                        }
+                    }
+                }
+            }
+        }
+        return dsReturn;
     }
 }
