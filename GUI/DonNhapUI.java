@@ -203,8 +203,9 @@ public class DonNhapUI extends JPanel implements MouseListener{
 
             Cell cell3 = row.getCell(2);
             if(cell3!=null) {
-                column3Value = cell2.getStringCellValue();
+                column3Value = cell3.getStringCellValue();
             }
+            System.out.println(column3Value);
 
             Cell cell4 = row.getCell(3);
             if(cell4!=null) {
