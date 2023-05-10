@@ -52,7 +52,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-import GUI.Form;
+import Panel.Form.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 

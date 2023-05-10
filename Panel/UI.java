@@ -28,7 +28,7 @@ import java.awt.*;
 
 import GUI.CongTy2UI;
 import GUI.DonNhap2Ui;
-import GUI.DonNhapUI;
+
 import GUI.DonXuatUI;
 import GUI.NhanVienUI2;
 import GUI.ThongKeUI;
