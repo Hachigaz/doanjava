@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
+import BLL.NhanVienBLL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -35,6 +36,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+
+import DTO.NhanvienMD;
 
 public class Form extends JDialog implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();

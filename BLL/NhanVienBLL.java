@@ -1,4 +1,4 @@
-package Panel.NhanVien;
+package BLL;
 
 import java.sql.SQLData;
 import java.text.DecimalFormat;
