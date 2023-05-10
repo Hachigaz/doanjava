@@ -138,7 +138,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
 
         JFreeChart barChart = ChartFactory.createBarChart(
                 "THỐNG KÊ HÀNG TRONG KHO THEO KHU VỰC",
-                maKhoHT,
+                UI.khoNVDangNhap.getTenKho(),
                 "Số thùng",
                 datasetBarChart
         );
@@ -159,7 +159,8 @@ public class ThongKeUI extends JPanel implements MouseListener{
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-        };;
+        };
+
         tableDanhSachKho.addColumn("Khu vực");
         tableDanhSachKho.addColumn("Loại hàng");
         tableDanhSachKho.addColumn("Số lượng thùng");

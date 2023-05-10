@@ -119,6 +119,18 @@ public class TraCuuHangUI extends JPanel{
         UpdateTable(tableDanhSach);
         
     }
+    public void setVisible(boolean isVisible){
+        super.setVisible(isVisible);
+        String[] columnNames = {"Khu vực","Tên hàng","Số lượng","Loại sản phẩm","Công ty","Ngày nhập"};
+        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+getSelectedMaKhoKey());
+        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        UpdateTable(tableDanhSach);
+    }
     //lọc theo loại sp và khu vực
     private ArrayList<JPanel> arrLocLabel = new ArrayList<JPanel>();
     private HashMap<JPanel,JScrollPane> arrLocPanel = new HashMap<JPanel,JScrollPane>();

@@ -4,7 +4,7 @@ import DTO.*;
 
 public class DSDonXuatMD extends Model{
     
-    public static final String selectStatement = "donxuat.MaDonXuat as 'Mã Đơn Xuat', donxuat.MaKho as 'Mã kho', donxuat.MaCty as 'Mã công ty', cong_ty.TenCty as 'Tên công ty',donxuat.MaNV as 'Mã Nhân viên', DATE(donxuat.NgayXuat) as 'Ngày Xuat'";
+    public static final String selectStatement = "donxuat.MaDonXuat as 'Mã Đơn Xuat', donxuat.MaKho as 'Mã kho', donxuat.MaCty as 'Mã công ty', cong_ty.TenCty as 'Tên công ty',donxuat.MaNV as 'Mã Nhân viên', DATE_FORMAT(DATE(donxuat.NgayXuat), '%d/%m/%Y') as 'Ngày Xuat'";
     public static final String fromStatement = "donxuat join cong_ty on donxuat.MaCty = cong_ty.MaCty ";
     public static final String groupByStatement = "";
 
