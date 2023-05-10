@@ -10,6 +10,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
@@ -17,6 +19,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import BLL.FormDonBLL;
 import DTO.ChitietdonnhapMD;
 import DTO.CongtyMD;
 import DTO.DonNhapMD;
@@ -88,8 +96,34 @@ public class DonNhap2Ui extends JPanel{
         btlook.setOpaque(true);
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
+
+        JButton btexport = new JButton("Export");
+        btexport.setPreferredSize(new Dimension(100, 40));
+        btexport.setBackground(new Color(255, 197, 70));
+        btexport.setForeground(new Color(0, 0, 0));
+
+        btexport.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                exportTableToExcel();
+            }
+        });
+
+        JButton btimport = new JButton("Import");
+        btimport.setPreferredSize(new Dimension(100, 40));
+        btimport.setBackground(new Color(255, 197, 70));
+        btimport.setForeground(new Color(0, 0, 0));
+
+        btimport.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                importExceltoTable();
+            }
+        });
         SetupPanelChucNang();
         panelChucNang.add(btlook);
+        panelChucNang.add(btexport);
+        panelChucNang.add(btimport);
         setupPanel();
     }
     public void setupPanel(){
@@ -365,7 +399,132 @@ public class DonNhap2Ui extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
+    private void exportTableToExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");
+            org.apache.poi.ss.usermodel.Row sheetname = sheet.createRow(0);
+            Cell sheeCell=sheetname.createCell(0);
+            sheeCell.setCellValue("Danh sách đơn nhập");
+            org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(1);
+            Cell headerCell1=headerRow.createCell(0);
+            headerCell1.setCellValue("Mã đơn nhập");
+            Cell headerCell2=headerRow.createCell(1);
+            headerCell2.setCellValue("Mã kho");
+            Cell headerCell3=headerRow.createCell(2);
+            headerCell3.setCellValue("Mã công ty");
+            Cell headerCell4=headerRow.createCell(3);
+            headerCell4.setCellValue("Mã nhân viên");
+            Cell headerCell5=headerRow.createCell(4);
+            headerCell5.setCellValue("Ngày nhập");
 
+            for (int i=0;i<panelDanhSach.getTableDS().getModel().getRowCount();i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(i+1);
+                for (int j=0;j<panelDanhSach.getTableDS().getModel().getColumnCount();j++){
+                    Cell cell = row.createCell(j);
+                    cell.setCellValue(String.valueOf(panelDanhSach.getTableDS().getValueAt(i, j)));
+                }
+            }
+            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/Donnhap.xlsx";
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void importExceltoTable() {
+        String excelFilePath="D:/Java/BT_javaa/src/doanjava/Excel/Donnhap_import1.xlsx";
+        FormDonBLL formDonBLL = new FormDonBLL();
+        
+        try {
+            FileInputStream inputStream = new FileInputStream(excelFilePath);
+
+            Workbook workbook = new XSSFWorkbook(inputStream);
+
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
+
+            org.apache.poi.ss.usermodel.Row row = sheet.getRow(2);
+            String column1Value="";
+            String column2Value="";
+            String column3Value="";
+            String column4Value="";
+            String column5Value="";
+
+            Cell cell1 = row.getCell(0);
+            if(cell1!=null) {
+                column1Value = cell1.getStringCellValue();
+            }
+
+            Cell cell2 = row.getCell(1);
+            if(cell2!=null) {
+                column2Value = cell2.getStringCellValue();
+            }
+
+            Cell cell3 = row.getCell(2);
+            if(cell3!=null) {
+                column3Value = cell3.getStringCellValue();
+            }
+            System.out.println(column3Value);
+
+            Cell cell4 = row.getCell(3);
+            if(cell4!=null) {
+                column4Value = cell4.getStringCellValue();
+            }
+
+            Cell cell5 = row.getCell(4);
+            if(cell5!=null) {
+                column5Value = cell5.getStringCellValue();
+            }
+
+            FormDon formdon =new FormDon("FormNhap");
+            formdon.setVisible(false);
+            DonNhapMD dn=new DonNhapMD(column1Value, column2Value, column3Value, column4Value, column5Value);
+            ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
+
+
+            for (int indexRow = 5; indexRow<=sheet.getLastRowNum();indexRow++) {
+                String madon ="";
+                String mamh="";
+                String makv="";
+                Float slnhap=0.0f;
+                Float slconlai=0.0f;
+                org.apache.poi.ss.usermodel.Row rowData = sheet.getRow(indexRow);
+                
+                Cell o1 = rowData.getCell(0);
+            if(o1!=null) {
+                madon = o1.getStringCellValue();
+            }
+
+            Cell o2 = rowData.getCell(1);
+            if(o2!=null) {
+                mamh = o2.getStringCellValue();
+            }
+
+            Cell o3 = rowData.getCell(2);
+            if(o3!=null) {
+                makv = o3.getStringCellValue();
+            }
+
+            Cell o4 = rowData.getCell(3);
+            if(o4.getCellType()==CellType.NUMERIC) {
+                slnhap = (float) o4.getNumericCellValue();
+            }
+
+            Cell o5 = rowData.getCell(4);
+            if(o5.getCellType()==CellType.NUMERIC) {
+                slconlai = (float) o5.getNumericCellValue();
+            }
+            
+            ctDN.add(new ChitietdonnhapMD(madon, mamh, makv, slnhap, slconlai));
+            }
+            formDonBLL.themDonNhapMoi(dn, ctDN);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

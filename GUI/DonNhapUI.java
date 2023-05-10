@@ -45,15 +45,19 @@ public class DonNhapUI extends JPanel implements MouseListener{
     private TablePanel tablePanel;
     private JTable table;
     private JPanel pNorth;
-    public DonNhapUI(DataSet dsdonnhap)
-    {
-        setLayout(new BorderLayout());
+    private DataSet dsdonnhap;
+    public void updateTable() {
         TableModel model = new DefaultTableModel(dsdonnhap.getData(), dsdonnhap.getColumnName());
         pNorth = new JPanel();
         tablePanel = new TablePanel();
         tablePanel.SetTable(model, null);
         table=tablePanel.getTableDS();
-
+    }
+    public DonNhapUI(DataSet dsdonnhap)
+    {
+        setLayout(new BorderLayout());
+        this.dsdonnhap =dsdonnhap;
+        updateTable();
         // tạo đơn nhập mới
         btadd = new JButton("Thêm đơn nhập");
         btadd.setBorder(null);
@@ -62,8 +66,7 @@ public class DonNhapUI extends JPanel implements MouseListener{
         btadd.setForeground(new Color(0, 0, 0));
         btadd.setOpaque(true);
         btadd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
-        // xem  chi tiết đơn
+
         btlook = new JButton("Xem đơn nhập");
         btlook.setPreferredSize(new Dimension(100, 40));
         btlook.setBackground(new Color(255, 197, 70));
