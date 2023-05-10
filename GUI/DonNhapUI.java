@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -104,7 +105,6 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                System.out.println(dsCT);
                 exportTableToExcel(donChon,dsCT);
             }
         });
@@ -369,7 +369,16 @@ public class DonNhapUI extends JPanel{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormDon("FormNhap");
+                FormDon formTao = new FormDon("FormNhap");
+                Window mainWindow = SwingUtilities.getWindowAncestor(panelChucNang);
+                mainWindow.setEnabled(false);
+                formTao.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e){
+                        mainWindow.setEnabled(true);
+                        mainWindow.setAlwaysOnTop(true);
+                        mainWindow.setAlwaysOnTop(false);
+                    }
+                });
             }
         });                                                                                         
         btlook.addActionListener(new ActionListener() {

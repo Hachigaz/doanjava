@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -101,7 +104,6 @@ public class DonXuatUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonXuatMD donChon = DonXuatBLL.getFirstDonXuat(maDonChon);
                 ArrayList<ChitietdonxuatMD> dsCT = DonXuatBLL.getDanhSachCTDX("MaDonXuat="+maDonChon);
-                System.out.println(dsCT);
                 exportTableToExcel(donChon,dsCT);
             }
         });
@@ -356,7 +358,16 @@ public class DonXuatUI extends JPanel{
         btadd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormDon("FormXuat");
+                FormDon formTao = new FormDon("FormXuat");
+                Window mainWindow = SwingUtilities.getWindowAncestor(panelChucNang);
+                mainWindow.setEnabled(false);
+                formTao.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e){
+                        mainWindow.setEnabled(true);
+                        mainWindow.setAlwaysOnTop(true);
+                        mainWindow.setAlwaysOnTop(false);
+                    }
+                });
             }
         });                                                                                         
         btlook.addActionListener(new ActionListener() {

@@ -106,7 +106,17 @@ public class FormDon extends TitleFrame {
 
 
         addButton.setEnabled(false);
+        JButton xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
+        xoaChiTietBtn.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = ctDonPanel.getSelectedRow();
+                dsCTDon.remove(selectedRow);
+                updateTableModel();
+            }
+            
+        });
 
         JButton saveButton = new JButton("Lưu");
         saveButton.addActionListener(new ActionListener() {
@@ -142,6 +152,7 @@ public class FormDon extends TitleFrame {
         JPanel panelSouth = new JPanel();
         panelSouth.add(saveButton);
         panelSouth.add(cancelButton);
+        panelSouth.add(xoaChiTietBtn);
 
         JPanel panel2 = new JPanel(new BorderLayout());
         panelTop.add(titlePanel,BorderLayout.NORTH);
