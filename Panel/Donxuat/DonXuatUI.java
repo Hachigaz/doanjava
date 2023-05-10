@@ -10,6 +10,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
@@ -17,6 +19,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import BLL.FormDonBLL;
+import DTO.ChitietdonnhapMD;
+import DTO.ChitietdonxuatMD;
 import DTO.CongtyMD;
 import DTO.DonXuatMD;
 import DTO.DonNhapMD;
@@ -66,10 +76,7 @@ public class DonXuatUI extends JPanel{
         this.add(panelChucNang,BorderLayout.NORTH);
         this.add(panelLoc,BorderLayout.WEST);
         this.add(panelDanhSach,BorderLayout.CENTER);
-        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX();
-        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX),columnNames);
-        panelDanhSach.SetTable(tableDanhSach, null);
+        updateTable();
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
         //panelChucNang.setBackground(new Color(27,101,147));
@@ -81,9 +88,33 @@ public class DonXuatUI extends JPanel{
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
 
+        JButton btexport = new JButton("Export");
+        btexport.setPreferredSize(new Dimension(100, 40));
+        btexport.setBackground(new Color(255, 197, 70));
+        btexport.setForeground(new Color(0, 0, 0));
+
+        btexport.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                exportTableToExcel();
+            }
+        });
+        JButton btreload = new JButton("Refresh");
+        btreload.setPreferredSize(new Dimension(100, 40));
+        btreload.setBackground(new Color(255, 197, 70));
+        btreload.setForeground(new Color(0, 0, 0));
+
+        btreload.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTable();
+            }
+            
+        });
         //Object[][] dsDN = Model.to2DArray(DonNhap2BLL.getDanhSachDonNhap());
 
-        btlook = new JButton("Xem đơn nhập");
+        btlook = new JButton("Xem đơn xuất");
         btlook.setPreferredSize(new Dimension(100, 40));
         btlook.setBackground(new Color(255, 197, 70));
         btlook.setForeground(new Color(0, 0, 0));
@@ -93,6 +124,8 @@ public class DonXuatUI extends JPanel{
         btlook.setEnabled(false);
         SetupPanelChucNang();
         panelChucNang.add(btlook);
+        panelChucNang.add(btexport);
+        panelChucNang.add(btreload);
         setupPanel();
     }
     public void setupPanel(){
@@ -368,8 +401,53 @@ public class DonXuatUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
+    private void exportTableToExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn xuất");
+            org.apache.poi.ss.usermodel.Row sheetname = sheet.createRow(0);
+            Cell sheeCell=sheetname.createCell(0);
+            sheeCell.setCellValue("Danh sách đơn xuất");
+            org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(1);
+            Cell headerCell1=headerRow.createCell(0);
+            headerCell1.setCellValue("Mã đơn");
+            Cell headerCell2=headerRow.createCell(1);
+            headerCell2.setCellValue("Mã kho");
+            Cell headerCell3=headerRow.createCell(2);
+            headerCell3.setCellValue("Mã công ty");
+            Cell headerCell4=headerRow.createCell(3);
+            headerCell4.setCellValue("Mã công ty");
+            Cell headerCell5=headerRow.createCell(4);
+            headerCell5.setCellValue("Mã nhân viên");
+            Cell headerCell6=headerRow.createCell(5);
+            headerCell6.setCellValue("Ngày xuất");
 
-
+            for (int i=0;i<panelDanhSach.getTableDS().getModel().getRowCount();i++) {
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(i+1);
+                for (int j=0;j<panelDanhSach.getTableDS().getModel().getColumnCount();j++){
+                    Cell cell = row.createCell(j);
+                    cell.setCellValue(String.valueOf(panelDanhSach.getTableDS().getValueAt(i, j)));
+                }
+            }
+            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/Donxuat.xlsx";
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateTable(){
+        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
+        ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX();
+        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX),columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        panelDanhSach.SetTable(tableDanhSach, null);
+    }
 
 
 

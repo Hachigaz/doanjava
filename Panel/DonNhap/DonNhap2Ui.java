@@ -10,6 +10,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -71,10 +73,7 @@ public class DonNhap2Ui extends JPanel{
         this.add(panelChucNang,BorderLayout.NORTH);
         this.add(panelLoc,BorderLayout.WEST);
         this.add(panelDanhSach,BorderLayout.CENTER);
-        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        ArrayList<DSDonNhapMD> dsDN = DonNhap2BLL.getDanhSachDN();
-        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames);
-        panelDanhSach.SetTable(tableDanhSach, null);
+        updateTable();
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
         //panelChucNang.setBackground(new Color(27,101,147));
@@ -101,6 +100,20 @@ public class DonNhap2Ui extends JPanel{
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
         btexport.setForeground(new Color(0, 0, 0));
+        
+        JButton btreload = new JButton("Refresh");
+        btreload.setPreferredSize(new Dimension(100, 40));
+        btreload.setBackground(new Color(255, 197, 70));
+        btreload.setForeground(new Color(0, 0, 0));
+
+        btreload.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateTable();
+            }
+            
+        });
 
         btexport.addActionListener(new ActionListener(){
             @Override
@@ -124,6 +137,7 @@ public class DonNhap2Ui extends JPanel{
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
         panelChucNang.add(btimport);
+        panelChucNang.add(btreload);
         setupPanel();
     }
     public void setupPanel(){
@@ -435,7 +449,7 @@ public class DonNhap2Ui extends JPanel{
     }
 
     private void importExceltoTable() {
-        String excelFilePath="D:/Java/BT_javaa/src/doanjava/Excel/Donnhap_import1.xlsx";
+        String excelFilePath="D:/Java/BT_javaa/src/doanjava/Excel/Donnhap_import2.xlsx";
         FormDonBLL formDonBLL = new FormDonBLL();
         
         try {
@@ -479,6 +493,12 @@ public class DonNhap2Ui extends JPanel{
             }
 
             FormDon formdon =new FormDon("FormNhap");
+            formdon.addWindowListener(new WindowAdapter() {
+                public void windowClosed(WindowEvent e){
+                    updateTable();
+                    System.out.println("A");
+                }
+            });
             formdon.setVisible(false);
             DonNhapMD dn=new DonNhapMD(column1Value, column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
@@ -520,12 +540,22 @@ public class DonNhap2Ui extends JPanel{
             ctDN.add(new ChitietdonnhapMD(madon, mamh, makv, slnhap, slconlai));
             }
             formDonBLL.themDonNhapMoi(dn, ctDN);
-
+            updateTable();
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
-
+    public void updateTable(){
+        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
+        ArrayList<DSDonNhapMD> dsDN = DonNhap2BLL.getDanhSachDN();
+        TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        panelDanhSach.SetTable(tableDanhSach, null);
+    }
 
 
 

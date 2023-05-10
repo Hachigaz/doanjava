@@ -50,7 +50,7 @@ public class FormDon extends TitleFrame {
 
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
-        JLabel label1 = new JLabel("Tạo đơn nhập mới");
+        JLabel label1 = new JLabel("Tạo đơn mới");
         label1.setFont(new Font("Helvetica", Font.BOLD, 18));
         titlePanel.add(label1);
         panel.add(titlePanel);
