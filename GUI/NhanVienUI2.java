@@ -49,13 +49,10 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-<<<<<<< Updated upstream
-=======
 import Panel.NhanVien.Form;
->>>>>>> Stashed changes
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
-import GUI.Form;
+
 
 public class NhanVienUI2 extends JPanel implements MouseListener{
     NhanVienBLL nhanVienBLL = new NhanVienBLL();
