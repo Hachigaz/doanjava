@@ -4,9 +4,9 @@ import java.awt.Window;
 
 import javax.swing.*;
 
-public class ThongBaoDialog extends TitleDialog {
+public class ThongBaoDialog extends JDialog {
     public ThongBaoDialog(String msg,Window window){
-        //super(window,JDialog.ModalityType.DOCUMENT_MODAL);
+        super(window,JDialog.ModalityType.DOCUMENT_MODAL);
         this.setTitle("Thông báo");
 
         JPanel panel = new JPanel();

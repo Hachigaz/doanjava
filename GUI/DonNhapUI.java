@@ -39,6 +39,7 @@ import Panel.Form.FormCTDN;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+import misc.ThongBaoDialog;
 public class DonNhapUI extends JPanel{
     //BLL
     private DonNhapBLL donNhapBLL = new DonNhapBLL();
@@ -480,18 +481,16 @@ public class DonNhapUI extends JPanel{
                 Cell slconlaiCTDN=row.createCell(4);
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
             }
-            System.out.println(dn.getMaDonNhap()+" export thành công.");
             JFileChooser xuatFileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(".xlsx", "xlsx");
-            xuatFileChooser.setFileFilter(filter);
-            int returnValue = xuatFileChooser.showOpenDialog(null);
+            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = xuatFileChooser.showSaveDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 // The user selected a file
-                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath();
-                importExceltoTable(selectedFilePath);
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dn.getMaDonNhap()+".xlsx";
                 FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
                 workbook.write(fileOutputStream);
                 fileOutputStream.close();
+                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".xlsx", null);
             }
 
         } catch (Exception e) {

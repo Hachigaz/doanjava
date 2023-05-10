@@ -45,6 +45,7 @@ import Panel.Form.FormCTDX;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+import misc.ThongBaoDialog;
 import misc.util;
 public class DonXuatUI extends JPanel{
     //BLL
@@ -453,10 +454,18 @@ public class DonXuatUI extends JPanel{
                     cell.setCellValue(String.valueOf(panelDanhSach.getTableDS().getValueAt(i, j)));
                 }
             }
-            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/Donxuat.xlsx";
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            workbook.write(fileOutputStream);
-            fileOutputStream.close();
+            JFileChooser xuatFileChooser = new JFileChooser();
+            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = xuatFileChooser.showSaveDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // The user selected a file
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dx.getMaDonXuat()+".xlsx";
+                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+                workbook.write(fileOutputStream);
+                fileOutputStream.close();
+                new ThongBaoDialog("Đã xuất ra file "+dx.getMaDonXuat()+".xlsx", null);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
