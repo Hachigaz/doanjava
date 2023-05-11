@@ -10,10 +10,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import Panel.*;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,8 +28,9 @@ public class ChangePass extends JDialog{
     private JPanel panelContainer,panelInput,panelBottom;
     private JLabel labelTitle,labelUser,labelPass,labelRetypePass,labelHienMK,labelPassCu;
     private JTextField textUser;
-    JButton button;
+    public static JButton button;
     private JPasswordField password,retypePass,passwordCu;
+    private JCheckBox hienMK;
     public ChangePass(JFrame parent,ActionListener change){
         this.setPreferredSize(new Dimension(700,500));
 
@@ -54,7 +58,7 @@ public class ChangePass extends JDialog{
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        labelPass = new JLabel("Mật khẩu");
+        labelPass = new JLabel("Mật khẩu mới");
         panelInput.add(labelPass,gbc);
 
         gbc.gridx = 1;
@@ -75,6 +79,32 @@ public class ChangePass extends JDialog{
         retypePass.setPreferredSize(new Dimension(300,35));
         retypePass.setBorder(null);
         panelInput.add(retypePass,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        labelHienMK = new JLabel("Hiện mật khẩu");
+        panelInput.add(labelHienMK,gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        hienMK = new JCheckBox();
+        hienMK.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 300));
+        hienMK.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED){
+                    password.setEchoChar((char) 0);
+                    retypePass.setEchoChar((char) 0);
+                    passwordCu.setEchoChar((char) 0);
+                }else{
+                    password.setEchoChar('\u2022');
+                    retypePass.setEchoChar('\u2022');
+                    passwordCu.setEchoChar('\u2022');
+                }
+            }
+            
+        });
+        panelInput.add(hienMK,gbc);
 
         button = new JButton("Xác nhận");
         button.setPreferredSize(new Dimension(250, 40));
@@ -117,25 +147,17 @@ public class ChangePass extends JDialog{
         }
         return true;
     }
-    // public String[] getUserPass(){
-    //     char[] passCharCu = passwordCu.getPassword();
-    //     String passCu = new String(passCharCu);
-    //     char[] passChar = password.getPassword();
-    //     String pass = new String(passChar);
-    //     char[] reTypeChar = retypePass.getPassword();
-    //     String retype = new String(reTypeChar); 
-    //     String check = "False";
-    //     if(pass.equals(retype)){
-    //         check = "True";
-    //     }
-    //     String maNhomQuyen = "";
-    //     if(UI.manv.substring(0, 2).equals("NV")){
-    //         maNhomQuyen = "NQ_NV";
-    //     }else if(UI.manv.substring(0, 3).equals("QLK")){
-    //         maNhomQuyen = "NQ_QLK";
-    //     }else if(UI.manv.substring(0, 3).equals("QTV")){
-    //         maNhomQuyen = "NQ_ADMIN";
-    //     }
-    //     return new String[] {passCu,pass,maNhomQuyen,retype,check};
-    // }
+    public String[] getUserPass(){
+        char[] passCharCu = passwordCu.getPassword();
+        String passCu = new String(passCharCu);
+        char[] passChar = password.getPassword();
+        String pass = new String(passChar);
+        char[] reTypeChar = retypePass.getPassword();
+        String retype = new String(reTypeChar); 
+        String check = "False";
+        if(pass.equals(retype)){
+            check = "True";
+        }
+        return new String[] {passCu,pass,retype,check};
+    }
 }

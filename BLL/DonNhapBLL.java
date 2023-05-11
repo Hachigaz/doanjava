@@ -1,5 +1,6 @@
 package BLL;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import DAL.DataAccessLayer;
@@ -60,5 +61,14 @@ public class DonNhapBLL {
     public DonNhapMD getFirstDonNhap(String maDonNhap){
         return DonNhapDAL.getFirst("MaDonNhap="+maDonNhap);
     }
-    
+    public String taoMaDonNhapMoi(){
+        DecimalFormat df = new DecimalFormat("0000");
+        ArrayList<DonNhapMD> dsDN = DonNhapDAL.getTable();
+        int soLuong = 0;
+        if(dsDN!=null){
+            soLuong = dsDN.size();
+        }
+        String maDNMoi = "DN"+df.format(soLuong+1);
+        return maDNMoi;
+    }   
 }

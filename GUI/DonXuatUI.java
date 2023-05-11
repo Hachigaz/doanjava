@@ -31,6 +31,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import BLL.*;
 import DTO.ChitietdonnhapMD;
@@ -50,6 +51,7 @@ import Panel.Form.FormCTDX;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+import misc.ThongBaoDialog;
 import misc.util;
 public class DonXuatUI extends JPanel{
     //BLL
@@ -59,7 +61,7 @@ public class DonXuatUI extends JPanel{
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
     public static JButton btloc,btlook,btexport;
-    private JCalendar date1,date2;
+    private JDateChooser date1,date2;
 
 
     private JTextField searchBar;
@@ -148,8 +150,8 @@ public class DonXuatUI extends JPanel{
         btloc.setBorder(null);
         btloc.setOpaque(true);
         btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        date1 = new JCalendar();
-        date2 = new JCalendar();
+        date1 = new JDateChooser();
+        date2 = new JDateChooser();
         btloc.addActionListener(new ActionListener() {
 
             @Override
@@ -166,7 +168,7 @@ public class DonXuatUI extends JPanel{
                 String startDateString = dateFormat.format(startDate);
                 String endDateString = dateFormat.format(endDate);
                 // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayNhap >= " + startDateString + " AND NgayNhap >= " + endDateString);
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
                 // Update the table with the filtered data
                 String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
                 
@@ -501,10 +503,18 @@ public class DonXuatUI extends JPanel{
                     cell.setCellValue(String.valueOf(panelDanhSach.getTableDS().getValueAt(i, j)));
                 }
             }
-            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/Donxuat.xlsx";
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            workbook.write(fileOutputStream);
-            fileOutputStream.close();
+            JFileChooser xuatFileChooser = new JFileChooser();
+            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = xuatFileChooser.showSaveDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // The user selected a file
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dx.getMaDonXuat()+".xlsx";
+                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+                workbook.write(fileOutputStream);
+                fileOutputStream.close();
+                new ThongBaoDialog("Đã xuất ra file "+dx.getMaDonXuat()+".xlsx", null);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -49,6 +49,7 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import Panel.UI;
 import Panel.NhanVien.Form;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
@@ -372,6 +373,10 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             int rowIndex = tableTemp.getSelectedRow();
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             arr[1] = tableTemp.getValueAt(rowIndex, 1).toString();
+            System.out.println(UI.manv);
+            System.out.println(UI.tenDN);
+            System.out.println(UI.matkhau);
+            System.out.println(UI.manhomquyen);
             int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa nhân viên "+arr[1]+" không?", "Xác nhận xóa dữ liệu", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 nhanVienBLL.xoaTK("MaNV = "+arr[0]);

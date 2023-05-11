@@ -26,14 +26,16 @@ public class DangNhap implements ActionListener {
         //lấy thông tin từ csdl
         DataAccessLayer<Taikhoan_nhanvienMD> tknvDAL = new DataAccessLayer<>(master, Taikhoan_nhanvienMD.class);
         ArrayList<Taikhoan_nhanvienMD> tknv = tknvDAL.getTable("TenTaiKhoan="+tentk,"MatKhau = "+mk);
-
+        if(tknv==null){
+            new ThongBaoDialog("Thông tin đăng nhập không đúng!", dangnhapui);
+            return;
+        }
         if(tknv.size()==1){//là tìm thấy tài khoản trong csdl
             Taikhoan_nhanvienMD tk = tknv.get(0);
             tkDangNhap = new Taikhoan_nhanvienMD(tk.getMaNV(),tk.getTenTaiKhoan(),tk.getMatKhau(),tk.getMaNhomQuyen());
             dangnhapui.dispose();
         }
         else if(tknv.size()==0){//là không tìm thấy tài khoản trong csdl
-            new ThongBaoDialog("Thông tin đăng nhập không đúng!", dangnhapui);
         }
         else{
             new ThongBaoDialog("Lỗi không xác định",dangnhapui);

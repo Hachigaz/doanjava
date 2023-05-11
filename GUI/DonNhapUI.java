@@ -54,8 +54,8 @@ public class DonNhapUI extends JPanel{
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
     public static JButton btloc,btlook, btexport;
-    private JCalendar date1,date2;
-
+    //private JCalendar date1,date2;
+    public static JDateChooser date1,date2;
     private JTextField searchBar;
 
 
@@ -101,14 +101,16 @@ public class DonNhapUI extends JPanel{
         btlook.setEnabled(false);
 
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(100, 40));
+        btloc.setPreferredSize(new Dimension(50, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
         btloc.setOpaque(true);
         btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        date1 = new JCalendar();
-        date2 = new JCalendar();
+        date1 = new JDateChooser();
+        date2 = new JDateChooser();
+        date1.setPreferredSize(new Dimension(200, 30));
+        date2.setPreferredSize(new Dimension(200, 30));
         btloc.addActionListener(new ActionListener() {
 
             @Override
@@ -125,7 +127,7 @@ public class DonNhapUI extends JPanel{
                 String startDateString = dateFormat.format(startDate);
                 String endDateString = dateFormat.format(endDate);
                 // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString + " AND NgayNhap >= " + endDateString);
+                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
                 // Update the table with the filtered data
                 String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
                 
@@ -533,11 +535,18 @@ public class DonNhapUI extends JPanel{
                 Cell slconlaiCTDN=row.createCell(4);
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
             }
-            System.out.println(dn.getMaDonNhap()+" export thành công.");
-            String filePath = "D:/Java/BT_javaa/src/doanjava/Excel/"+dn.getMaDonNhap()+".xlsx";
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            workbook.write(fileOutputStream);
-            fileOutputStream.close();
+            JFileChooser xuatFileChooser = new JFileChooser();
+            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = xuatFileChooser.showSaveDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // The user selected a file
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dn.getMaDonNhap()+".xlsx";
+                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+                workbook.write(fileOutputStream);
+                fileOutputStream.close();
+                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".xlsx", null);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -594,7 +603,7 @@ public class DonNhapUI extends JPanel{
                 }
             });
             formdon.setVisible(false);
-            DonNhapMD dn=new DonNhapMD(column1Value, column2Value, column3Value, column4Value, column5Value);
+            DonNhapMD dn=new DonNhapMD(donNhapBLL.taoMaDonNhapMoi(), column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
 
 
@@ -608,7 +617,7 @@ public class DonNhapUI extends JPanel{
                 
                 Cell o1 = rowData.getCell(0);
             if(o1!=null) {
-                madon = o1.getStringCellValue();
+                madon = donNhapBLL.taoMaDonNhapMoi();
             }
 
             Cell o2 = rowData.getCell(1);
@@ -635,6 +644,7 @@ public class DonNhapUI extends JPanel{
             }
             formDonBLL.themDonNhapMoi(dn, ctDN);
             updateTable();
+            new ThongBaoDialog("Thêm đơn nhập thành công", null);
         } catch(Exception e) {
             e.printStackTrace();
         }

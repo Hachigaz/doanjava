@@ -7,13 +7,18 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
+import BLL.NhanVienBLL;
 import DAL.DataAccessLayer;
 import DTO.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ import GUI.DonXuatUI;
 import GUI.NhanVienUI2;
 import GUI.ThongKeUI;
 import GUI.TraCuuHangUI;
+import Panel.NhanVien.ChangePass;
 import Panel.ThongTinKho.ThongTinKhoUI;
 import Program.Program;
 public class UI extends TitleFrame implements MouseListener{
@@ -34,6 +40,7 @@ public class UI extends TitleFrame implements MouseListener{
     JLabel label1,labelIcon1,labelIcon2,labelUserName,labelTitle,labelTitleBar;
     JPopupMenu popupMenu;
     JLabel labelSetting;
+    ChangePass formChange;
     //tao thay Label[] thành Arraylist<Label>
     private ArrayList<JLabel> btnChucNang = new ArrayList<JLabel>();
     //mảng chứa panel chức năng
@@ -44,20 +51,25 @@ public class UI extends TitleFrame implements MouseListener{
     public static NhanvienMD nvDangNhap;
     public static KhoMD khoNVDangNhap;
     
-    public static String manv;
+    public static String manv,tenDN,matkhau,manhomquyen;
     public static String maKho;
 
     private DataAccessLayer<KhoMD> khoDAL;
     private DataAccessLayer<NhanvienMD> nvDAL;
     private DataAccessLayer<ChitietnhomquyenMD> ctNhomQuyenDAL;
-
+    private NhanVienBLL nhanVienBLL;
 
 
     public UI(SQLUser master,Taikhoan_nhanvienMD tkDangNhap){
         UI.master= master;
         UI.tenTKDangNhap=tkDangNhap;
 
+        nhanVienBLL = new NhanVienBLL();
+
         manv = tkDangNhap.getMaNV();
+        tenDN = tkDangNhap.getTenTaiKhoan();
+        matkhau = tkDangNhap.getMatKhau();
+        manhomquyen = tkDangNhap.getMaNhomQuyen();
 
         khoDAL=  new DataAccessLayer<>(master, KhoMD.class);
         nvDAL = new DataAccessLayer<>(master, NhanvienMD.class);
@@ -142,7 +154,7 @@ public class UI extends TitleFrame implements MouseListener{
         labelTitle.setHorizontalAlignment(JLabel.CENTER);
         labelTitle.setFont(new Font("Monospace",Font.BOLD,25));
 
-        labelSetting = new JLabel("Đăng xuất");
+        labelSetting = new JLabel("Đăng xuất/Đổi mật khẩu");
         ImageIcon iconST = new ImageIcon("res/img/logout.png");
         Image imgST = iconST.getImage();
         Image newImgST = imgST.getScaledInstance(30,30,java.awt.Image.SCALE_SMOOTH);
@@ -152,15 +164,13 @@ public class UI extends TitleFrame implements MouseListener{
         labelSetting.setFocusable(false);
         labelSetting.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         labelSetting.setHorizontalAlignment(JLabel.RIGHT);
-        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,50));
+        labelSetting.setBorder(BorderFactory.createEmptyBorder(0,0,0,20));
         labelSetting.setForeground(Color.white);
 
-        labelSetting.addMouseListener(new MouseListener() {
+        JMenuItem logoutItem = new JMenuItem("Đăng xuất");
+        logoutItem.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn là muốn đăng xuất không", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     Program.program.dangNhap();
@@ -168,7 +178,37 @@ public class UI extends TitleFrame implements MouseListener{
                 }else{
 
                 }
-                
+            }
+            
+        });
+
+        JMenuItem changePasswordItem = new JMenuItem("Đổi mật khẩu");
+        changePasswordItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Thực hiện các thao tác khi nhấn "Đổi mật khẩu" ở đây
+                // JOptionPane.showMessageDialog(null, "Bạn muốn đổi mật khẩu");
+                createForm();
+            }
+        });
+
+        popupMenu = new JPopupMenu();
+        popupMenu.add(logoutItem);
+        popupMenu.add(changePasswordItem);
+
+        labelSetting.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn là muốn đăng xuất không", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
+                // if (dialogResult == JOptionPane.YES_OPTION) {
+                //     Program.program.dangNhap();
+                //     dispose();
+                // }else{
+
+                // }
+                popupMenu.show(labelSetting, 250, labelSetting.getHeight());
             }
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -229,6 +269,29 @@ public class UI extends TitleFrame implements MouseListener{
             }
         }
     }
+    public void createForm(){
+        Window window = SwingUtilities.getWindowAncestor(this);
+        formChange = new ChangePass((JFrame) window, changeButtonAction);
+        formChange.setVisible(true);
+    }
+
+    ActionListener changeButtonAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String[] dataTK = formChange.getUserPass();
+            if(formChange.check()==false){
+                JOptionPane.showMessageDialog(formChange, "Mời bạn nhập đầy đủ thông tin");
+            }else if(dataTK[0].equals(UI.matkhau)==false){
+                JOptionPane.showMessageDialog(formChange, "Bạn nhập sai mật khẩu cũ");
+            }else if(dataTK[3] == "False"){
+                JOptionPane.showMessageDialog(formChange, "Bạn nhập lại mật khẩu không hợp lệ!");
+            }else{
+                nhanVienBLL.suaTK("MaNV = "+UI.manv,"TenTaiKhoan = " + UI.tenDN,"MatKhau = " + dataTK[1],"MaNhomQuyen = " + UI.manhomquyen);
+                JOptionPane.showMessageDialog(formChange, "Đổi mật khẩu thành công");
+                formChange.dispose();
+            }
+        }   
+    };
     
     @Override
     public void mouseClicked(MouseEvent e) {
