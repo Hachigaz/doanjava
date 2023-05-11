@@ -101,7 +101,7 @@ public class DonNhapUI extends JPanel{
         btlook.setEnabled(false);
 
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(50, 40));
+        btloc.setPreferredSize(new Dimension(300, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
