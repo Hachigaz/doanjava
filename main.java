@@ -1,6 +1,7 @@
 import Program.Program;
 import com.formdev.flatlaf.*;
-public class main{
+
+public class Main{
     public static void main(String[] args) {
         FlatLightLaf.setup();
 

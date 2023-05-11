@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -45,6 +47,12 @@ import Panel.Form.FormCTDN;
 import Panel.Form.FormDon;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
+import misc.ThongBaoDialog;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
@@ -56,7 +64,7 @@ public class DonNhapUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton btloc,btlook, btexport;
+    public static JButton btloc,btlook, btexport,btpdf;
     //private JCalendar date1,date2;
     public static JDateChooser date1,date2;
     private JTextField searchBar;
@@ -104,7 +112,7 @@ public class DonNhapUI extends JPanel{
         btlook.setEnabled(false);
 
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(50, 40));
+        btloc.setPreferredSize(new Dimension(500, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
@@ -194,6 +202,27 @@ public class DonNhapUI extends JPanel{
                 }
             }
         });
+
+        btpdf = new JButton("In đơn nhập");
+        btpdf.setPreferredSize(new Dimension(100, 40));
+        btpdf.setBackground(new Color(255, 197, 70));
+        btpdf.setForeground(new Color(0, 0, 0));
+
+        btpdf.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){                
+                int selectedRow = panelDanhSach.getSelectedRow();
+                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
+                ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
+                try {
+                    exportTableToPdf(donChon,dsCT);
+                } catch (Exception ignore) {
+                    // TODO: handle exception
+                }
+            }
+        });
+
         panelLoc.add(btloc);
         panelLoc.add(date1);
         panelLoc.add(date2);
@@ -202,6 +231,7 @@ public class DonNhapUI extends JPanel{
         panelChucNang.add(btexport);
         panelChucNang.add(btimport);
         panelChucNang.add(btreload);
+        panelChucNang.add(btpdf);
         setupPanel();
         
     }
@@ -428,6 +458,8 @@ public class DonNhapUI extends JPanel{
                         mainWindow.setEnabled(true);
                         mainWindow.setAlwaysOnTop(true);
                         mainWindow.setAlwaysOnTop(false);
+                        new ThongBaoDialog("Thêm đơn nhập thành công", null);
+
                     }
                 });
             }
@@ -644,7 +676,6 @@ public class DonNhapUI extends JPanel{
             formdon.addWindowListener(new WindowAdapter() {
                 public void windowClosed(WindowEvent e){
                     updateTable();
-                    System.out.println("A");
                 }
             });
             formdon.setVisible(false);
@@ -652,7 +683,7 @@ public class DonNhapUI extends JPanel{
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
 
 
-            for (int indexRow = 5; indexRow<=sheet.getLastRowNum();indexRow++) {
+            for (int indexRow = 4; indexRow<=sheet.getLastRowNum();indexRow++) {
                 String madon ="";
                 String mamh="";
                 String makv="";
@@ -689,7 +720,6 @@ public class DonNhapUI extends JPanel{
             }
             formDonBLL.themDonNhapMoi(dn, ctDN);
             updateTable();
-            new ThongBaoDialog("Thêm đơn nhập thành công", null);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -708,7 +738,58 @@ public class DonNhapUI extends JPanel{
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
     }
+    private void exportTableToPdf(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT) throws IOException {
+        JFileChooser xuatFileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xlsx", "xlsx");
+        xuatFileChooser.setFileFilter(filter);
+            // xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnValue = xuatFileChooser.showSaveDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                // The user selected a file
+                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath();
+                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".pdf", null);
+        
+                // Load the Excel file
+                FileInputStream fis = new FileInputStream(selectedFilePath);
+                Workbook workbook = new XSSFWorkbook(fis);
 
+                // Create a PDF document
+                PDDocument document = new PDDocument();
 
+                // Loop through each sheet in the Excel file
+                for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                    Sheet sheet = workbook.getSheetAt(i);
+                    PDPage page = new PDPage();
+                    document.addPage(page);
+                    PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                    contentStream.beginText();
 
+                    // Set the font and font size for the text
+
+                    // Loop through each row and column in the sheet
+                    for (org.apache.poi.ss.usermodel.Row row : sheet) {
+                        for (Cell cell : row) {
+                            // Get the cell value as a string
+                            String value = cell.getStringCellValue();
+                            // Get the position of the cell in the PDF document
+                            float x = (float) (cell.getColumnIndex() * 100.0);
+                            float y = (float) ((sheet.getLastRowNum() - cell.getRowIndex()) * 20.0 + 700.0);
+                            // Write the cell value to the PDF document
+                            contentStream.newLineAtOffset(x, y);
+                            contentStream.showText(value);
+                        }
+                    }
+
+                    contentStream.endText();
+                    contentStream.close();
+                }
+
+                // Save the PDF document to a file
+                document.save(selectedFilePath.replace(".xlsx", ".pdf"));
+                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+                workbook.write(fileOutputStream);
+                document.close();
+            }
+            
+    }
 }
