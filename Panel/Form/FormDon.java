@@ -36,6 +36,7 @@ public class FormDon extends TitleFrame {
     private JLabel labelNgayTaoDon;
     private CustomComboBox comboBox2;
     private JButton addButton;
+    private JButton xoaChiTietBtn;
 
     private JPanel contentPanel = new JPanel();
     private FormDonBLL formDonBLL = new FormDonBLL();
@@ -106,14 +107,21 @@ public class FormDon extends TitleFrame {
 
 
         addButton.setEnabled(false);
-        JButton xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
+        xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
         xoaChiTietBtn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = ctDonPanel.getSelectedRow();
+                if(selectedRow<0){
+                    new ThongBaoDialog("Chưa chọn mặt hàng để xoá", null);
+                    return;
+                }
                 dsCTDon.remove(selectedRow);
                 updateTableModel();
+                rightPanel.remove(themSPPanel);
+                themSPPanel=null;
+
             }
             
         });
@@ -222,7 +230,7 @@ public class FormDon extends TitleFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(themSPPanel==null){  
+                if(themSPPanel==null){
                     ArrayList<FormInput> inputFields = new ArrayList<FormInput>();
 
 
@@ -237,14 +245,14 @@ public class FormDon extends TitleFrame {
                     inputFields.add(new FormInput("Chọn sản phẩm", mhCB));
 
                     CustomComboBox kvCB = new CustomComboBox();
-                    kvCB.addItem("Chọn khu vực để chứa","null");
-
                     inputFields.add(new FormInput("Chọn khu vực muốn chứa", kvCB));
                     ActionListener changeMHAction = new ActionListener() {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(!mhCB.getSelectedKey().equals("null")){
+                                kvCB.removeAllItems();
+                                kvCB.addItem("Chọn khu vực", null);
                                 ArrayList<KhuvucMD> dsKVchuaMH = formDonBLL.getDanhSachKhuVuc_MH(mhCB.getSelectedKey());
                                 if(dsKVchuaMH == null){
                                     new ThongBaoDialog("Không có khu vực được phân chứa loại mặt hàng này trong kho",null);
@@ -269,23 +277,24 @@ public class FormDon extends TitleFrame {
                     JLabel sucChuaLabel = new JLabel();
                     
                     kvCB.addActionListener(new ActionListener() {
-
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
-                            for(DataRow ctkvRow : dsCTDon){
-                                if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
-                                    tongSLKV+=(float)ctkvRow.getSoLuong();
+                            if(kvCB.getSelectedKey()!=null){
+                                float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
+                                for(DataRow ctkvRow : dsCTDon){
+                                    if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
+                                        tongSLKV+=(float)ctkvRow.getSoLuong();
+                                    }
                                 }
+                                sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                             }
-                            sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                         }
                         
                     });
                     ActionListener submitAction = new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(kvCB.getSelectedKey().equals("null")){
+                            if(kvCB.getSelectedKey()==null){
                                 new ThongBaoDialog("Vui lòng chọn khu vực để chứa", null);
                                 return;
                             }
@@ -395,7 +404,13 @@ public class FormDon extends TitleFrame {
                     ArrayList<Object[]> dsMHChon = formDonBLL.getDanhSachMHChon(comboBox2.getSelectedKey());
                     if(dsMHChon!=null){
                         for(Object[] mh :dsMHChon){
-                            tableChonSP.addRow(new Object[]{mh[1],mh[2],mh[3],mh[4],mh[5]});
+                            float soLuong = (float)mh[3];
+                            for(DataRow r :dsCTDon){
+                                if(r.mh.getMaMH().equals(mh[0])&&r.kv.getMaKV().equals(mh[2])&&r.getMaDonNhap().equals(mh[4])){
+                                    soLuong-=r.getSoLuong();
+                                }
+                            }
+                            tableChonSP.addRow(new Object[]{mh[1],mh[2],soLuong,mh[4],mh[5]});
                         }
                     }
                     ListSelectionListener selectedMHListener = new ListSelectionListener() {
