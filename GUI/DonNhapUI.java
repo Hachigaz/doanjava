@@ -160,7 +160,7 @@ public class DonNhapUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){                
                 int selectedRow = panelDanhSach.getSelectedRow();
-                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                String maDonChon = panelDanhSach.getTableDS().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
                 JFileChooser xuatFileChooser = new JFileChooser();

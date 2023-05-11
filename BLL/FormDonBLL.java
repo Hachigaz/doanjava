@@ -117,7 +117,7 @@ public class FormDonBLL {
                 if(ctdn.getMaDonNhap().equals(dn.getMaDonNhap())){
                     for(Mat_hangMD mh : dsMH){
                         if(mh.getMaMH().equals(ctdn.getMaMH())){
-                            dsMHReturn.add(new Object[]{mh.getMaMH(),mh.getTenMH(),ctdn.getMaKV(),ctdn.getSLConLai(),dn.getNgayNhap(),dn.getMaDonNhap()});
+                            dsMHReturn.add(new Object[]{mh.getMaMH(),mh.getTenMH(),ctdn.getMaKV(),ctdn.getSLConLai(),dn.getMaDonNhap(),dn.getNgayNhap()});
                         }  
                     }
                 }
