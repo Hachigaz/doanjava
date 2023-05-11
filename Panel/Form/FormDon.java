@@ -273,7 +273,7 @@ public class FormDon extends TitleFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
-                            sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            //sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                         }
                         
                     });
@@ -307,7 +307,7 @@ public class FormDon extends TitleFrame {
                                     tongSLKV+=(float)ctkvRow.getSoLuong()/(float)ctkvRow.mh.getSoLuongMoiThung();
                                 }
                             }
-                            if(soLuong/formDonBLL.getFirstMH(mhCB.getSelectedKey()).getSoLuongMoiThung()>tongSLKV){
+                            if(soLuong/formDonBLL.getFirstMH(mhCB.getSelectedKey()).getSoLuongMoiThung()>formDonBLL.getDanhSachKV("MaKV="+kvCB.getSelectedKey()).get(0).getSucChua()){
                                 new ThongBaoDialog("Khu vực không đủ sức chứa", null);
                                 return;
                             }

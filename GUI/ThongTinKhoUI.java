@@ -1,4 +1,4 @@
-package Panel.ThongTinKho;
+package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import BLL.ThongTinKhoBLL;
 import DTO.*;
 import DTO.Custom.DSChiTietKhuVucLoaiMD;
 import Panel.UI;

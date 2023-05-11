@@ -1,6 +1,6 @@
 import Program.Program;
 import com.formdev.flatlaf.*;
-public class main{
+public class QLKho{
     public static void main(String[] args) {
         FlatLightLaf.setup();
 

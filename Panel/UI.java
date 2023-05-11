@@ -30,9 +30,9 @@ import GUI.DonNhapUI;
 import GUI.DonXuatUI;
 import GUI.NhanVienUI2;
 import GUI.ThongKeUI;
+import GUI.ThongTinKhoUI;
 import GUI.TraCuuHangUI;
 import Panel.NhanVien.ChangePass;
-import Panel.ThongTinKho.ThongTinKhoUI;
 import Program.Program;
 public class UI extends TitleFrame implements MouseListener{
     JPanel panelLeft,panelTop,panelIcon,panelUser,panelUI;

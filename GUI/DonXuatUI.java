@@ -147,7 +147,7 @@ public class DonXuatUI extends JPanel{
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(100, 40));
+        btloc.setPreferredSize(new Dimension(500, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
@@ -155,6 +155,8 @@ public class DonXuatUI extends JPanel{
         btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         date1 = new JDateChooser();
         date2 = new JDateChooser();
+        date1.setPreferredSize(new Dimension(200, 30));
+        date2.setPreferredSize(new Dimension(200, 30));
         btloc.addActionListener(new ActionListener() {
 
             @Override
@@ -171,9 +173,9 @@ public class DonXuatUI extends JPanel{
                 String startDateString = dateFormat.format(startDate);
                 String endDateString = dateFormat.format(endDate);
                 // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString , "NgayXuat <="+ endDateString );
                 // Update the table with the filtered data
-                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày Xuất"};
                 
                 TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
                     @Override
@@ -589,7 +591,7 @@ public class DonXuatUI extends JPanel{
     }
     public void updateTable(){
         
-        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
+        String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
         ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX),columnNames){
             @Override
@@ -601,7 +603,4 @@ public class DonXuatUI extends JPanel{
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
     }
-
-
-
 }
