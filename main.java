@@ -5,5 +5,6 @@ public class main{
         FlatLightLaf.setup();
 
         new Program();
+        
     }
 }

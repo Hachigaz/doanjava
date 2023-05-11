@@ -102,7 +102,6 @@ public class ThongTinSPUI extends TitleFrame{
         ArrayList<ThongTinSPMD> dsMatHang = thongTinSPBLL.getDanhSachTTSP();
         if (dsMatHang == null) {
             JOptionPane.showMessageDialog(null, "Lỗi: Công ty chưa có sản phẩm", "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
-            this.dispose();
         } else {
             String[] columnNames = {"Mã mặt hàng","Tên mặt hàng","Loại sản phẩm","Số lượng mỗi thùng"};
             currentTableModel = new DefaultTableModel(Model.to2DArray(dsMatHang,"MaMH","TenMH","TenLoai","SLMoiThung"), columnNames);

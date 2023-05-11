@@ -15,7 +15,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
@@ -26,6 +29,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import BLL.*;
 import DTO.ChitietdonnhapMD;
@@ -54,8 +60,8 @@ public class DonXuatUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton SPButton,btlook,btexport;
-    
+    public static JButton btloc,btlook,btexport;
+    private JDateChooser date1,date2;
 
 
     private JTextField searchBar;
@@ -137,6 +143,49 @@ public class DonXuatUI extends JPanel{
         btlook.setOpaque(true);
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
+        btloc = new JButton("Lọc");
+        btloc.setPreferredSize(new Dimension(100, 40));
+        btloc.setBackground(new Color(255, 197, 70));
+        btloc.setForeground(new Color(0, 0, 0));
+        btloc.setBorder(null);
+        btloc.setOpaque(true);
+        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        date1 = new JDateChooser();
+        date2 = new JDateChooser();
+        btloc.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               loc();
+            }
+
+            private void loc() {
+                Date startDate = date1.getDate();
+                Date endDate = date2.getDate();
+                
+                // Convert the dates to string format
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
+                // Update the table with the filtered data
+                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+            }
+            
+        }
+        );
+        panelLoc.add(btloc);
+        panelLoc.add(date1);
+        panelLoc.add(date2);
         SetupPanelChucNang();
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
