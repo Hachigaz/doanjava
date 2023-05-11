@@ -118,7 +118,7 @@ public class DonXuatUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){                
                 int selectedRow = panelDanhSach.getSelectedRow();
-                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                String maDonChon = panelDanhSach.getTableDS().getValueAt(selectedRow, 0).toString();
                 DonXuatMD donChon = DonXuatBLL.getFirstDonXuat(maDonChon);
                 ArrayList<ChitietdonxuatMD> dsCT = DonXuatBLL.getDanhSachCTDX("MaDonXuat="+maDonChon);
                 exportTableToExcel(donChon,dsCT);

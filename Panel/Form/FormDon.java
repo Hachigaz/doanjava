@@ -108,7 +108,6 @@ public class FormDon extends TitleFrame {
 
         addButton.setEnabled(false);
         xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
-        xoaChiTietBtn.setEnabled(false);
         xoaChiTietBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -231,8 +230,7 @@ public class FormDon extends TitleFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(themSPPanel==null){  
-                    xoaChiTietBtn.setEnabled(true);
+                if(themSPPanel==null){
                     ArrayList<FormInput> inputFields = new ArrayList<FormInput>();
 
 
@@ -247,20 +245,21 @@ public class FormDon extends TitleFrame {
                     inputFields.add(new FormInput("Chọn sản phẩm", mhCB));
 
                     CustomComboBox kvCB = new CustomComboBox();
-                    kvCB.addItem("Chọn khu vực để chứa","null");
-
                     inputFields.add(new FormInput("Chọn khu vực muốn chứa", kvCB));
+                    kvCB.addItem("Chọn khu vực để chứa","null");
                     ActionListener changeMHAction = new ActionListener() {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(!mhCB.getSelectedKey().equals("null")){
+                                // if(kvCB.getItemCount()>0){
+                                //     kvCB.removeAllItems();
+                                // }
                                 ArrayList<KhuvucMD> dsKVchuaMH = formDonBLL.getDanhSachKhuVuc_MH(mhCB.getSelectedKey());
                                 if(dsKVchuaMH == null){
                                     new ThongBaoDialog("Không có khu vực được phân chứa loại mặt hàng này trong kho",null);
                                 }
                                 else{
-                                    kvCB.Deleteoption();
                                     for(KhuvucMD kv : dsKVchuaMH){
                                         kvCB.addItem(kv.getTenKV(), kv.getMaKV());
                                     }
@@ -289,7 +288,9 @@ public class FormDon extends TitleFrame {
                                     tongSLKV+=(float)ctkvRow.getSoLuong();
                                 }
                             }
-                            sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            if(!kvCB.getSelectedKey().equals("null")){
+                                sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            }
                         }
                         
                     });
@@ -381,7 +382,6 @@ public class FormDon extends TitleFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(themSPPanel==null){
-                    xoaChiTietBtn.setEnabled(true);
                     JPanel panelChonContent = new JPanel();
                     panelChonContent.setLayout(new BoxLayout(panelChonContent, BoxLayout.Y_AXIS));
                     TablePanel panelChonSP = new TablePanel();
