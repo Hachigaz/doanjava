@@ -245,13 +245,14 @@ public class FormDon extends TitleFrame {
                     inputFields.add(new FormInput("Chọn sản phẩm", mhCB));
 
                     CustomComboBox kvCB = new CustomComboBox();
-                    kvCB.setSelectedItem("Chọn khu vực để chứa");
                     inputFields.add(new FormInput("Chọn khu vực muốn chứa", kvCB));
                     ActionListener changeMHAction = new ActionListener() {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(!mhCB.getSelectedKey().equals("null")){
+                                kvCB.removeAllItems();
+                                kvCB.addItem("Chọn khu vực", null);
                                 ArrayList<KhuvucMD> dsKVchuaMH = formDonBLL.getDanhSachKhuVuc_MH(mhCB.getSelectedKey());
                                 if(dsKVchuaMH == null){
                                     new ThongBaoDialog("Không có khu vực được phân chứa loại mặt hàng này trong kho",null);
