@@ -360,5 +360,6 @@ public class UI extends TitleFrame implements MouseListener{
         pnlChucNang.put(label,panel);
         panelRight.add(panel);
         panel.setVisible(false);
+        
     }
 }

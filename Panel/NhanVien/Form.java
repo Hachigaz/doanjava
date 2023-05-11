@@ -60,6 +60,7 @@ public class Form extends JDialog implements MouseListener{
     public Form(JFrame parent,ActionListener add){
         super(parent,"Form nhân viên",true);
         this.setPreferredSize(new Dimension(1300,700));
+        this.setResizable(false);
         labelTitleInfo = new JLabel("Thông tin nhân viên");
         labelTitleInfo.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         labelTitleInfo.setFont(new Font("Poppins",Font.BOLD,20));

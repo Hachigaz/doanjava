@@ -237,16 +237,7 @@ public class DonNhapUI extends JPanel{
 
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
-        //setup bảng
-        // String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        // ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
-        // TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
-        //     @Override
-        //     public boolean isCellEditable(int row, int column) {
-        //         return false;
-        //     }
-        // };
-        // UpdateTable(tableDanhSach);
+
         
     }
     //lọc theo loại sp và khu vực
