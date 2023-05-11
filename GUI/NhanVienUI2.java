@@ -309,6 +309,8 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             String[] dataTK = form.getUserPass();
             if(form.check()==false){
                 JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
+            }else if(form.checkTen()==false){
+                JOptionPane.showMessageDialog(form, "Họ tên không được phép có số hoặc ký tự đặt biệt!");
             }else{
                 if(dataTK[4] == "False"){
                     JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
@@ -342,6 +344,8 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             if(form.check()==false){
                 JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
+            }else if(form.checkTen()==false){
+                JOptionPane.showMessageDialog(form, "Họ tên không được phép có số hoặc ký tự đặt biệt!");
             }else{
                 if(dataTK[4] == "False"){
                     JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");

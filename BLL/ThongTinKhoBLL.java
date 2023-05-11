@@ -1,4 +1,4 @@
-package Panel.ThongTinKho;
+package BLL;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
