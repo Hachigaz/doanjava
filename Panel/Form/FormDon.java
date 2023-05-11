@@ -36,6 +36,7 @@ public class FormDon extends TitleFrame {
     private JLabel labelNgayTaoDon;
     private CustomComboBox comboBox2;
     private JButton addButton;
+    private JButton xoaChiTietBtn;
 
     private JPanel contentPanel = new JPanel();
     private FormDonBLL formDonBLL = new FormDonBLL();
@@ -106,14 +107,21 @@ public class FormDon extends TitleFrame {
 
 
         addButton.setEnabled(false);
-        JButton xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
+        xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
         xoaChiTietBtn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = ctDonPanel.getSelectedRow();
+                if(selectedRow<0){
+                    new ThongBaoDialog("Chưa chọn mặt hàng để xoá", null);
+                    return;
+                }
                 dsCTDon.remove(selectedRow);
                 updateTableModel();
+                rightPanel.remove(themSPPanel);
+                themSPPanel=null;
+
             }
             
         });
@@ -222,7 +230,7 @@ public class FormDon extends TitleFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(themSPPanel==null){  
+                if(themSPPanel==null){
                     ArrayList<FormInput> inputFields = new ArrayList<FormInput>();
 
 
@@ -237,8 +245,7 @@ public class FormDon extends TitleFrame {
                     inputFields.add(new FormInput("Chọn sản phẩm", mhCB));
 
                     CustomComboBox kvCB = new CustomComboBox();
-                    kvCB.addItem("Chọn khu vực để chứa","null");
-
+                    kvCB.setSelectedItem("Chọn khu vực để chứa");
                     inputFields.add(new FormInput("Chọn khu vực muốn chứa", kvCB));
                     ActionListener changeMHAction = new ActionListener() {
 
@@ -269,7 +276,6 @@ public class FormDon extends TitleFrame {
                     JLabel sucChuaLabel = new JLabel();
                     
                     kvCB.addActionListener(new ActionListener() {
-
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
@@ -278,7 +284,10 @@ public class FormDon extends TitleFrame {
                                     tongSLKV+=(float)ctkvRow.getSoLuong();
                                 }
                             }
-                            sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            System.out.println(kvCB.getSelectedKey());
+                            if(kvCB.getSelectedKey()!=null){
+                                sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            }
                         }
                         
                     });
@@ -387,7 +396,7 @@ public class FormDon extends TitleFrame {
                     soLuongSpinner.setEnabled(false);
 
 
-                    String[] columnNames = {"Tên sản phẩm","Khu vực","Số lượng","Ngày nhập","Đơn nhập"};
+                    String[] columnNames = {"Tên sản phẩm","Khu vực","Số lượng","Đơn nhập","Ngày nhập"};
                     DefaultTableModel tableChonSP = new DefaultTableModel();
                     for(String columnName:columnNames){
                         tableChonSP.addColumn(columnName);
@@ -395,7 +404,13 @@ public class FormDon extends TitleFrame {
                     ArrayList<Object[]> dsMHChon = formDonBLL.getDanhSachMHChon(comboBox2.getSelectedKey());
                     if(dsMHChon!=null){
                         for(Object[] mh :dsMHChon){
-                            tableChonSP.addRow(new Object[]{mh[1],mh[2],mh[3],mh[4],mh[5]});
+                            float soLuong = (float)mh[3];
+                            for(DataRow r :dsCTDon){
+                                if(r.mh.getMaMH().equals(mh[0])&&r.kv.getMaKV().equals(mh[2])&&r.getMaDonNhap().equals(mh[4])){
+                                    soLuong-=r.getSoLuong();
+                                }
+                            }
+                            tableChonSP.addRow(new Object[]{mh[1],mh[2],soLuong,mh[4],mh[5]});
                         }
                     }
                     ListSelectionListener selectedMHListener = new ListSelectionListener() {
@@ -412,11 +427,12 @@ public class FormDon extends TitleFrame {
                     panelChonSP.getTableDS().setPreferredSize(new Dimension(panelChonSP.getTableDS().getPreferredSize().width, 400));
                     panelChonContent.add(panelChonSP);
                     panelChonContent.add(Box.createVerticalGlue()); // Add glue component
-
+                    //panelChonContent.setPreferredSize(new Dimension(panelChonContent.getPreferredSize().width,400));
                     JPanel panelSpinnerInput = new JPanel();
                     panelSpinnerInput.add(new JLabel("Chọn số lượng xuất"));
                     panelSpinnerInput.add(soLuongSpinner);
                     panelChonContent.add(panelSpinnerInput);
+                    panelChonContent.add(Box.createVerticalStrut(10));
 
                     JPanel panelSubmitInput = new JPanel(new FlowLayout(FlowLayout.CENTER, 20,0));
                     JButton submitButton = new JButton("Thêm vào đơn xuất");
@@ -433,11 +449,32 @@ public class FormDon extends TitleFrame {
                                 new ThongBaoDialog("Vui lòng chọn giá trị lớn hơn 0", null);
                                 return;
                             }
+
                             int selectedRow = panelChonSP.getSelectedRow();
+
+
                             Mat_hangMD mhChon = formDonBLL.getFirstMH(((dsMHChon.get(selectedRow))[0]).toString());
                             KhuvucMD kvChon = formDonBLL.getFirstKV(((dsMHChon.get(selectedRow)[2])).toString());
-                            String maDonChon = dsMHChon.get(selectedRow)[5].toString();
+                            String maDonChon = dsMHChon.get(selectedRow)[4].toString();
+
                             
+                            Float SLConLai = (Float)dsMHChon.get(selectedRow)[3];
+                            System.out.println(SLConLai);
+                            int tongSLXuat = soLuongXuat;
+                            for(DataRow r: dsCTDon){
+                                if(r.getMaDonNhap().equals(maDonChon)&&r.mh.getMaMH().equals(mhChon.getMaMH())&&r.kv.getMaKV().equals(kvChon.getMaKV())){
+                                    tongSLXuat+=r.getSoLuong();
+                                }
+                            }
+                            System.out.println(tongSLXuat);
+                            if(tongSLXuat>SLConLai){
+                                ThongBaoDialog tb = new ThongBaoDialog("Không đủ số hàng để xuất cho mặt hàng "+mhChon.getTenMH()+" trong " + kvChon.getTenKV() +" thuộc đơn nhập "+maDonChon, null);
+                                tb.setSize(400, 300);
+                                return;
+                            }
+
+
+
                             boolean timThay = false;
                             for(DataRow r:dsCTDon){
                                 if(r.getMaDonNhap().equals(maDonChon)&&r.mh.getMaMH().equals(mhChon.getMaMH())&&r.kv.getMaKV().equals(kvChon.getMaKV())){

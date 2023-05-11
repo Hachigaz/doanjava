@@ -60,7 +60,7 @@ public class ThongTinSPBLL {
         if(dsmh != null){
             soluong = dsmh.size();
         }
-        String maMHMoi = "MH_"+maCtyChon.split("Cty_")[1]+"_"+df.format(+1);
+        String maMHMoi = "MH_"+maCtyChon.split("Cty_")[1]+"_"+df.format(soluong+1);
         return maMHMoi;
     }
     public void themMatHangMoi(Mat_hangMD mhMoi){

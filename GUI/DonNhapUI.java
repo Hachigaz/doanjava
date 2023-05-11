@@ -26,6 +26,13 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -119,7 +126,7 @@ public class DonNhapUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){                
                 int selectedRow = panelDanhSach.getSelectedRow();
-                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
+                String maDonChon = panelDanhSach.getTableDS().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
                 JFileChooser xuatFileChooser = new JFileChooser();
@@ -128,6 +135,7 @@ public class DonNhapUI extends JPanel{
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     // The user selected a file
                     String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
+                    System.out.println(donChon.getMaDonNhap());
                     if(exportTableToExcel(donChon,dsCT,selectedFilePath))
                     {
                         new ThongBaoDialog("Đã xuất ra file "+donChon.getMaDonNhap()+".xlsx", null);
@@ -174,7 +182,7 @@ public class DonNhapUI extends JPanel{
             }
         });
 
-        btpdf = new JButton("In đơn nhập");
+        btpdf = new JButton("In");
         btpdf.setPreferredSize(new Dimension(100, 40));
         btpdf.setBackground(new Color(255, 197, 70));
         btpdf.setForeground(new Color(0, 0, 0));
@@ -182,19 +190,10 @@ public class DonNhapUI extends JPanel{
         btpdf.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){                
-                int selectedRow = panelDanhSach.getSelectedRow();
-                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
-                DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
-                ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                JFileChooser xuatFileChooser = new JFileChooser();
-                xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                int returnValue = xuatFileChooser.showSaveDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    // The user selected a file
-                    String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
-                    if(exportTableToExcel(donChon, dsCT, selectedFilePath)){
-                        exportTableToPdf(selectedFilePath);
-                    }
+                try {
+                    exportTableToPdf();
+                } catch (Exception ignore) {
+                    // TODO: handle exception
                 }
             }
         });
@@ -666,7 +665,6 @@ public class DonNhapUI extends JPanel{
 
     private void importExceltoTable(String excelFilePath) {
         FormDonBLL formDonBLL = new FormDonBLL();
-        
         try {
             FileInputStream inputStream = new FileInputStream(excelFilePath);
 
@@ -675,16 +673,10 @@ public class DonNhapUI extends JPanel{
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
 
             org.apache.poi.ss.usermodel.Row row = sheet.getRow(2);
-            String column1Value="";
             String column2Value="";
             String column3Value="";
             String column4Value="";
             String column5Value="";
-
-            Cell cell1 = row.getCell(0);
-            if(cell1!=null) {
-                column1Value = cell1.getStringCellValue();
-            }
 
             Cell cell2 = row.getCell(1);
             if(cell2!=null) {
@@ -695,7 +687,6 @@ public class DonNhapUI extends JPanel{
             if(cell3!=null) {
                 column3Value = cell3.getStringCellValue();
             }
-            System.out.println(column3Value);
 
             Cell cell4 = row.getCell(3);
             if(cell4!=null) {
@@ -714,11 +705,11 @@ public class DonNhapUI extends JPanel{
                 }
             });
             formdon.setVisible(false);
-            DonNhapMD dn=new DonNhapMD(donNhapBLL.taoMaDonNhapMoi(), column2Value, column3Value, column4Value, column5Value);
+            String md=donNhapBLL.taoMaDonNhapMoi();
+            DonNhapMD dn=new DonNhapMD(md, column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
-
-
-            for (int indexRow = 4; indexRow<=sheet.getLastRowNum();indexRow++) {
+            
+            for (int indexRow = 5; indexRow<=sheet.getLastRowNum();indexRow++) {
                 String madon ="";
                 String mamh="";
                 String makv="";
@@ -726,41 +717,38 @@ public class DonNhapUI extends JPanel{
                 Float slconlai=0.0f;
                 org.apache.poi.ss.usermodel.Row rowData = sheet.getRow(indexRow);
                 
-                Cell o1 = rowData.getCell(0);
-            if(o1!=null) {
-                madon = donNhapBLL.taoMaDonNhapMoi();
-            }
+                madon = md;
 
-            Cell o2 = rowData.getCell(1);
-            if(o2!=null) {
-                mamh = o2.getStringCellValue();
-            }
+                Cell o2 = rowData.getCell(1);
+                if(o2!=null) {
+                    mamh = o2.getStringCellValue();
+                }
 
-            Cell o3 = rowData.getCell(2);
-            if(o3!=null) {
-                makv = o3.getStringCellValue();
-            }
+                Cell o3 = rowData.getCell(2);
+                if(o3!=null) {
+                    makv = o3.getStringCellValue();
+                }
 
-            Cell o4 = rowData.getCell(3);
-            if(o4.getCellType()==CellType.NUMERIC) {
-                slnhap = (float) o4.getNumericCellValue();
-            }
+                Cell o4 = rowData.getCell(3);
+                if(o4.getCellType()==CellType.NUMERIC) {
+                    slnhap = (float) o4.getNumericCellValue();
+                }
 
-            Cell o5 = rowData.getCell(4);
-            if(o5.getCellType()==CellType.NUMERIC) {
-                slconlai = (float) o5.getNumericCellValue();
-            }
-            
-            ctDN.add(new ChitietdonnhapMD(madon, mamh, makv, slnhap, slconlai));
-            }
-            formDonBLL.themDonNhapMoi(dn, ctDN);
-            updateTable();
+                Cell o5 = rowData.getCell(4);
+                if(o5.getCellType()==CellType.NUMERIC) {
+                    slconlai = (float) o5.getNumericCellValue();
+                }
+                
+                ctDN.add(new ChitietdonnhapMD(madon, mamh, makv, slnhap, slconlai));
+                }
+                formDonBLL.themDonNhapMoi(dn, ctDN);
+                System.out.println("ok");
+                updateTable();
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
     public void updateTable(){
-
         String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
         ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
@@ -773,14 +761,24 @@ public class DonNhapUI extends JPanel{
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
     }
-    private void exportTableToPdf(String path){
-            // The user selected a file
-            System.out.println(path);
-            File file = new File(path);
-            Converter converter = new Converter(file.getPath());
-            PdfConvertOptions options = new PdfConvertOptions();
-            converter.convert(file.getPath().replace("xlsx", "pdf"), options);            
-            new ThongBaoDialog("Đã xuất ra file pdf", null);
-            converter.close();
+    private void exportTableToPdf() {
+        JFileChooser fc = new JFileChooser();
+        fc.removeChoosableFileFilter(fc.getFileFilter());
+        // set thu muc default, mày thay "transaction/bills" thành đường dẫn đến thư mục Excel của m để nó mở thư mục Excel luôn
+        fc.setCurrentDirectory(new File("D:/Java/BT_Javaa/src/doanjava/Excel"));
+            
+        FileFilter filter = new FileNameExtensionFilter("xlsx", "xlsx");
+        fc.setFileFilter(filter);
+        int returnVal = fc.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File file = fc.getSelectedFile();
+        Converter converter = new Converter(file.getPath());
+        PdfConvertOptions options = new PdfConvertOptions();
+        converter.convert(file.getPath().replace("xlsx", "pdf"), options);
+            
+        new ThongBaoDialog("Đã xuất ra file PDF", null);
+        }
     }
 }
+
+        

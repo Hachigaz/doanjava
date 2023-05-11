@@ -71,4 +71,5 @@ public class DonNhapBLL {
         String maDNMoi = "DN"+df.format(soLuong+1);
         return maDNMoi;
     }   
+    
 }
