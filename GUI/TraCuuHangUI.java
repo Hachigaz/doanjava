@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -22,6 +23,7 @@ import DTO.KhuvucMD;
 import DTO.Loai_hangMD;
 import DTO.Model;
 import DTO.Custom.DSTraCuuHangMD;
+import Panel.UI;
 import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 import misc.util;
@@ -74,7 +76,7 @@ public class TraCuuHangUI extends JPanel{
 
 
         //Lấy danh sách khu vực và thêm vào bảng lộc
-        ArrayList<KhuvucMD> danhSachKV = traCuuHangBLL.getDanhSachKV("MaKho = "+getSelectedMaKhoKey());
+        ArrayList<KhuvucMD> danhSachKV = traCuuHangBLL.getDanhSachKV("MaKho = "+UI.khoNVDangNhap.getMaKho());
 
         tenLoc.add(new ArrayList<String>());
         for(KhuvucMD khuvuc : danhSachKV){          
@@ -103,7 +105,7 @@ public class TraCuuHangUI extends JPanel{
 
         //setup bảng
         String[] columnNames = {"Khu vực","Tên hàng","Số lượng","Loại sản phẩm","Công ty","Ngày nhập"};
-        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+getSelectedMaKhoKey());
+        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+UI.khoNVDangNhap.getMaKho());
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -116,7 +118,7 @@ public class TraCuuHangUI extends JPanel{
     public void setVisible(boolean isVisible){
         super.setVisible(isVisible);
         String[] columnNames = {"Khu vực","Tên hàng","Số lượng","Loại sản phẩm","Công ty","Ngày nhập"};
-        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+getSelectedMaKhoKey());
+        ArrayList<DSTraCuuHangMD> dsTraCuu = traCuuHangBLL.getDanhSachTCH("donnhap.MaKho = "+UI.khoNVDangNhap.getMaKho());
         TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsTraCuu),columnNames){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -239,7 +241,6 @@ public class TraCuuHangUI extends JPanel{
 
     private String[] optionName;
     private String[] optionKey;
-    private JComboBox<String> cbChonKho;
 
     ActionListener onChangeMaKho = new ActionListener() {
 
@@ -266,18 +267,15 @@ public class TraCuuHangUI extends JPanel{
         panelSearch.setBorder(BorderFactory.createEmptyBorder(14,0,0,10));
         panelReload.setOpaque(false);
         panelReload.setBorder(BorderFactory.createEmptyBorder(14,10,0,0));
-        JLabel labelChonKho = new JLabel("Chọn kho");
+        JLabel labelChonKho = new JLabel("Kho đăng nhập:"+UI.khoNVDangNhap.getTenKho());
+        labelChonKho.setFont(new Font("Helvetica", Font.BOLD, 18));
 
         optionName = dsTenKho;
         optionKey = dsMaKho;
 
-        cbChonKho = new JComboBox<String>(optionName);
 
         panelChonKho.add(labelChonKho);
-        panelChonKho.add(cbChonKho);
         panelChucNang.add(panelChonKho,BorderLayout.WEST);
-
-        cbChonKho.addActionListener(onChangeMaKho);
 
         JLabel timkiem = new JLabel("Tìm kiếm");
         searchBar = new JTextField(20);
@@ -302,16 +300,6 @@ public class TraCuuHangUI extends JPanel{
         panelReload.add(btreload);
     }
 
-    //lấy mã kho đang chọn trong combobox
-    public String getSelectedMaKhoKey(){
-        String selected = cbChonKho.getSelectedItem().toString();
-        for(int i = 0; i < optionKey.length;i++){
-            if(selected.equals(optionName[i])){
-                return optionKey[i];
-            }
-        }
-        return null;
-    }
     //tìm kiếm theo giá trị nhập
     String searchedText="";
     public void timTheoGiaTri(){

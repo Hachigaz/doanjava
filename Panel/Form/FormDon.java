@@ -279,14 +279,13 @@ public class FormDon extends TitleFrame {
                     kvCB.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
-                            for(DataRow ctkvRow : dsCTDon){
-                                if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
-                                    tongSLKV+=(float)ctkvRow.getSoLuong();
-                                }
-                            }
-                            System.out.println(kvCB.getSelectedKey());
                             if(kvCB.getSelectedKey()!=null){
+                                float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
+                                for(DataRow ctkvRow : dsCTDon){
+                                    if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
+                                        tongSLKV+=(float)ctkvRow.getSoLuong();
+                                    }
+                                }
                                 sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                             }
                         }
@@ -295,7 +294,7 @@ public class FormDon extends TitleFrame {
                     ActionListener submitAction = new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(kvCB.getSelectedKey().equals("null")){
+                            if(kvCB.getSelectedKey()==null){
                                 new ThongBaoDialog("Vui lòng chọn khu vực để chứa", null);
                                 return;
                             }
