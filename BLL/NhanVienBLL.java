@@ -3,9 +3,13 @@ package BLL;
 import java.sql.SQLData;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import DAL.DataAccessLayer;
 import DTO.ChucvuMD;
+import DTO.DonNhapMD;
+import DTO.DonXuatMD;
 import DTO.KhoMD;
 import DTO.KhuvucMD;
 import DTO.NhanvienMD;
@@ -20,6 +24,8 @@ public class NhanVienBLL {
     private DataAccessLayer<KhoMD> KhoDAL;
     private DataAccessLayer<Taikhoan_nhanvienMD> TaiKhoanDAL;
     private DataAccessLayer<ChucvuMD> ChucVuDAL;
+    private DataAccessLayer<DonNhapMD> DonNhapDAL;
+    private DataAccessLayer<DonXuatMD> DonXuatDAL;
     public NhanVienBLL(){
         SQLUser master = UI.master;
         DSNhanVienDAL = new DataAccessLayer<>(master,DSNhanVienMD.class);
@@ -27,6 +33,8 @@ public class NhanVienBLL {
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
         TaiKhoanDAL = new DataAccessLayer<>(master, Taikhoan_nhanvienMD.class);
         ChucVuDAL = new DataAccessLayer<>(master, ChucvuMD.class);
+        DonNhapDAL = new DataAccessLayer<>(master, DonNhapMD.class);
+        DonXuatDAL = new DataAccessLayer<>(master, DonXuatMD.class);
     }
     public ArrayList<DSNhanVienMD> getDanhSachNhanVien(String... statements){
         return DSNhanVienDAL.getTable(statements);
@@ -62,6 +70,47 @@ public class NhanVienBLL {
             dsTenChucVu[i] = dschucvu.getTenCV();
         }
         return dsTenChucVu;
+    }
+    public String[] layManvDN(){
+        String[] dsMaNVDN = new String[DonNhapDAL.getTable().size()];
+        for(int i=0;i<DonNhapDAL.getTable().size();i++){
+            DonNhapMD dsDN = DonNhapDAL.getTable().get(i);
+            dsMaNVDN[i] = dsDN.getMaNV();
+        }
+        return dsMaNVDN;
+    }
+    public String[] layManvDX(){
+        String[] dsMaNVDX = new String[DonXuatDAL.getTable().size()];
+        for(int i=0;i<DonXuatDAL.getTable().size();i++){
+            DonXuatMD dsDX = DonXuatDAL.getTable().get(i);
+            dsMaNVDX[i] = dsDX.getMaNV();
+        }
+        return dsMaNVDX;
+    }
+    public String[] luuMaNVDuyNhat(String[] a, String[] b){
+        Set<String> set = new HashSet<>();
+        for (String s : a) {
+            set.add(s);
+        }
+        for (String s : b) {
+            set.add(s);
+        }
+        String[] mangDuyNhat = new String[set.size()];
+        int index = 0;
+        for (String s : set) {
+            mangDuyNhat[index] = s;
+            index++;
+        }
+        return mangDuyNhat;
+    }
+   
+    public boolean kiemTra(String a, String[] b){
+        for(int i=0;i<b.length;i++){
+            if(a==b[i]){
+                return true;
+            }
+        }
+        return false;
     }
     public int layMa(){
         int count = 0;

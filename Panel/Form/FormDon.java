@@ -388,7 +388,7 @@ public class FormDon extends TitleFrame {
                     soLuongSpinner.setEnabled(false);
 
 
-                    String[] columnNames = {"Tên sản phẩm","Khu vực","Số lượng","Ngày nhập","Đơn nhập"};
+                    String[] columnNames = {"Tên sản phẩm","Khu vực","Số lượng","Đơn nhập","Ngày nhập"};
                     DefaultTableModel tableChonSP = new DefaultTableModel();
                     for(String columnName:columnNames){
                         tableChonSP.addColumn(columnName);
@@ -413,11 +413,12 @@ public class FormDon extends TitleFrame {
                     panelChonSP.getTableDS().setPreferredSize(new Dimension(panelChonSP.getTableDS().getPreferredSize().width, 400));
                     panelChonContent.add(panelChonSP);
                     panelChonContent.add(Box.createVerticalGlue()); // Add glue component
-
+                    //panelChonContent.setPreferredSize(new Dimension(panelChonContent.getPreferredSize().width,400));
                     JPanel panelSpinnerInput = new JPanel();
                     panelSpinnerInput.add(new JLabel("Chọn số lượng xuất"));
                     panelSpinnerInput.add(soLuongSpinner);
                     panelChonContent.add(panelSpinnerInput);
+                    panelChonContent.add(Box.createVerticalStrut(10));
 
                     JPanel panelSubmitInput = new JPanel(new FlowLayout(FlowLayout.CENTER, 20,0));
                     JButton submitButton = new JButton("Thêm vào đơn xuất");
@@ -434,11 +435,32 @@ public class FormDon extends TitleFrame {
                                 new ThongBaoDialog("Vui lòng chọn giá trị lớn hơn 0", null);
                                 return;
                             }
+
                             int selectedRow = panelChonSP.getSelectedRow();
+
+
                             Mat_hangMD mhChon = formDonBLL.getFirstMH(((dsMHChon.get(selectedRow))[0]).toString());
                             KhuvucMD kvChon = formDonBLL.getFirstKV(((dsMHChon.get(selectedRow)[2])).toString());
-                            String maDonChon = dsMHChon.get(selectedRow)[5].toString();
+                            String maDonChon = dsMHChon.get(selectedRow)[4].toString();
+
                             
+                            Float SLConLai = (Float)dsMHChon.get(selectedRow)[3];
+                            System.out.println(SLConLai);
+                            int tongSLXuat = soLuongXuat;
+                            for(DataRow r: dsCTDon){
+                                if(r.getMaDonNhap().equals(maDonChon)&&r.mh.getMaMH().equals(mhChon.getMaMH())&&r.kv.getMaKV().equals(kvChon.getMaKV())){
+                                    tongSLXuat+=r.getSoLuong();
+                                }
+                            }
+                            System.out.println(tongSLXuat);
+                            if(tongSLXuat>SLConLai){
+                                ThongBaoDialog tb = new ThongBaoDialog("Không đủ số hàng để xuất cho mặt hàng "+mhChon.getTenMH()+" trong " + kvChon.getTenKV() +" thuộc đơn nhập "+maDonChon, null);
+                                tb.setSize(400, 300);
+                                return;
+                            }
+
+
+
                             boolean timThay = false;
                             for(DataRow r:dsCTDon){
                                 if(r.getMaDonNhap().equals(maDonChon)&&r.mh.getMaMH().equals(mhChon.getMaMH())&&r.kv.getMaKV().equals(kvChon.getMaKV())){

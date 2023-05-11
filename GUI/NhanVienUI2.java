@@ -71,7 +71,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
     private JComboBox comboChucVu;
     private JTextField searchField;
     public static JButton searchButton,addButton,infoButton;
-    private JButton editButton,deleteButton;
+    public static JButton editButton,deleteButton;
     private TableRowSorter<TableModel> rowSorter;
     private TableModel tableDanhSach;
     private Object[] atributeNV;
@@ -210,6 +210,7 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
 
         panelRight.add(panelDefault);
     }
+    
     private String[] optionName = {"Tất cả",nhanVienBLL.layTenChucVu()[0],nhanVienBLL.layTenChucVu()[1],nhanVienBLL.layTenChucVu()[2]};
     public String getSelectedChucVuKey(){
         String selected = comboChucVu.getSelectedItem().toString();
@@ -377,10 +378,6 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             int rowIndex = tableTemp.getSelectedRow();
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             arr[1] = tableTemp.getValueAt(rowIndex, 1).toString();
-            System.out.println(UI.manv);
-            System.out.println(UI.tenDN);
-            System.out.println(UI.matkhau);
-            System.out.println(UI.manhomquyen);
             int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa nhân viên "+arr[1]+" không?", "Xác nhận xóa dữ liệu", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 nhanVienBLL.xoaTK("MaNV = "+arr[0]);
@@ -462,11 +459,26 @@ public class NhanVienUI2 extends JPanel implements MouseListener{
             panelInfo.setVisible(true);
             panelInfo.removeAll();     
             panelInfo.add(labelTitle);
+
             for(int i=0;i<labelForm.length;i++){
                 JLabel label = createLabelInfo(labelForm[i] + " " + arr[i]);
                 panelInfo.add(label);
             }
+            String[] dsMa = nhanVienBLL.luuMaNVDuyNhat(nhanVienBLL.layManvDN(), nhanVienBLL.layManvDX());
             panelInfo.add(panelButton);
+            boolean foundMatch = false;
+            for (int i = 0; i < dsMa.length; i++) {
+                if (arr[0].equals(dsMa[i])) {
+                    deleteButton.setEnabled(false);
+                    foundMatch = true; // Đánh dấu đã tìm thấy điều kiện đúng
+                    break; // Thoát khỏi vòng lặp
+                }
+            }
+
+            if (!foundMatch) {
+                deleteButton.setEnabled(true);
+            }
+            
             panelInfo.revalidate();
             panelInfo.repaint();    
         }
