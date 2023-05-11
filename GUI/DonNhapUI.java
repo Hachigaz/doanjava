@@ -27,7 +27,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -491,49 +494,91 @@ public class DonNhapUI extends JPanel{
             Workbook workbook = new XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");
             org.apache.poi.ss.usermodel.Row sheetname = sheet.createRow(0);
+            sheet.setColumnWidth(0, 20* 256);
+            sheet.setColumnWidth(1, 20* 256);
+            sheet.setColumnWidth(2, 20* 256);
+            sheet.setColumnWidth(3, 20* 256);
+            sheet.setColumnWidth(4, 20* 256);
+
+            CellStyle cellStyle = workbook.createCellStyle();
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);
+            cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
             Cell sheeCell=sheetname.createCell(0);
             sheeCell.setCellValue("Đơn nhập "+dn.getMaDonNhap());
             org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(1);
             Cell headerCell1=headerRow.createCell(0);
             headerCell1.setCellValue("Mã đơn nhập");
+            headerCell1.setCellStyle(cellStyle);
             Cell headerCell2=headerRow.createCell(1);
             headerCell2.setCellValue("Mã kho");
+            headerCell2.setCellStyle(cellStyle);
             Cell headerCell3=headerRow.createCell(2);
             headerCell3.setCellValue("Mã công ty");
+            headerCell3.setCellStyle(cellStyle);
             Cell headerCell4=headerRow.createCell(3);
             headerCell4.setCellValue("Mã nhân viên");
+            headerCell4.setCellStyle(cellStyle);
             Cell headerCell5=headerRow.createCell(4);
             headerCell5.setCellValue("Ngày nhập");
+            headerCell5.setCellStyle(cellStyle);
 
             org.apache.poi.ss.usermodel.Row dataheaderRow = sheet.createRow(2);
             Cell dataheaderCell1=dataheaderRow.createCell(0);
             dataheaderCell1.setCellValue(dn.getMaDonNhap());
+            dataheaderCell1.setCellStyle(cellStyle);
             Cell dataheaderCell2=dataheaderRow.createCell(1);
             dataheaderCell2.setCellValue(dn.getMaKho());
+            dataheaderCell2.setCellStyle(cellStyle);
             Cell dataheaderCell3=dataheaderRow.createCell(2);
             dataheaderCell3.setCellValue(dn.getMaCty());
+            dataheaderCell3.setCellStyle(cellStyle);
             Cell dataheaderCell4=dataheaderRow.createCell(3);
             dataheaderCell4.setCellValue(dn.getMaNV());
+            dataheaderCell4.setCellStyle(cellStyle);
             Cell dataheaderCell5=dataheaderRow.createCell(4);
             dataheaderCell5.setCellValue(dn.getNgayNhap());
+            dataheaderCell5.setCellStyle(cellStyle);
 
             org.apache.poi.ss.usermodel.Row CTDNRow = sheet.createRow(3);
             Cell sheeCell2=CTDNRow.createCell(0);
             sheeCell2.setCellValue("Chi tiết đơn nhập");
 
-            for (int i=3;i<dsCT.size()+3;i++) {
+            org.apache.poi.ss.usermodel.Row dataCTDNRow = sheet.createRow(4);
+            Cell mdn = dataCTDNRow.createCell(0);
+            mdn.setCellValue("Mã đơn nhập");
+            mdn.setCellStyle(cellStyle);
+            Cell mmh = dataCTDNRow.createCell(1);
+            mmh.setCellValue("Mã mặt hàng");
+            mmh.setCellStyle(cellStyle);
+            Cell mkv = dataCTDNRow.createCell(2);
+            mkv.setCellValue("Mã khu vực");
+            mkv.setCellStyle(cellStyle);
+            Cell slnhap = dataCTDNRow.createCell(3);
+            slnhap.setCellValue("Số lượng nhập");
+            slnhap.setCellStyle(cellStyle);
+            Cell slconlai = dataCTDNRow.createCell(4);
+            slconlai.setCellValue("Số lượng còn lại");
+            slconlai.setCellStyle(cellStyle);
+
+            for (int i=4;i<dsCT.size()+4;i++) {
                 org.apache.poi.ss.usermodel.Row row = sheet.createRow(i+1);
-                ChitietdonnhapMD ct= dsCT.get(i-3);
+                ChitietdonnhapMD ct= dsCT.get(i-4);
                 Cell madnCTDN=row.createCell(0);
                 madnCTDN.setCellValue(ct.getMaDonNhap());
+                madnCTDN.setCellStyle(cellStyle);
                 Cell mamhCTDN=row.createCell(1);
                 mamhCTDN.setCellValue(ct.getMaMH());
+                mamhCTDN.setCellStyle(cellStyle);
                 Cell makvCTDN=row.createCell(2);
                 makvCTDN.setCellValue(ct.getMaKV());
+                makvCTDN.setCellStyle(cellStyle);
                 Cell slnhapCTDN=row.createCell(3);
                 slnhapCTDN.setCellValue(ct.getSLNhap());
+                slnhapCTDN.setCellStyle(cellStyle);
                 Cell slconlaiCTDN=row.createCell(4);
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
+                slconlaiCTDN.setCellStyle(cellStyle);
             }
             JFileChooser xuatFileChooser = new JFileChooser();
             xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
