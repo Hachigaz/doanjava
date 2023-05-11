@@ -176,6 +176,7 @@ public class DonNhapUI extends JPanel{
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     // The user selected a file
                     String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
+                    System.out.println(donChon.getMaDonNhap());
                     if(exportTableToExcel(donChon,dsCT,selectedFilePath))
                     {
                         new ThongBaoDialog("Đã xuất ra file "+donChon.getMaDonNhap()+".xlsx", null);
@@ -647,7 +648,6 @@ public class DonNhapUI extends JPanel{
             if(cell3!=null) {
                 column3Value = cell3.getStringCellValue();
             }
-            System.out.println(column3Value);
 
             Cell cell4 = row.getCell(3);
             if(cell4!=null) {
@@ -666,9 +666,10 @@ public class DonNhapUI extends JPanel{
                 }
             });
             formdon.setVisible(false);
-            DonNhapMD dn=new DonNhapMD(donNhapBLL.taoMaDonNhapMoi(), column2Value, column3Value, column4Value, column5Value);
+            String md=donNhapBLL.taoMaDonNhapMoi();
+            DonNhapMD dn=new DonNhapMD(md, column2Value, column3Value, column4Value, column5Value);
             ArrayList<ChitietdonnhapMD> ctDN = new ArrayList<ChitietdonnhapMD>();
-
+            
             for (int indexRow = 5; indexRow<=sheet.getLastRowNum();indexRow++) {
                 String madon ="";
                 String mamh="";
@@ -677,10 +678,7 @@ public class DonNhapUI extends JPanel{
                 Float slconlai=0.0f;
                 org.apache.poi.ss.usermodel.Row rowData = sheet.getRow(indexRow);
                 
-                Cell o1 = rowData.getCell(0);
-                if(o1!=null) {
-                    madon = donNhapBLL.taoMaDonNhapMoi();
-                }
+                madon = md;
 
                 Cell o2 = rowData.getCell(1);
                 if(o2!=null) {
@@ -705,6 +703,7 @@ public class DonNhapUI extends JPanel{
                 ctDN.add(new ChitietdonnhapMD(madon, mamh, makv, slnhap, slconlai));
                 }
                 formDonBLL.themDonNhapMoi(dn, ctDN);
+                System.out.println("ok");
                 updateTable();
         } catch(Exception e) {
             e.printStackTrace();
