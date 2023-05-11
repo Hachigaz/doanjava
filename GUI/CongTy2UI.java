@@ -265,30 +265,32 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
     ActionListener editButtonAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String[] data = form.getData();
             int rowIndex = tableTemp.getSelectedRow();
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             if(form.check()==false){
                 JOptionPane.showMessageDialog(form, "Mời bạn nhập đầy đủ thông tin");
             }else{
-                String[] data = form.getData();
-                CongTy2BLL.xoaCT("MaCty = "+arr[0]);
-                CongTy2BLL.themCTmoi(new CongtyMD(data[0],data[1],data[2],data[3]));
+                if(data[0] == "False"){
+                    JOptionPane.showMessageDialog(form, "Bạn nhập mật khẩu không hợp lệ!");
+                }else{
+                    CongTy2BLL.suaCT("MaCty = "+arr[0],"TenCty = "+data[1]," DiaChi = "+data[2]," SDT = "+data[3]);
                 
-               
-                String[] columnNames = {"Mã công ty","Tên","Địa chỉ","SDT"};
-                currentTableDS = new DefaultTableModel(Model.to2DArray(CongTy2BLL.getDSCT(), "MaCty","TenCty","DiaChi","SDT"), columnNames){
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
+                    String[] columnNames = {"Mã công ty","Tên","Địa chỉ","SDT"};
+                    currentTableDS = new DefaultTableModel(Model.to2DArray(CongTy2BLL.getDSCT(),"MaCty","TenCty","DiaChi","SDT"),columnNames){
+                        @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(currentTableDS, null);
+                tableTemp = panelDanhSach.getTableDS();
+                tableTemp.addMouseListener(actionInfo);
+                JOptionPane.showMessageDialog(form, "Sửa thành công");
+                panelDefault.setVisible(true);
+                panelInfo.setVisible(false);
+                form.dispose();
                 }
-            };
-            panelDanhSach.SetTable(currentTableDS, null);
-            tableTemp = panelDanhSach.getTableDS();
-            tableTemp.addMouseListener(actionInfo);
-            JOptionPane.showMessageDialog(form, "Sửa thành công");
-            panelDefault.setVisible(true);
-            panelInfo.setVisible(false);
-            form.dispose();
         }
         }
     };
@@ -382,6 +384,7 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
         form.addButton.setText("Sửa");
         form.textTenCty.setText(arr[1]);
         form.textMaCty.setText(arr[0]);
+        form.textMaCty.setEnabled(false);
         form.textSDT.setText(arr[3]);
         form.textDiaChi.setText(arr[2]);
         form.setVisible(true);

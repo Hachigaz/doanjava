@@ -83,14 +83,11 @@ public class FormDonBLL {
     }    
     public float getSoLuongCL_KV(String maKV){
         ArrayList<ChitietdonnhapMD> dsCTDN = ctdnDAL.getTable("MaKV="+maKV);
-        ArrayList<Mat_hangMD> dsMH = matHangDAL.getTable();
         float tongSucChua = 0;
         if(dsCTDN!=null){
             for(ChitietdonnhapMD ctdn : dsCTDN){
-                for(Mat_hangMD mh:dsMH){
-                    if(mh.getMaMH().equals(ctdn.getMaMH())&&maKV.equals(ctdn.getMaKV())){
-                        tongSucChua+=ctdn.getSLConLai()/mh.getSoLuongMoiThung();
-                    }
+                if(maKV.equals(ctdn.getMaKV())){
+                    tongSucChua+=ctdn.getSLConLai();
                 }
             }
         }

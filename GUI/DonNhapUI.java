@@ -31,7 +31,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -49,12 +48,11 @@ import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import com.toedter.calendar.JCalendar;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+import java.io.File;
+
 import com.toedter.calendar.JDateChooser;
 
 public class DonNhapUI extends JPanel{
@@ -112,7 +110,7 @@ public class DonNhapUI extends JPanel{
         btlook.setEnabled(false);
 
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(500, 40));
+        btloc.setPreferredSize(new Dimension(300, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
@@ -165,7 +163,17 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                exportTableToExcel(donChon,dsCT);
+                JFileChooser xuatFileChooser = new JFileChooser();
+                xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnValue = xuatFileChooser.showSaveDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    // The user selected a file
+                    String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
+                    if(exportTableToExcel(donChon,dsCT,selectedFilePath))
+                    {
+                        new ThongBaoDialog("Đã xuất ra file "+donChon.getMaDonNhap()+".xlsx", null);
+                    }
+                }
             }
         });
 
@@ -215,10 +223,15 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                try {
-                    //exportTableToPdf(donChon,dsCT);
-                } catch (Exception ignore) {
-                    // TODO: handle exception
+                JFileChooser xuatFileChooser = new JFileChooser();
+                xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnValue = xuatFileChooser.showSaveDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    // The user selected a file
+                    String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
+                    if(exportTableToExcel(donChon, dsCT, selectedFilePath)){
+                        exportTableToPdf(selectedFilePath);
+                    }
                 }
             }
         });
@@ -269,16 +282,7 @@ public class DonNhapUI extends JPanel{
 
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
-        //setup bảng
-        // String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        // ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
-        // TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
-        //     @Override
-        //     public boolean isCellEditable(int row, int column) {
-        //         return false;
-        //     }
-        // };
-        // UpdateTable(tableDanhSach);
+
         
     }
     //lọc theo loại sp và khu vực
@@ -519,7 +523,7 @@ public class DonNhapUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
-    private void exportTableToExcel(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT) {
+    private boolean exportTableToExcel(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT,String selectedFilePath) {
         try {
             Workbook workbook = new XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");
@@ -610,21 +614,15 @@ public class DonNhapUI extends JPanel{
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
                 slconlaiCTDN.setCellStyle(cellStyle);
             }
-            JFileChooser xuatFileChooser = new JFileChooser();
-            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int returnValue = xuatFileChooser.showSaveDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                // The user selected a file
-                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dn.getMaDonNhap()+".xlsx";
-                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
-                workbook.write(fileOutputStream);
-                fileOutputStream.close();
-                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".xlsx", null);
-            }
 
+            FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     private void importExceltoTable(String excelFilePath) {
@@ -736,58 +734,14 @@ public class DonNhapUI extends JPanel{
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
     }
-    private void exportTableToPdf(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT) throws IOException {
-        JFileChooser xuatFileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".xlsx", "xlsx");
-        xuatFileChooser.setFileFilter(filter);
-            // xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int returnValue = xuatFileChooser.showSaveDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                // The user selected a file
-                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath();
-                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".pdf", null);
-        
-                // Load the Excel file
-                FileInputStream fis = new FileInputStream(selectedFilePath);
-                Workbook workbook = new XSSFWorkbook(fis);
-
-                // Create a PDF document
-                PDDocument document = new PDDocument();
-
-                // Loop through each sheet in the Excel file
-                for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-                    Sheet sheet = workbook.getSheetAt(i);
-                    PDPage page = new PDPage();
-                    document.addPage(page);
-                    PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                    contentStream.beginText();
-
-                    // Set the font and font size for the text
-
-                    // Loop through each row and column in the sheet
-                    for (org.apache.poi.ss.usermodel.Row row : sheet) {
-                        for (Cell cell : row) {
-                            // Get the cell value as a string
-                            String value = cell.getStringCellValue();
-                            // Get the position of the cell in the PDF document
-                            float x = (float) (cell.getColumnIndex() * 100.0);
-                            float y = (float) ((sheet.getLastRowNum() - cell.getRowIndex()) * 20.0 + 700.0);
-                            // Write the cell value to the PDF document
-                            contentStream.newLineAtOffset(x, y);
-                            contentStream.showText(value);
-                        }
-                    }
-
-                    contentStream.endText();
-                    contentStream.close();
-                }
-
-                // Save the PDF document to a file
-                document.save(selectedFilePath.replace(".xlsx", ".pdf"));
-                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
-                workbook.write(fileOutputStream);
-                document.close();
-            }
-            
+    private void exportTableToPdf(String path){
+            // The user selected a file
+            System.out.println(path);
+            File file = new File(path);
+            Converter converter = new Converter(file.getPath());
+            PdfConvertOptions options = new PdfConvertOptions();
+            converter.convert(file.getPath().replace("xlsx", "pdf"), options);            
+            new ThongBaoDialog("Đã xuất ra file pdf", null);
+            converter.close();
     }
 }

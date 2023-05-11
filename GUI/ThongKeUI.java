@@ -145,7 +145,7 @@ public class ThongKeUI extends JPanel implements MouseListener{
         );
 
         ChartPanel barChartPanel = new ChartPanel(barChart);
-        barChartPanel.setPreferredSize(new java.awt.Dimension(700,250));
+        barChartPanel.setPreferredSize(new java.awt.Dimension(900,250));
 
         panelKho.add(barChartPanel);
 

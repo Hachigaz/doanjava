@@ -28,6 +28,9 @@ public class CongTy2BLL {
     public void themCTmoi(CongtyMD CTmoi){
         CongTy2DAL.addOne(CTmoi);
     }
+    public void suaCT(String key,String... statements){
+        CongTy2DAL.update(key, statements);
+    }
     public void xoaCT(String... keys){
         CongTy2DAL.remove(keys);
     }

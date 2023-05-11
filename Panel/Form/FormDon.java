@@ -273,7 +273,12 @@ public class FormDon extends TitleFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
-                            //sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
+                            for(DataRow ctkvRow : dsCTDon){
+                                if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
+                                    tongSLKV+=(float)ctkvRow.getSoLuong();
+                                }
+                            }
+                            sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                         }
                         
                     });
@@ -301,13 +306,15 @@ public class FormDon extends TitleFrame {
                                 new ThongBaoDialog("Giá trị nhập vào phải lớn hơn 0", null);
                                 return;
                             }
+                            //lấy tổng số lượng
                             float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
                             for(DataRow ctkvRow : dsCTDon){
                                 if(ctkvRow.kv.getMaKV().equals(kvCB.getSelectedKey())){                                    
-                                    tongSLKV+=(float)ctkvRow.getSoLuong()/(float)ctkvRow.mh.getSoLuongMoiThung();
+                                    tongSLKV+=(float)ctkvRow.getSoLuong();
                                 }
                             }
-                            if(soLuong/formDonBLL.getFirstMH(mhCB.getSelectedKey()).getSoLuongMoiThung()>formDonBLL.getDanhSachKV("MaKV="+kvCB.getSelectedKey()).get(0).getSucChua()){
+                            KhuvucMD kv = formDonBLL.getFirstKV(kvCB.getSelectedKey());
+                            if(soLuong+tongSLKV>kv.getSucChua()){
                                 new ThongBaoDialog("Khu vực không đủ sức chứa", null);
                                 return;
                             }
@@ -315,6 +322,7 @@ public class FormDon extends TitleFrame {
                             for(DataRow r : dsCTDon){
                                 if(r.mh.getMaMH().equals(mhCB.getSelectedKey())&&r.kv.getMaKV().equals(kvCB.getSelectedKey())){
                                     r.setSoLuong(r.getSoLuong()+soLuong);
+                                    timThay=true;
                                 }
                             }
                             if(!timThay){
@@ -426,8 +434,6 @@ public class FormDon extends TitleFrame {
                                 return;
                             }
                             int selectedRow = panelChonSP.getSelectedRow();
-                            System.out.println(selectedRow);
-                            System.out.println("MaMH ="+((dsMHChon.get(selectedRow))[0]).toString());
                             Mat_hangMD mhChon = formDonBLL.getFirstMH(((dsMHChon.get(selectedRow))[0]).toString());
                             KhuvucMD kvChon = formDonBLL.getFirstKV(((dsMHChon.get(selectedRow)[2])).toString());
                             String maDonChon = dsMHChon.get(selectedRow)[5].toString();
