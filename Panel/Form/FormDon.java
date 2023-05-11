@@ -245,16 +245,13 @@ public class FormDon extends TitleFrame {
                     inputFields.add(new FormInput("Chọn sản phẩm", mhCB));
 
                     CustomComboBox kvCB = new CustomComboBox();
+                    kvCB.setSelectedItem("Chọn khu vực để chứa");
                     inputFields.add(new FormInput("Chọn khu vực muốn chứa", kvCB));
-                    kvCB.addItem("Chọn khu vực để chứa","null");
                     ActionListener changeMHAction = new ActionListener() {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(!mhCB.getSelectedKey().equals("null")){
-                                // if(kvCB.getItemCount()>0){
-                                //     kvCB.removeAllItems();
-                                // }
                                 ArrayList<KhuvucMD> dsKVchuaMH = formDonBLL.getDanhSachKhuVuc_MH(mhCB.getSelectedKey());
                                 if(dsKVchuaMH == null){
                                     new ThongBaoDialog("Không có khu vực được phân chứa loại mặt hàng này trong kho",null);
@@ -279,7 +276,6 @@ public class FormDon extends TitleFrame {
                     JLabel sucChuaLabel = new JLabel();
                     
                     kvCB.addActionListener(new ActionListener() {
-
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             float tongSLKV = formDonBLL.getSoLuongCL_KV(kvCB.getSelectedKey());
@@ -288,7 +284,8 @@ public class FormDon extends TitleFrame {
                                     tongSLKV+=(float)ctkvRow.getSoLuong();
                                 }
                             }
-                            if(!kvCB.getSelectedKey().equals("null")){
+                            System.out.println(kvCB.getSelectedKey());
+                            if(kvCB.getSelectedKey()!=null){
                                 sucChuaLabel.setText("Sức chứa khu vực hiện tại: "+tongSLKV+"/"+formDonBLL.getFirstKV(kvCB.getSelectedKey()).getSucChua());
                             }
                         }
