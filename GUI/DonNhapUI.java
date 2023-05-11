@@ -73,6 +73,7 @@ public class DonNhapUI extends JPanel{
     //private JCalendar date1,date2;
     public static JDateChooser date1,date2;
     private JTextField searchBar;
+    private JLabel label1,label2;
 
 
 
@@ -116,48 +117,7 @@ public class DonNhapUI extends JPanel{
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
 
-        btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(300, 40));
-        btloc.setBackground(new Color(255, 197, 70));
-        btloc.setForeground(new Color(0, 0, 0));
-        btloc.setBorder(null);
-        btloc.setOpaque(true);
-        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        date1 = new JDateChooser();
-        date2 = new JDateChooser();
-        date1.setPreferredSize(new Dimension(200, 30));
-        date2.setPreferredSize(new Dimension(200, 30));
-        btloc.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               loc();
-            }
-
-            private void loc() {
-                Date startDate = date1.getDate();
-                Date endDate = date2.getDate();
-                
-                // Convert the dates to string format
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String startDateString = dateFormat.format(startDate);
-                String endDateString = dateFormat.format(endDate);
-                // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
-                // Update the table with the filtered data
-                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
-                
-                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
-                    }
-                };
-                panelDanhSach.SetTable(tableDanhSach, null);
-            }
-            
-        }
-        );
+       
         btexport = new JButton("Export");
         btexport.setPreferredSize(new Dimension(100, 40));
         btexport.setBackground(new Color(255, 197, 70));
@@ -192,8 +152,16 @@ public class DonNhapUI extends JPanel{
         btreload.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                panelLoc.remove(label1);
+                panelLoc.remove(label2);
+                panelLoc.remove(btloc);
+                panelLoc.remove(date1);
+                panelLoc.remove(date2);
+                setupPanel();
                 updateTable();
                 btlook.setEnabled(false);
+                btexport.setEnabled(false);
+
             }
             
         });
@@ -234,10 +202,6 @@ public class DonNhapUI extends JPanel{
                 }
             }
         });
-
-        panelLoc.add(btloc);
-        panelLoc.add(date1);
-        panelLoc.add(date2);
         SetupPanelChucNang();
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
@@ -277,8 +241,111 @@ public class DonNhapUI extends JPanel{
         // for(CongtyMD cty : danhSachCT){
         //     tenLoc.get(2).add(cty.getTenCty());
         // }
-        
+        label1 = new JLabel("   >=");
+        label2 = new JLabel("   <=");
+        btloc = new JButton("Lọc");
+        btloc.setPreferredSize(new Dimension(300, 40));
+        btloc.setBackground(new Color(255, 197, 70));
+        btloc.setForeground(new Color(0, 0, 0));
+        btloc.setBorder(null);
+        btloc.setOpaque(true);
+        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        date1 = new JDateChooser();
+        date2 = new JDateChooser();
+        date1.setPreferredSize(new Dimension(200, 30));
+        date2.setPreferredSize(new Dimension(200, 30));
+        btloc.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               loc();
+            }
+
+            private void loc() {
+  
+                Date startDate = date1.getDate();
+                Date endDate = date2.getDate();
+                
+                // Convert the dates to string format
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if (startDate==null && endDate == null){
+                    new ThongBaoDialog("Chọn ngày đi ", null);
+                }
+                else if (startDate==null){
+                String endDateString = dateFormat.format(endDate);
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap <="+ endDateString );
+                if(dsDN == null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+
+                }else{
+                    String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                
+                    TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                // Update the table with the filtered data
+               
+                }
+                else if(endDate == null){
+                    String startDateString = dateFormat.format(startDate);
+                
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString );
+                if (dsDN== null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+                }else{
+                    String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                // Update the table with the filtered data
+                
+                }
+                else{
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN("NgayNhap >= " + startDateString , "NgayNhap <="+ endDateString );
+                if(dsDN == null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+                }
+                else {
+                    String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày nhập"};
+                
+                    TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                // Update the table with the filtered data
+                
+            }}
+        
+        }
+        );
+        label1.setPreferredSize(new Dimension(70, 30));
+        label2.setPreferredSize(new Dimension(70, 30));
+        panelLoc.add(btloc);
+        panelLoc.add(label1);
+        panelLoc.add(date1);
+        panelLoc.add(label2);
+        panelLoc.add(date2);
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
 
@@ -471,6 +538,7 @@ public class DonNhapUI extends JPanel{
                 new FormCTDN(arr[0]);
             }
         });
+        
         panelChucNang.add(btadd);
         //panelChucNang.add(btlook);
     }

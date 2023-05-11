@@ -24,13 +24,6 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import com.groupdocs.conversion.Converter;
-import com.groupdocs.conversion.options.convert.PdfConvertOptions;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -70,10 +63,10 @@ public class DonXuatUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton btloc,btlook,btexport,btpdf;
+    public static JButton btloc,btlook,btexport;
     private JDateChooser date1,date2;
 
-
+    private JLabel label1,label2;
     private JTextField searchBar;
 
 
@@ -118,7 +111,7 @@ public class DonXuatUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e){                
                 int selectedRow = panelDanhSach.getSelectedRow();
-                String maDonChon = panelDanhSach.getTableDS().getValueAt(selectedRow, 0).toString();
+                String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonXuatMD donChon = DonXuatBLL.getFirstDonXuat(maDonChon);
                 ArrayList<ChitietdonxuatMD> dsCT = DonXuatBLL.getDanhSachCTDX("MaDonXuat="+maDonChon);
                 exportTableToExcel(donChon,dsCT);
@@ -138,26 +131,18 @@ public class DonXuatUI extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                panelLoc.remove(label1);
+                panelLoc.remove(label2);
+                panelLoc.remove(btloc);
+                panelLoc.remove(date1);
+                panelLoc.remove(date2);
+                setupPanel();
                 updateTable();
                 btlook.setEnabled(false);
+                btexport.setEnabled(false);
+
             }
             
-        });
-
-        btpdf = new JButton("In");
-        btpdf.setPreferredSize(new Dimension(100, 40));
-        btpdf.setBackground(new Color(255, 197, 70));
-        btpdf.setForeground(new Color(0, 0, 0));
-
-        btpdf.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){                
-                try {
-                    exportTableToPdf();
-                } catch (Exception ignore) {
-                    // TODO: handle exception
-                }
-            }
         });
         //Object[][] dsDN = Model.to2DArray(DonNhap2BLL.getDanhSachDonNhap());
 
@@ -169,6 +154,37 @@ public class DonXuatUI extends JPanel{
         btlook.setOpaque(true);
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
+       
+        SetupPanelChucNang();
+        panelChucNang.add(btlook);
+        panelChucNang.add(btexport);
+        panelChucNang.add(btreload);
+        setupPanel();
+    }
+    public void setupPanel(){
+        String[] locPanelTitle = {"Lọc theo kho","Lọc theo công ty","Lọc theo sản phẩm của công ty"};
+        int[] columnIndexes = {1,3,4};
+        ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
+
+
+
+        
+        ArrayList<KhoMD> danhSachKho = DonXuatBLL.getDanhSachKho();
+
+        tenLoc.add(new ArrayList<String>());
+        for(KhoMD kho : danhSachKho){          
+            tenLoc.get(0).add(kho.getMaKho());
+        }
+
+        
+         ArrayList<CongtyMD> danhSachCongtyMD = DonXuatBLL.getDanhSachCongTy();
+         tenLoc.add(new ArrayList<String>());
+        for(CongtyMD congty : danhSachCongtyMD){          
+            tenLoc.get(1).add(congty.getTenCty());
+        }
+
+        label1 = new JLabel("   >=");
+        label2 = new JLabel("   <=");
         btloc = new JButton("Lọc");
         btloc.setPreferredSize(new Dimension(500, 40));
         btloc.setBackground(new Color(255, 197, 70));
@@ -188,70 +204,90 @@ public class DonXuatUI extends JPanel{
             }
 
             private void loc() {
+  
                 Date startDate = date1.getDate();
                 Date endDate = date2.getDate();
                 
                 // Convert the dates to string format
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String startDateString = dateFormat.format(startDate);
+                if (startDate==null && endDate == null){
+                    new ThongBaoDialog("Chọn ngày đi ", null);
+                }
+                else if (startDate==null){
                 String endDateString = dateFormat.format(endDate);
                 // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString , "NgayXuat <="+ endDateString );
-                // Update the table with the filtered data
-                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày Xuất"};
+                ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX("NgayXuat <="+ endDateString );
+                if(dsDX == null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+
+                }else{
+                    String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
                 
-                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX), columnNames) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                // Update the table with the filtered data
+               
+                }
+                else if(endDate == null){
+                    String startDateString = dateFormat.format(startDate);
+                
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString );
+                if (dsDX== null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+                }else{
+                    String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX), columnNames) {
                     @Override
                     public boolean isCellEditable(int row, int column) {
                         return false;
                     }
                 };
                 panelDanhSach.SetTable(tableDanhSach, null);
-            }
-            
+                }
+                // Update the table with the filtered data
+                
+                }
+                else{
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDX = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString , "NgayXuat <="+ endDateString );
+                if(dsDX == null){
+                    new ThongBaoDialog("Không có đơn  phù hợp ", null);
+                }
+                else {
+                    String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
+                
+                    TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDX), columnNames) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                // Update the table with the filtered data
+                
+            }}
+        
         }
         );
+        label1.setPreferredSize(new Dimension(70, 30));
+        label2.setPreferredSize(new Dimension(70, 30));
         panelLoc.add(btloc);
+        panelLoc.add(label1);
         panelLoc.add(date1);
+        panelLoc.add(label2);
         panelLoc.add(date2);
-        SetupPanelChucNang();
-        panelChucNang.add(btlook);
-        panelChucNang.add(btexport);
-        panelChucNang.add(btreload);
-        panelChucNang.add(btpdf);
-        setupPanel();
-    }
-    public void setupPanel(){
-        String[] locPanelTitle = {"Lọc theo kho","Lọc theo công ty","Lọc theo sản phẩm của công ty"};
-        int[] columnIndexes = {1,3,4};
-        ArrayList<ArrayList<String>> tenLoc = new ArrayList<ArrayList<String>>();
-
-
-
-        //Lấy danh sách kho và thêm vào bảng lộc
-        ArrayList<KhoMD> danhSachKho = DonXuatBLL.getDanhSachKho();
-
-        tenLoc.add(new ArrayList<String>());
-        for(KhoMD kho : danhSachKho){          
-            tenLoc.get(0).add(kho.getMaKho());
-        }
-
-        //Lấy danh sách khu vực và thêm vào bảng lộc
-         ArrayList<CongtyMD> danhSachCongtyMD = DonXuatBLL.getDanhSachCongTy();
-         tenLoc.add(new ArrayList<String>());
-        for(CongtyMD congty : danhSachCongtyMD){          
-            tenLoc.get(1).add(congty.getTenCty());
-        }
-
-
-        //Lấy danh sách khu vực và thêm vào bảng lộc
-        // ArrayList<CongtyMD> danhSachCT = DonNhap2BLL.getDanhSachCongTy(); 
-
-        // tenLoc.add(new ArrayList<String>());
-        // for(CongtyMD cty : danhSachCT){
-        //     tenLoc.get(2).add(cty.getTenCty());
-        // }
-        
 
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
@@ -626,24 +662,5 @@ public class DonXuatUI extends JPanel{
         panelDanhSach.SetTable(tableDanhSach, null);
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
-    }
-
-    private void exportTableToPdf() {
-        JFileChooser fc = new JFileChooser();
-        fc.removeChoosableFileFilter(fc.getFileFilter());
-        // set thu muc default, mày thay "transaction/bills" thành đường dẫn đến thư mục Excel của m để nó mở thư mục Excel luôn
-        fc.setCurrentDirectory(new File("D:/Java/BT_Javaa/src/doanjava/Excel"));
-            
-        FileFilter filter = new FileNameExtensionFilter("xlsx", "xlsx");
-        fc.setFileFilter(filter);
-        int returnVal = fc.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-        File file = fc.getSelectedFile();
-        Converter converter = new Converter(file.getPath());
-        PdfConvertOptions options = new PdfConvertOptions();
-        converter.convert(file.getPath().replace("xlsx", "pdf"), options);
-            
-        new ThongBaoDialog("Đã xuất ra file PDF", null);
-        }
     }
 }
