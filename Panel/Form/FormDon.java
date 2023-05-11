@@ -36,6 +36,7 @@ public class FormDon extends TitleFrame {
     private JLabel labelNgayTaoDon;
     private CustomComboBox comboBox2;
     private JButton addButton;
+    private JButton xoaChiTietBtn;
 
     private JPanel contentPanel = new JPanel();
     private FormDonBLL formDonBLL = new FormDonBLL();
@@ -106,14 +107,22 @@ public class FormDon extends TitleFrame {
 
 
         addButton.setEnabled(false);
-        JButton xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
+        xoaChiTietBtn = new JButton("Xoá mặt hàng đã chọn");
+        xoaChiTietBtn.setEnabled(false);
         xoaChiTietBtn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = ctDonPanel.getSelectedRow();
+                if(selectedRow<0){
+                    new ThongBaoDialog("Chưa chọn mặt hàng để xoá", null);
+                    return;
+                }
                 dsCTDon.remove(selectedRow);
                 updateTableModel();
+                rightPanel.remove(themSPPanel);
+                themSPPanel=null;
+
             }
             
         });
@@ -223,6 +232,7 @@ public class FormDon extends TitleFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(themSPPanel==null){  
+                    xoaChiTietBtn.setEnabled(true);
                     ArrayList<FormInput> inputFields = new ArrayList<FormInput>();
 
 
@@ -371,6 +381,7 @@ public class FormDon extends TitleFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(themSPPanel==null){
+                    xoaChiTietBtn.setEnabled(true);
                     JPanel panelChonContent = new JPanel();
                     panelChonContent.setLayout(new BoxLayout(panelChonContent, BoxLayout.Y_AXIS));
                     TablePanel panelChonSP = new TablePanel();
@@ -396,7 +407,13 @@ public class FormDon extends TitleFrame {
                     ArrayList<Object[]> dsMHChon = formDonBLL.getDanhSachMHChon(comboBox2.getSelectedKey());
                     if(dsMHChon!=null){
                         for(Object[] mh :dsMHChon){
-                            tableChonSP.addRow(new Object[]{mh[1],mh[2],mh[3],mh[4],mh[5]});
+                            float soLuong = (float)mh[3];
+                            for(DataRow r :dsCTDon){
+                                if(r.mh.getMaMH().equals(mh[0])&&r.kv.getMaKV().equals(mh[2])&&r.getMaDonNhap().equals(mh[4])){
+                                    soLuong-=r.getSoLuong();
+                                }
+                            }
+                            tableChonSP.addRow(new Object[]{mh[1],mh[2],soLuong,mh[4],mh[5]});
                         }
                     }
                     ListSelectionListener selectedMHListener = new ListSelectionListener() {
