@@ -13,4 +13,8 @@ public class CustomComboBox extends JComboBox<String>{
     public String getSelectedKey(){
         return keys.get(super.getSelectedItem());
     }
+
+    public void Deleteoption() {
+        super.removeAllItems();
+    }
 }

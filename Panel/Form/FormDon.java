@@ -250,6 +250,7 @@ public class FormDon extends TitleFrame {
                                     new ThongBaoDialog("Không có khu vực được phân chứa loại mặt hàng này trong kho",null);
                                 }
                                 else{
+                                    kvCB.Deleteoption();
                                     for(KhuvucMD kv : dsKVchuaMH){
                                         kvCB.addItem(kv.getTenKV(), kv.getMaKV());
                                     }

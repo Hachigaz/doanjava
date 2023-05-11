@@ -24,6 +24,13 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -63,7 +70,7 @@ public class DonXuatUI extends JPanel{
     private JPanel panelChucNang;
     private JPanel panelLoc;
     private TablePanel panelDanhSach;
-    public static JButton btloc,btlook,btexport;
+    public static JButton btloc,btlook,btexport,btpdf;
     private JDateChooser date1,date2;
 
 
@@ -136,6 +143,22 @@ public class DonXuatUI extends JPanel{
             }
             
         });
+
+        btpdf = new JButton("In");
+        btpdf.setPreferredSize(new Dimension(100, 40));
+        btpdf.setBackground(new Color(255, 197, 70));
+        btpdf.setForeground(new Color(0, 0, 0));
+
+        btpdf.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){                
+                try {
+                    exportTableToPdf();
+                } catch (Exception ignore) {
+                    // TODO: handle exception
+                }
+            }
+        });
         //Object[][] dsDN = Model.to2DArray(DonNhap2BLL.getDanhSachDonNhap());
 
         btlook = new JButton("Xem đơn xuất");
@@ -195,6 +218,7 @@ public class DonXuatUI extends JPanel{
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
         panelChucNang.add(btreload);
+        panelChucNang.add(btpdf);
         setupPanel();
     }
     public void setupPanel(){
@@ -602,5 +626,24 @@ public class DonXuatUI extends JPanel{
         panelDanhSach.SetTable(tableDanhSach, null);
         tableTemp = panelDanhSach.getTableDS();
         tableTemp.addMouseListener(actionInfo);
+    }
+
+    private void exportTableToPdf() {
+        JFileChooser fc = new JFileChooser();
+        fc.removeChoosableFileFilter(fc.getFileFilter());
+        // set thu muc default, mày thay "transaction/bills" thành đường dẫn đến thư mục Excel của m để nó mở thư mục Excel luôn
+        fc.setCurrentDirectory(new File("D:/Java/BT_Javaa/src/doanjava/Excel"));
+            
+        FileFilter filter = new FileNameExtensionFilter("xlsx", "xlsx");
+        fc.setFileFilter(filter);
+        int returnVal = fc.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        File file = fc.getSelectedFile();
+        Converter converter = new Converter(file.getPath());
+        PdfConvertOptions options = new PdfConvertOptions();
+        converter.convert(file.getPath().replace("xlsx", "pdf"), options);
+            
+        new ThongBaoDialog("Đã xuất ra file PDF", null);
+        }
     }
 }
