@@ -19,7 +19,8 @@
             "d:\\POI\\jcommon-1.0.23.jar",
             "c:\\Users\\84778\\Downloads\\poi-4.1.0/**/*.jar",
             "c:\\Users\\84778\\Downloads\\jcommon-1.0.23.jar",
-            "c:\\Users\\84778\\Downloads\\jfreechart-1.0.19.jar"
+            "c:\\Users\\84778\\Downloads\\jfreechart-1.0.19.jar",
+            "c:\\Users\\Admin\\Downloads\\flatlaf-3.1.1.jar"
         ],
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"
