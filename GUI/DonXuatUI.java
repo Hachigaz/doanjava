@@ -131,6 +131,10 @@ public class DonXuatUI extends JPanel{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                panelLoc.remove(btloc);
+                panelLoc.remove(date1);
+                panelLoc.remove(date2);
+                setupPanel();
                 updateTable();
                 btlook.setEnabled(false);
             }
@@ -146,51 +150,7 @@ public class DonXuatUI extends JPanel{
         btlook.setOpaque(true);
         btlook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btlook.setEnabled(false);
-        btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(500, 40));
-        btloc.setBackground(new Color(255, 197, 70));
-        btloc.setForeground(new Color(0, 0, 0));
-        btloc.setBorder(null);
-        btloc.setOpaque(true);
-        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        date1 = new JDateChooser();
-        date2 = new JDateChooser();
-        date1.setPreferredSize(new Dimension(200, 30));
-        date2.setPreferredSize(new Dimension(200, 30));
-        btloc.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               loc();
-            }
-
-            private void loc() {
-                Date startDate = date1.getDate();
-                Date endDate = date2.getDate();
-                
-                // Convert the dates to string format
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String startDateString = dateFormat.format(startDate);
-                String endDateString = dateFormat.format(endDate);
-                // Retrieve the data from the database and filter it based on the date range
-                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString , "NgayXuat <="+ endDateString );
-                // Update the table with the filtered data
-                String[] columnNames = {"Mã Đơn ", "Mã kho", "Mã Cty", "Tên Cty", "Mã NV", "Ngày Xuất"};
-                
-                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
-                    }
-                };
-                panelDanhSach.SetTable(tableDanhSach, null);
-            }
-            
-        }
-        );
-        panelLoc.add(btloc);
-        panelLoc.add(date1);
-        panelLoc.add(date2);
+       
         SetupPanelChucNang();
         panelChucNang.add(btlook);
         panelChucNang.add(btexport);
@@ -227,7 +187,87 @@ public class DonXuatUI extends JPanel{
         // for(CongtyMD cty : danhSachCT){
         //     tenLoc.get(2).add(cty.getTenCty());
         // }
+        btloc = new JButton("Lọc");
+        btloc.setPreferredSize(new Dimension(500, 40));
+        btloc.setBackground(new Color(255, 197, 70));
+        btloc.setForeground(new Color(0, 0, 0));
+        btloc.setBorder(null);
+        btloc.setOpaque(true);
+        btloc.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        date1 = new JDateChooser();
+        date2 = new JDateChooser();
+        date1.setPreferredSize(new Dimension(200, 30));
+        date2.setPreferredSize(new Dimension(200, 30));
+        btloc.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               loc();
+            }
+
+            private void loc() {
+  
+                Date startDate = date1.getDate();
+                Date endDate = date2.getDate();
+                
+                // Convert the dates to string format
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                if (startDate==null && endDate == null){
+                    new ThongBaoDialog("Chọn ngày đi ", null);
+                }
+                else if (startDate==null){
+                String endDateString = dateFormat.format(endDate);
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat <="+ endDateString );
+                // Update the table with the filtered data
+                String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                else if(endDate == null){
+                    String startDateString = dateFormat.format(startDate);
+                
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString );
+                // Update the table with the filtered data
+                String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+                }
+                else{
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+                // Retrieve the data from the database and filter it based on the date range
+                ArrayList<DSDonXuatMD> dsDN = DonXuatBLL.getDanhSachDX("NgayXuat >= " + startDateString , "NgayXuat <="+ endDateString );
+                // Update the table with the filtered data
+                String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày Xuất"};
+                
+                TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN), columnNames) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+                panelDanhSach.SetTable(tableDanhSach, null);
+            }}
         
+        }
+        );
+        panelLoc.add(btloc);
+        panelLoc.add(date1);
+        panelLoc.add(date2);
 
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
