@@ -112,7 +112,7 @@ public class DonNhapUI extends JPanel{
         btlook.setEnabled(false);
 
         btloc = new JButton("Lọc");
-        btloc.setPreferredSize(new Dimension(500, 40));
+        btloc.setPreferredSize(new Dimension(300, 40));
         btloc.setBackground(new Color(255, 197, 70));
         btloc.setForeground(new Color(0, 0, 0));
         btloc.setBorder(null);
@@ -269,16 +269,7 @@ public class DonNhapUI extends JPanel{
 
         SetupPanelLoc(locPanelTitle, columnIndexes, tenLoc);
 
-        //setup bảng
-        // String[] columnNames = {"Mã Đơn ","Mã kho","Mã Cty","Tên Cty","Mã NV","Ngày nhập"};
-        // ArrayList<DSDonNhapMD> dsDN = donNhapBLL.getDanhSachDN();
-        // TableModel tableDanhSach = new DefaultTableModel(Model.to2DArray(dsDN),columnNames){
-        //     @Override
-        //     public boolean isCellEditable(int row, int column) {
-        //         return false;
-        //     }
-        // };
-        // UpdateTable(tableDanhSach);
+
         
     }
     //lọc theo loại sp và khu vực

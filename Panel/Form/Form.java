@@ -59,12 +59,12 @@ public class Form extends JDialog implements MouseListener{
     private Date ngayDaChon;
     public Form(JFrame parent,ActionListener add){
         super(parent,"Form Công ty",true);
-        this.setPreferredSize(new Dimension(1300,700));
+        this.setPreferredSize(new Dimension(800,700));
         labelTitleInfo = new JLabel("Thông tin công ty");
         labelTitleInfo.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         labelTitleInfo.setFont(new Font("Poppins",Font.BOLD,20));
         labelTitleInfo.setHorizontalAlignment(JLabel.CENTER);
-
+        this.setResizable(false);
         
 
         panelEnterData = new JPanel();//chứa các thành phần nhập

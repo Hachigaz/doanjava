@@ -27,7 +27,7 @@ import Panel.SubPanel.TablePanel;
 import misc.util;
 public class TraCuuHangUI extends JPanel{
     //BLL
-    private TraCuuHangBLL traCuuHangBLL = new TraCuuHangBLL();
+    private TraCuuHangBLL traCuuHangBLL= new TraCuuHangBLL();
 
     private JPanel panelChucNang;
     private JPanel panelLoc;
@@ -37,27 +37,22 @@ public class TraCuuHangUI extends JPanel{
 
     private JTextField searchBar;
 
+    private Dimension d;
+
 
 
     public TraCuuHangUI(Dimension d){
-
         this.panelChucNang = new JPanel();
         this.panelLoc = new JPanel();
         this.panelDanhSach = new TablePanel();
-
         this.setLayout(new BorderLayout());
-
         this.setPreferredSize(d);
-
         panelChucNang.setPreferredSize(new Dimension(this.getPreferredSize().width,60));
         panelLoc.setPreferredSize(new Dimension(240,this.getPreferredSize().height-60));
         panelDanhSach.setPreferredSize(new Dimension(this.getPreferredSize().width-240,this.getPreferredSize().height-60));
-
         this.add(panelChucNang,BorderLayout.NORTH);
         this.add(panelLoc,BorderLayout.WEST);
         this.add(panelDanhSach,BorderLayout.CENTER);
-
-
         panelChucNang.setBackground(new Color(27,101,147));
         panelChucNang.setOpaque(true);
         panelChucNang.setLayout(new BorderLayout());
@@ -66,13 +61,11 @@ public class TraCuuHangUI extends JPanel{
         panelLoc.setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
         panelDanhSach.setBackground(new Color(255, 182, 87,255));
         panelDanhSach.setOpaque(true);
-
         Object[][] dsKho = Model.to2DArray(traCuuHangBLL.getDanhSachKho(),"MaKho","TenKho");
-
         SetupPanelChucNang(util.objToString(util.getColumn(dsKho, 1)),util.objToString(util.getColumn(dsKho, 0)));
-
         setupPanel();
     }
+    
     public void setupPanel(){
         String[] locPanelTitle = {"Lọc theo khu vực","Lọc theo loại hàng","Lọc theo sản phẩm của công ty"};
         int[] columnIndexes = {0,3,4};
@@ -266,10 +259,13 @@ public class TraCuuHangUI extends JPanel{
     public void SetupPanelChucNang(String[] dsTenKho,String[]dsMaKho){
         JPanel panelChonKho = new JPanel();
         JPanel panelSearch = new JPanel();
+        JPanel panelReload = new JPanel();
         panelChonKho.setOpaque(false);
         panelChonKho.setBorder(BorderFactory.createEmptyBorder(14,10,0,0));
         panelSearch.setOpaque(false);
         panelSearch.setBorder(BorderFactory.createEmptyBorder(14,0,0,10));
+        panelReload.setOpaque(false);
+        panelReload.setBorder(BorderFactory.createEmptyBorder(14,10,0,0));
         JLabel labelChonKho = new JLabel("Chọn kho");
 
         optionName = dsTenKho;
@@ -291,6 +287,19 @@ public class TraCuuHangUI extends JPanel{
         searchBar.addActionListener(onSubmitSearch);
 
         panelChucNang.add(panelSearch,BorderLayout.EAST);
+        JButton btreload = new JButton("Refresh");
+        btreload.setPreferredSize(new Dimension(100, 40));
+        btreload.setBackground(new Color(255, 197, 70));
+        btreload.setForeground(new Color(0, 0, 0));
+        btreload.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refesh();
+            }
+            
+        });
+        panelChucNang.add(panelReload);
+        panelReload.add(btreload);
     }
 
     //lấy mã kho đang chọn trong combobox
@@ -339,7 +348,12 @@ public class TraCuuHangUI extends JPanel{
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
 
-
+public void refesh (){
+    Object[][] dsKho = Model.to2DArray(traCuuHangBLL.getDanhSachKho(),"MaKho","TenKho");
+        SetupPanelChucNang(util.objToString(util.getColumn(dsKho, 1)),util.objToString(util.getColumn(dsKho, 0)));
+        setupPanel();
+    
+}
 
 
 

@@ -17,6 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import BLL.NhanVienBLL;
 
 import javax.swing.BorderFactory;
@@ -60,6 +63,7 @@ public class Form extends JDialog implements MouseListener{
     public Form(JFrame parent,ActionListener add){
         super(parent,"Form nhân viên",true);
         this.setPreferredSize(new Dimension(1300,700));
+        this.setResizable(false);
         labelTitleInfo = new JLabel("Thông tin nhân viên");
         labelTitleInfo.setBorder(BorderFactory.createEmptyBorder(60,0,0,0));
         labelTitleInfo.setFont(new Font("Poppins",Font.BOLD,20));
@@ -354,6 +358,14 @@ public class Form extends JDialog implements MouseListener{
     }
     public void visible(){
         setVisible(true);
+    }
+    public boolean checkTen(){
+        String pattern = "^[a-zA-Z\\s\\p{L}]*$"; // Biểu thức chính quy kiểm tra chữ cái, dấu cách và dấu trong tiếng Việt
+
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(textTenNV.getText());
+
+        return matcher.matches();
     }
     public boolean check() {
         String TenNV = textTenNV.getText();
