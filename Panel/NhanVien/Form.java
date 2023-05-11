@@ -17,6 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import BLL.NhanVienBLL;
 
 import javax.swing.BorderFactory;
@@ -354,6 +357,14 @@ public class Form extends JDialog implements MouseListener{
     }
     public void visible(){
         setVisible(true);
+    }
+    public boolean checkTen(){
+        String pattern = "^[a-zA-Z\\s\\p{L}]*$"; // Biểu thức chính quy kiểm tra chữ cái, dấu cách và dấu trong tiếng Việt
+
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(textTenNV.getText());
+
+        return matcher.matches();
     }
     public boolean check() {
         String TenNV = textTenNV.getText();
