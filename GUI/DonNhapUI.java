@@ -216,7 +216,7 @@ public class DonNhapUI extends JPanel{
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
                 try {
-                    exportTableToPdf(donChon,dsCT);
+                    //exportTableToPdf(donChon,dsCT);
                 } catch (Exception ignore) {
                     // TODO: handle exception
                 }
@@ -458,8 +458,6 @@ public class DonNhapUI extends JPanel{
                         mainWindow.setEnabled(true);
                         mainWindow.setAlwaysOnTop(true);
                         mainWindow.setAlwaysOnTop(false);
-                        new ThongBaoDialog("Thêm đơn nhập thành công", null);
-
                     }
                 });
             }
