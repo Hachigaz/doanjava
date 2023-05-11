@@ -38,7 +38,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -56,12 +55,11 @@ import Panel.SubPanel.LocPanel;
 import Panel.SubPanel.TablePanel;
 import misc.ThongBaoDialog;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import com.toedter.calendar.JCalendar;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+import java.io.File;
+
 import com.toedter.calendar.JDateChooser;
 
 public class DonNhapUI extends JPanel{
@@ -172,7 +170,17 @@ public class DonNhapUI extends JPanel{
                 String maDonChon = panelDanhSach.getTableDS().getModel().getValueAt(selectedRow, 0).toString();
                 DonNhapMD donChon = donNhapBLL.getFirstDonNhap(maDonChon);
                 ArrayList<ChitietdonnhapMD> dsCT = donNhapBLL.getDanhSachCTDN("MaDonNhap="+maDonChon);
-                exportTableToExcel(donChon,dsCT);
+                JFileChooser xuatFileChooser = new JFileChooser();
+                xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnValue = xuatFileChooser.showSaveDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    // The user selected a file
+                    String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+donChon.getMaDonNhap()+".xlsx";
+                    if(exportTableToExcel(donChon,dsCT,selectedFilePath))
+                    {
+                        new ThongBaoDialog("Đã xuất ra file "+donChon.getMaDonNhap()+".xlsx", null);
+                    }
+                }
             }
         });
 
@@ -513,7 +521,7 @@ public class DonNhapUI extends JPanel{
     // }
 
     //tạo bảng và khởi tạo lại mảng chứa các đối tượng lọc
-    private void exportTableToExcel(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT) {
+    private boolean exportTableToExcel(DonNhapMD dn,ArrayList<ChitietdonnhapMD> dsCT,String selectedFilePath) {
         try {
             Workbook workbook = new XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Đơn nhập");
@@ -604,21 +612,15 @@ public class DonNhapUI extends JPanel{
                 slconlaiCTDN.setCellValue(ct.getSLConLai());
                 slconlaiCTDN.setCellStyle(cellStyle);
             }
-            JFileChooser xuatFileChooser = new JFileChooser();
-            xuatFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int returnValue = xuatFileChooser.showSaveDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                // The user selected a file
-                String selectedFilePath = xuatFileChooser.getSelectedFile().getPath()+"\\"+dn.getMaDonNhap()+".xlsx";
-                FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
-                workbook.write(fileOutputStream);
-                fileOutputStream.close();
-                new ThongBaoDialog("Đã xuất ra file "+dn.getMaDonNhap()+".xlsx", null);
-            }
 
+            FileOutputStream fileOutputStream = new FileOutputStream(selectedFilePath);
+            workbook.write(fileOutputStream);
+            fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     private void importExceltoTable(String excelFilePath) {

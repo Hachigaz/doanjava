@@ -435,8 +435,6 @@ public class FormDon extends TitleFrame {
                                 return;
                             }
                             int selectedRow = panelChonSP.getSelectedRow();
-                            System.out.println(selectedRow);
-                            System.out.println("MaMH ="+((dsMHChon.get(selectedRow))[0]).toString());
                             Mat_hangMD mhChon = formDonBLL.getFirstMH(((dsMHChon.get(selectedRow))[0]).toString());
                             KhuvucMD kvChon = formDonBLL.getFirstKV(((dsMHChon.get(selectedRow)[2])).toString());
                             String maDonChon = dsMHChon.get(selectedRow)[5].toString();
