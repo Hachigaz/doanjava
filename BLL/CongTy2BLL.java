@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import DAL.DataAccessLayer;
 import DTO.ChucvuMD;
 import DTO.CongtyMD;
+import DTO.DonNhapMD;
 import DTO.KhoMD;
 import DTO.NhanvienMD;
 import DTO.Custom.DSNhanVienMD;
@@ -17,10 +18,12 @@ public class CongTy2BLL {
     
     private DataAccessLayer<KhoMD> KhoDAL;
     private DataAccessLayer<CongtyMD> CongTy2DAL;
+    private DataAccessLayer<DonNhapMD> DNDAL;
     public CongTy2BLL(){
         SQLUser master = UI.master;
         KhoDAL = new DataAccessLayer<>(master, KhoMD.class);
         CongTy2DAL = new DataAccessLayer<>(master, CongtyMD.class);
+        DNDAL = new DataAccessLayer<>(master, DonNhapMD.class);
     }
     // public ArrayList<DSNhanVienMD> getDanhSachNhanVien(String... statements){
     //     return DSNhanVienDAL.getTable(statements);
@@ -36,6 +39,9 @@ public class CongTy2BLL {
     }
     public ArrayList<CongtyMD> getDSCT(String... statements){
         return CongTy2DAL.getTable(statements);
+    }
+    public ArrayList<DonNhapMD> getDSDN(String... statements){
+        return DNDAL.getTable(statements);
     }
    
     

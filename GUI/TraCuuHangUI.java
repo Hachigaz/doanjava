@@ -268,7 +268,7 @@ public class TraCuuHangUI extends JPanel{
         panelReload.setOpaque(false);
         panelReload.setBorder(BorderFactory.createEmptyBorder(14,10,0,0));
         JLabel labelChonKho = new JLabel("Kho đăng nhập:"+UI.khoNVDangNhap.getTenKho());
-        labelChonKho.setFont(new Font("Helvetica", Font.BOLD, 18));
+        labelChonKho.setFont(new Font("Helvetica", Font .BOLD, 18));
 
         optionName = dsTenKho;
         optionKey = dsMaKho;

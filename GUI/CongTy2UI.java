@@ -345,6 +345,12 @@ CongTy2BLL CongTy2BLL = new CongTy2BLL();
             int rowIndex = tableTemp.getSelectedRow();
             arr[0] = tableTemp.getValueAt(rowIndex, 0).toString();
             arr[1] = tableTemp.getValueAt(rowIndex, 1).toString();
+            System.out.println(arr[0]);
+            if(CongTy2BLL.getDSDN("MaCty="+arr[0])!=null){
+                new ThongBaoDialog("Không thể xoá công ty có tồn tại đơn nhập", null);
+                return;
+            }
+
             int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa công ty "+arr[1]+" không?", "Xác nhận xóa dữ liệu", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 CongTy2BLL.xoaCT("MaCty = "+arr[0]);
