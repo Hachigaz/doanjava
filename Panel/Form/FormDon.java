@@ -424,7 +424,7 @@ public class FormDon extends TitleFrame {
                         }
                     };
                     panelChonSP.SetTable(tableChonSP, selectedMHListener);
-                    panelChonSP.getTableDS().setPreferredSize(new Dimension(panelChonSP.getTableDS().getPreferredSize().width, 400));
+                    
                     panelChonContent.add(panelChonSP);
                     panelChonContent.add(Box.createVerticalGlue()); // Add glue component
                     //panelChonContent.setPreferredSize(new Dimension(panelChonContent.getPreferredSize().width,400));

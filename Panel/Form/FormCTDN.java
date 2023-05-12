@@ -102,7 +102,7 @@ public class FormCTDN extends TitleFrame{
     }
     public void updateTable(){
         ArrayList<ChitietdonnhapMD> dsMatHang = FormCTDNBLL.getDanhSachTTSP();
-        String[] columnNames = {"Mã DN","Mã MH","Mã KV","Số lượng còn lại","Số lượng nhập"};
+        String[] columnNames = {"Mã DN","Mã MH","Mã KV","Số lượng nhập","Số lượng còn lại"};
         currentTableModel = new DefaultTableModel(Model.to2DArray(dsMatHang,"MaDonNhap","MaKV","MaMH","SLConLai","SLNhap"), columnNames);
         matHangTable.SetTable(currentTableModel,null);
     }
