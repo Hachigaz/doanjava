@@ -31,12 +31,14 @@
             "d:\\POI\\groupdocs-conversion-23.4.jar",
             "c:\\Users\\Admin\\Desktop\\bt\\java_lib\\sql\\flatlaf-3.1.1.jar",
             "c:\\Users\\ACER\\Downloads\\flatlaf-3.1.1.jar",
-            "c:\\Users\\ACER\\Downloads\\pdfbox-app-3.0.0-alpha3.jar"
+            "c:\\Users\\ACER\\Downloads\\pdfbox-app-3.0.0-alpha3.jar",
+            "c:\\Users\\Admin\\Downloads\\temp\\mysql-connector-j-9.1.0\\mysql-connector-j-9.1.0.jar"
         ],
         "exclude": [
             "c:\\Users\\Admin\\Downloads\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar"
         ]
     },
     "cSpell.words": [],
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable"
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
