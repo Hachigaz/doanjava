@@ -18,7 +18,7 @@ public class FormCTDNBLL {
     private DataAccessLayer<Loai_hangMD> loaiHangDAL;
     private DataAccessLayer<ChitietdonnhapMD> ctdnDAL;
     private String maDNChon;
-    static SQLUser master = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho", "master", "123");
+    static SQLUser master = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho", "admin", "Abc12345");
 
     public FormCTDNBLL(String maDNChon){
         //SQLUser master = UI.master;

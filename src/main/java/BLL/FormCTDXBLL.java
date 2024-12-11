@@ -20,7 +20,7 @@ public class FormCTDXBLL {
     private DataAccessLayer<ChitietdonnhapMD> ctdnDAL;
     private DataAccessLayer<ChitietdonxuatMD> ctdxDAL;
     private String maDXChon;
-    static SQLUser master = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho", "master", "123");
+    static SQLUser master = new SQLUser("jdbc:mysql://localhost:3306/QuanLyKho", "admin", "Abc12345");
 
     public FormCTDXBLL(String maDXChon){
         //SQLUser master = UI.master;

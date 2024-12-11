@@ -10,8 +10,8 @@ import SQL.*;
 public class Program {
     private final String url = "jdbc:mysql://localhost:3306/QuanLyKho";
 
-    private final String username = "master";
-    private final String password = "123";
+    private final String username = "admin";
+    private final String password = "Abc12345";
 
     public static Program program;
     private  SQLUser master;
